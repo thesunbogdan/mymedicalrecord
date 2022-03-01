@@ -1,0 +1,143 @@
+.profile {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 2px solid black;
+
+  .profile-column {
+    max-width: 600px;
+    min-height: 80vh;
+  }
+  .profile-avatar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.15fr 1fr 0.15fr;
+    grid-template-rows: 0.3fr 3fr 0.5fr 0.3fr 0.15fr;
+    gap: 0;
+
+    .profile-avatar-button {
+      grid-area: 1 / 1 / 2 / 2;
+
+      button {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .profile-avatar-photo {
+      grid-area: 2 / 2 / 3 / 3;
+
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .profile-avatar-name {
+      grid-area: 3 / 2 / 4 / 3;
+
+      h1 {
+        text-align: center;
+      }
+    }
+    .profile-avatar-other {
+      grid-area: 4 / 2 / 5 / 3;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .profile-bio {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 0.15fr 1fr 0.15fr;
+    grid-template-rows: repeat(2, 0.3fr) 1fr 0.3fr;
+    gap: 0;
+
+    .profile-bio-title {
+      grid-area: 2 / 2 / 3 / 3;
+
+      h2 {
+        text-align: center;
+      }
+    }
+    .profile-bio-text {
+      grid-area: 3 / 2 / 4 / 3;
+
+      p {
+        text-indent: 40px;
+        text-align: justify;
+      }
+    }
+  }
+
+  .profile-contact {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.15fr 1fr 0.15fr;
+    grid-template-rows: repeat(2, 0.3fr) repeat(3, 0.5fr) 0.3fr;
+    gap: 0;
+
+    .profile-contact-title {
+      grid-area: 2 / 2 / 3 / 3;
+
+      h2 {
+        text-align: center;
+      }
+    }
+
+    .profile-contact-button-one {
+      grid-area: 3 / 2 / 4 / 3;
+
+      button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+    }
+
+    .profile-contact-button-two {
+      grid-area: 4 / 2 / 5 / 3;
+
+      button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+    }
+
+    .profile-contact-button-three {
+      grid-area: 5 / 2 / 6 / 3;
+
+      button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.modal-grid-top {
+  grid-area: 1 / 1 / 2 / 2;
+  .modal-close-button {
+    cursor: pointer;
+    background-color: red;
+  }
+}
+
+.modal-grid-bottom {
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  .modal-column {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
+}

@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp-F2oyrGF1ThSajj0V4ROs-VYKcnkbN4",
@@ -18,41 +19,46 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
   if (!snapShot.exists) {
-    const { displayName, email } = userAuth;
+    console.log("userAuth: " + userAuth);
+    console.log("additionalData: " + additionalData);
+    const { email } = userAuth;
+    const profilePictureURL = null;
+    const tel = null;
+    const medicalRecord = null;
 
     const createdAt = new Date();
 
     try {
-      // if (role === "Medic") {
-      //   await userRef.set({
-      //     firstName,
-      //     lastName,
-      //     createdAt,
-      //     email,
-      //     role,
-      //     medicInstitution,
-      //     medicFunction,
-      //     ...additionalData,
-      //   });
-      // } else if (role === "Pacient") {
-      //   await userRef.set({
-      //     firstName,
-      //     lastName,
-      //     createdAt,
-      //     email,
-      //     role,
-      //     pacientBirthDate,
-      //     ...additionalData,
-      //   });
-      // }
+      const { role, firstName, lastName } = additionalData;
+      if (role === "Pacient") {
+        const { pacientBirthDate } = additionalData;
 
-      await userRef.set({
-        displayName,
-        email,
-        createdAt,
-        abbbb: "aaaaa",
-        ...additionalData,
-      });
+        await userRef.set({
+          firstName,
+          lastName,
+          email,
+          role,
+          pacientBirthDate,
+          createdAt,
+          profilePictureURL,
+          tel,
+          medicalRecord,
+        });
+      } else if (role === "Medic") {
+        const { medicInstitution, medicFunction } = additionalData;
+
+        await userRef.set({
+          firstName,
+          lastName,
+          email,
+          role,
+          medicInstitution,
+          medicFunction,
+          createdAt,
+          profilePictureURL,
+          tel,
+        });
+      }
     } catch (error) {
       console.log("error creating user", error.message);
     }
@@ -60,6 +66,77 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   return userRef;
 };
+
+export const updateUserProfileDocument = async (userAuth, additionalData) => {
+  console.log("userAuth: " + userAuth.id);
+  if (!userAuth) {
+    return true;
+  }
+  const userRef = firestore.doc(`users/${userAuth.id}`);
+  // console.log(JSON.stringify(userRef, null, 2));
+  const snapShot = await userRef.get();
+  // console.log(JSON.stringify(snapShot, null, 2));
+  if (snapShot.exists) {
+    const { role } = additionalData;
+
+    try {
+      const { firstName, lastName, tel, profilePictureURL } = additionalData;
+      console.log(
+        "firstname " +
+          firstName +
+          "\nlastName " +
+          lastName +
+          "\ntel " +
+          tel +
+          "\nprofilePicture " +
+          profilePictureURL +
+          "\nrole " +
+          role
+      );
+      if (role === "Pacient") {
+        await userRef.update({
+          firstName: firstName,
+          lastName: lastName,
+          profilePictureURL: profilePictureURL,
+          tel: tel,
+        });
+      } else if (role === "Medic") {
+        const { medicInstitution, medicFunction } = additionalData;
+
+        await userRef.update({
+          firstName: firstName,
+          lastName: lastName,
+          profilePictureURL: profilePictureURL,
+          tel: tel,
+          medicFunction: medicFunction,
+          medicInstitution: medicInstitution,
+        });
+      }
+    } catch (error) {
+      console.log("error updating user profile", error.message);
+    }
+  }
+  return false;
+};
+
+export const updateUserProfilePicture = async (userAuth, file) => {
+  var profilePictureURL = null;
+  if (file && userAuth) {
+    const storageRef = firebase
+      .storage()
+      .ref("ProfilePictures/" + userAuth.id + "/" + file.name);
+    console.log(storageRef);
+
+    await storageRef.put(file);
+
+    await storageRef.getDownloadURL().then((url) => {
+      profilePictureURL = url;
+    });
+
+    return profilePictureURL;
+  }
+};
+
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();

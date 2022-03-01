@@ -24,6 +24,9 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useLocation } from "react-router-dom";
 import ListComponent from "../../components/list/list.components";
+import ProfileComponent from "../../components/profile/profile.component";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
@@ -39,29 +42,51 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <Toolbar>{`Hello, ${currentUser.displayName}!`}</Toolbar>
+      <Toolbar>{`Hello, ${currentUser.firstName}!`}</Toolbar>
 
       <Divider />
-      <List>
-        {["Profile", "Pacients", "Statistics"].map((text, index) => (
-          <ListItem
-            button
-            key={text}
-            onClick={() => {
-              navigate(`/${text.toLowerCase()}`);
-            }}
-          >
-            <ListItemIcon>
-              {(() => {
-                if (index === 0) return <PersonIcon />;
-                if (index === 1) return <FormatListBulletedIcon />;
-                if (index === 2) return <EqualizerIcon />;
-              })()}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      {currentUser.role === "Medic" ? (
+        <List>
+          {["Profile", "Pacients", "Statistics"].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              onClick={() => {
+                navigate(`/${text.toLowerCase()}`);
+              }}
+            >
+              <ListItemIcon>
+                {(() => {
+                  if (index === 0) return <PersonIcon />;
+                  if (index === 1) return <FormatListBulletedIcon />;
+                  if (index === 2) return <EqualizerIcon />;
+                })()}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <List>
+          {["Profile", "Access"].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              onClick={() => {
+                navigate(`/${text.toLowerCase()}`);
+              }}
+            >
+              <ListItemIcon>
+                {(() => {
+                  if (index === 0) return <PersonIcon />;
+                  if (index === 1) return <VisibilityIcon />;
+                })()}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </div>
   );
 
@@ -89,9 +114,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           {currentUser ? (
-            <Link to="/login" onClick={() => auth.signOut()}>
-              SIGN OUT
-            </Link>
+            <button onClick={() => auth.signOut()}>SIGN OUT</button>
           ) : (
             ""
           )}
@@ -147,7 +170,11 @@ function ResponsiveDrawer(props) {
         {location.pathname === "/pacients" ? (
           <ListComponent />
         ) : (
-          <p>{location.pathname}</p>
+          ((location.pathname === "/profile" ? (
+            <ProfileComponent />
+          ) : location.pathname === "/statistics" ? (
+            <p>/statistics</p>
+          ) : null): null)
         )}
       </Box>
     </Box>

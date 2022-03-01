@@ -1,0 +1,23 @@
+{
+  "users": {
+    "both": {
+      "firstName": "",
+      "lastName": "",
+      "createdAt": "",
+      "profilePicture": "",
+      "email": "",
+      "role": "",
+      "tel": "",
+
+      "medic": {
+        "medicFunction": "",
+        "medicInstitution": ""
+      },
+
+      "pacient": {
+        "medicalRecord": "",
+        "birthDate": ""
+      }
+    }
+  }
+}

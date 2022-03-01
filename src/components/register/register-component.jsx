@@ -25,16 +25,15 @@ export default class Register extends React.Component {
     super(props);
 
     this.state = {
-      // firstName: "",
-      // lastName: "",
-      displayName: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
-      //   role: "",
-      //   medicInstitution: "",
-      //   medicFunction: "",
-      //   pacientBirthDate: "",
+      role: "",
+      medicInstitution: "",
+      medicFunction: "",
+      pacientBirthDate: "",
     };
   }
 
@@ -43,14 +42,24 @@ export default class Register extends React.Component {
     this.setState({ [name]: value });
   };
 
-  // handleChange1 = (newValue) => {
-  //   this.setState({ pacientBirthDate: newValue });
-  // };
+  handleChange1 = (newValue) => {
+    this.setState({ pacientBirthDate: newValue });
+  };
 
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { displayName, email, password, confirmPassword } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      role,
+      medicInstitution,
+      medicFunction,
+      pacientBirthDate,
+    } = this.state;
 
     if (password !== confirmPassword) {
       alert("passwords don't match");
@@ -62,33 +71,33 @@ export default class Register extends React.Component {
         email,
         password
       );
-
-      // if (role === "Pacient") {
-      //   await createUserProfileDocument(user, {
-      //     firstName,
-      //     lastName,
-      //     role,
-      //     pacientBirthDate,
-      //   });
-      // } else if (role === "Medic") {
-      //   await createUserProfileDocument(user, {
-      //     firstName,
-      //     lastName,
-      //     role,
-      //     medicInstitution,
-      //     medicFunction,
-      //   });
-      // }
-
-      await createUserProfileDocument(user, {
-        displayName,
-      });
+      if (role === "Pacient") {
+        await createUserProfileDocument(user, {
+          firstName,
+          lastName,
+          role,
+          pacientBirthDate,
+        });
+      } else if (role === "Medic") {
+        await createUserProfileDocument(user, {
+          firstName,
+          lastName,
+          role,
+          medicInstitution,
+          medicFunction,
+        });
+      }
 
       this.setState({
-        displayName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
         confirmPassword: "",
+        role: "",
+        medicInstitution: "",
+        medicFunction: "",
+        pacientBirthDate: "",
       });
     } catch (error) {
       alert(error.message);
@@ -121,7 +130,7 @@ export default class Register extends React.Component {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                {/* <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="firstName"
                     required
@@ -132,20 +141,9 @@ export default class Register extends React.Component {
                     onChange={this.handleChange}
                     autoFocus
                   />
-                </Grid> */}
-                <Grid item xs={12}>
-                  <TextField
-                    name="displayName"
-                    required
-                    fullWidth
-                    id="displayName"
-                    label="Full name"
-                    value={this.state.displayName}
-                    onChange={this.handleChange}
-                    autoFocus
-                  />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
+
+                <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
@@ -155,7 +153,7 @@ export default class Register extends React.Component {
                     value={this.state.lastName}
                     onChange={this.handleChange}
                   />
-                </Grid> */}
+                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -191,7 +189,7 @@ export default class Register extends React.Component {
                     onChange={this.handleChange}
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                   <RadioGroup
                     row
                     aria-label="role"
@@ -252,7 +250,6 @@ export default class Register extends React.Component {
                     </LocalizationProvider>
                   </Grid>
                 ) : null}
-              </Grid> */}
               </Grid>
               <Button
                 type="submit"
