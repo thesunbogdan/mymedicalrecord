@@ -3,7 +3,6 @@ import "./medic-profile.styles.scss";
 import ProfilePicture from "./doctor.jpg";
 import PhoneIcon from "@mui/icons-material/Phone";
 import MailIcon from "@mui/icons-material/Mail";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { connect } from "react-redux";
 import ReactModal from "react-modal";
 import TextField from "@mui/material/TextField";
@@ -11,6 +10,8 @@ import { updateUserProfileDocument } from "../../../utils/firebase";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 import { updateUserProfilePicture } from "../../../utils/firebase";
+import EditIcon from "@mui/icons-material/Edit";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 class MedicProfile extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class MedicProfile extends React.Component {
       tel: this.props.currentUser.tel,
       medicFunction: this.props.currentUser.medicFunction,
       medicInstitution: this.props.currentUser.medicInstitution,
-      profilePicture: null,
+      profilePicture: this.props.currentUser.profilePicture,
+      location: this.props.currentUser.location,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -68,6 +70,7 @@ class MedicProfile extends React.Component {
       tel,
       medicFunction,
       medicInstitution,
+      location,
     } = this.state;
 
     try {
@@ -81,6 +84,7 @@ class MedicProfile extends React.Component {
           medicFunction,
           medicInstitution,
           role: "Medic",
+          location,
         }
       );
       console.log("const showModal " + showModal);
@@ -93,7 +97,7 @@ class MedicProfile extends React.Component {
 
   render() {
     return (
-      <div className="profile">
+      <div className="medic-profile">
         <ReactModal
           isOpen={this.state.showModal}
           style={{
@@ -124,12 +128,14 @@ class MedicProfile extends React.Component {
           <div className="modal-grid-bottom">
             <div className="modal-column">
               <TextField
+                fullWidth
                 label="First name"
                 name="firstName"
                 defaultValue={this.props.currentUser.firstName}
                 onChange={this.handleChange}
               />
               <TextField
+                fullWidth
                 label="Last name"
                 name="lastName"
                 defaultValue={this.props.currentUser.lastName}
@@ -137,6 +143,7 @@ class MedicProfile extends React.Component {
               />
 
               <PhoneInput
+                inputStyle={{ width: "100%" }}
                 specialLabel="Telephone number"
                 country={"ro"}
                 value={this.props.currentUser.tel}
@@ -145,18 +152,28 @@ class MedicProfile extends React.Component {
             </div>
             <div className="modal-column">
               <TextField
+                fullWidth
                 label="Medical Function"
                 name="medicFunction"
                 defaultValue={this.props.currentUser.medicFunction}
                 onChange={this.handleChange}
               />
               <TextField
+                fullWidth
                 label="Medical Institution"
                 name="medicInstitution"
                 defaultValue={this.props.currentUser.medicInstitution}
                 onChange={this.handleChange}
               />
+              <TextField
+                fullWidth
+                label="Institution Location"
+                name="location"
+                defaultValue={this.props.currentUser.location}
+                onChange={this.handleChange}
+              />
               <input
+                fullWidth
                 name="profile-picture"
                 type="file"
                 accept="image/*"
@@ -165,84 +182,82 @@ class MedicProfile extends React.Component {
             </div>
           </div>
         </ReactModal>
-        <div className="profile-column">
-          <div className="profile-avatar">
-            <div className="profile-avatar-button">
-              <button onClick={this.handleOpenModal}>EDIT</button>
-            </div>
-            <div className="profile-avatar-photo">
-              <img
-                src={`${
-                  this.props.currentUser.profilePictureURL
-                    ? this.props.currentUser.profilePictureURL
-                    : ProfilePicture
-                }`}
-                alt="profile-picture"
-              />
-            </div>
-            <div className="profile-avatar-name">
-              <h1>
-                {this.props.currentUser.firstName}{" "}
-                {this.props.currentUser.lastName}{" "}
-              </h1>
-            </div>
-            <div className="profile-avatar-other">
-              <h3>{this.props.currentUser.medicFunction}</h3>
-              <hr />
-              <h3>{this.props.currentUser.medicInstitution}</h3>
-            </div>
+        <div className="first-column">
+          <button onClick={this.handleOpenModal} className="modal-open-btn">
+            <EditIcon fontSize="small" />
+            <p>EDIT</p>
+          </button>
+          <div className="half-column">
+            <img
+              className="profile-image"
+              src={`${
+                this.props.currentUser.profilePictureURL
+                  ? this.props.currentUser.profilePictureURL
+                  : ProfilePicture
+              }`}
+            />
           </div>
-        </div>{" "}
-        <div className="profile-column">
-          <div className="profile-bio">
-            <div className="profile-bio-title">
-              <h2>Bio</h2>
-            </div>
-            <div className="profile-bio-text">
-              <p>
-                Qui voluptate sint cillum officia. Nulla quis sint officia elit
-                nulla aute veniam mollit aliquip occaecat sit adipisicing.
-                Incididunt nisi cupidatat tempor laborum. Occaecat ipsum nostrud
-                sit non. Ut id dolor aliqua occaecat adipisicing id esse laborum
-                dolore ex duis labore. Quis enim anim anim duis dolor culpa ad
-                aliqua magna ipsum.
-              </p>
-              <p>
-                Irure ex velit elit occaecat irure excepteur incididunt duis
-                consequat excepteur. Sint et nulla laborum minim elit velit
-                cillum culpa et sit pariatur elit exercitation nisi. Commodo
-                labore fugiat fugiat deserunt nostrud voluptate. Ad quis id amet
-                amet.
-              </p>
+          <div className="half-column">
+            <h1 className="medic-name">
+              {this.props.currentUser.firstName}
+              {this.props.currentUser.lastName}
+            </h1>
+            <div className="medic-function-institution">
+              <h2>{this.props.currentUser.medicFunction}</h2>
+              <p> | </p>
+              <h2>{this.props.currentUser.medicInstitution}</h2>
             </div>
           </div>
         </div>
-        <div className="profile-column">
-          <div className="profile-contact">
-            <div className="profile-contact-title">
-              <h2>Contact</h2>
-            </div>
+        <div className="column">
+          <h1 className="title">Bio</h1>
+          <div className="column-bottom">
+            <p>
+              Ad fugiat irure nulla ea fugiat dolore ipsum. Deserunt dolor anim
+              irure incididunt irure eu magna nisi ullamco aliquip ipsum eu.
+              Sunt veniam fugiat sit excepteur elit ullamco laborum et minim
+              nisi ullamco amet occaecat irure.
+            </p>
+            <p>
+              Tempor aute sit qui consequat irure officia ipsum ad nostrud est
+              commodo. Commodo eu dolor elit ad irure duis dolor duis
+              adipisicing ea do officia occaecat. Ex culpa aliquip ut sunt minim
+              esse eiusmod ex in fugiat mollit ipsum fugiat.
+            </p>
+            <p>
+              Lorem anim consectetur ullamco proident amet irure qui mollit
+              adipisicing aute. Pariatur tempor aliquip irure ut officia magna
+              quis adipisicing nisi Lorem laborum labore minim. Fugiat pariatur
+              dolor deserunt cillum dolore nisi ullamco eu anim esse.
+            </p>
+          </div>
+        </div>
 
-            <div className="profile-contact-button-one">
-              <button>
-                <PhoneIcon />
-                <p>{this.props.currentUser.tel}</p>
-              </button>
-            </div>
+        <div className="column">
+          <h1 className="title">Contact</h1>
+          <div className="column-bottom">
+            <button className="contact-button">
+              <PhoneIcon />
+              <p>
+                {this.props.currentUser.tel
+                  ? this.props.currentUser.tel
+                  : "Please add a phone number"}
+              </p>
+            </button>
 
-            <div className="profile-contact-button-two">
-              <button>
-                <MailIcon />
-                <p>{this.props.currentUser.email}</p>
-              </button>
-            </div>
+            <button className="contact-button">
+              <MailIcon />
+              <p>{this.props.currentUser.email}</p>
+            </button>
 
-            <div className="profile-contact-button-three">
-              <button>
-                <LocationOnIcon />
-                <p>Str fasf, nr 5</p>
-              </button>
-            </div>
+            <button className="contact-button">
+              <LocationOnIcon />
+              <p>
+                {this.props.currentUser.location
+                  ? this.props.currentUser.location
+                  : "Please add medical institution location"}
+              </p>
+            </button>
           </div>
         </div>
       </div>

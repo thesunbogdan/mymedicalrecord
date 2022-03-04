@@ -6,17 +6,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import { auth } from "../../utils/firebase";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
@@ -114,7 +110,17 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           {currentUser ? (
-            <button onClick={() => auth.signOut()}>SIGN OUT</button>
+            <button
+              style={{
+                border: "1px solid black",
+                borderRadius: "3px",
+                height: "25px",
+                width: "90px",
+              }}
+              onClick={() => auth.signOut()}
+            >
+              SIGN OUT
+            </button>
           ) : (
             ""
           )}

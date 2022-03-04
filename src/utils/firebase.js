@@ -25,6 +25,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const profilePictureURL = null;
     const tel = null;
     const medicalRecord = null;
+    const location = null;
 
     const createdAt = new Date();
 
@@ -57,6 +58,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           createdAt,
           profilePictureURL,
           tel,
+          location,
         });
       }
     } catch (error) {
@@ -80,7 +82,8 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
     const { role } = additionalData;
 
     try {
-      const { firstName, lastName, tel, profilePictureURL } = additionalData;
+      const { firstName, lastName, tel, profilePictureURL, location } =
+        additionalData;
       console.log(
         "firstname " +
           firstName +
@@ -110,6 +113,7 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
           tel: tel,
           medicFunction: medicFunction,
           medicInstitution: medicInstitution,
+          location: location,
         });
       }
     } catch (error) {

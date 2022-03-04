@@ -259,10 +259,7 @@ export default class Register extends React.Component {
               >
                 Register
               </Button>
-              <p>{this.state.displayName}</p>
-              <p>{this.state.email}</p>
-              <p>{this.state.password}</p>
-              <p>{this.state.confirmPassword}</p>
+
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link to="/login" variant="body2">

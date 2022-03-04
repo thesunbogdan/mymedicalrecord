@@ -11,7 +11,8 @@
 
       "medic": {
         "medicFunction": "",
-        "medicInstitution": ""
+        "medicInstitution": "",
+        "location": ""
       },
 
       "pacient": {
