@@ -1,0 +1,1 @@
+export const basicProfilePictureURL = "https://firebasestorage.googleapis.com/v0/b/mymedicalrecord-a82bb.appspot.com/o/ProfilePictures%2Fdoctor.jpg?alt=media&token=a927629e-cb7c-4eb7-8bef-b689daa23499"

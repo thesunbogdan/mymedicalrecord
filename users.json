@@ -17,7 +17,11 @@
 
       "pacient": {
         "medicalRecord": "",
-        "birthDate": ""
+        "birthDate": "",
+        "gender": "",
+        "age": "",
+        "height": "",
+        "weight": ""
       }
     }
   }

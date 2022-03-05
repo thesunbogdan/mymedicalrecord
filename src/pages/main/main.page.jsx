@@ -176,7 +176,7 @@ function ResponsiveDrawer(props) {
         {location.pathname === "/pacients" ? (
           <ListComponent />
         ) : (
-          ((location.pathname === "/profile" ? (
+          ((location.pathname === "/" + currentUser.id ? (
             <ProfileComponent />
           ) : location.pathname === "/statistics" ? (
             <p>/statistics</p>

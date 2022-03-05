@@ -24,10 +24,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const { email } = userAuth;
     const profilePictureURL = null;
     const tel = null;
-    const medicalRecord = null;
     const location = null;
-
     const createdAt = new Date();
+
+    const gender = null;
+    const medicalRecord = [];
+    const height = null;
+    const weight = null;
+    
 
     try {
       const { role, firstName, lastName } = additionalData;
@@ -43,6 +47,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           createdAt,
           profilePictureURL,
           tel,
+          gender,
+          height, 
+          weight,
           medicalRecord,
         });
       } else if (role === "Medic") {
@@ -84,24 +91,17 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
     try {
       const { firstName, lastName, tel, profilePictureURL, location } =
         additionalData;
-      console.log(
-        "firstname " +
-          firstName +
-          "\nlastName " +
-          lastName +
-          "\ntel " +
-          tel +
-          "\nprofilePicture " +
-          profilePictureURL +
-          "\nrole " +
-          role
-      );
+     
       if (role === "Pacient") {
+        const { height, weight, gender} = additionalData;
         await userRef.update({
           firstName: firstName,
           lastName: lastName,
           profilePictureURL: profilePictureURL,
           tel: tel,
+          height: height,
+          weight: weight,
+          gender: gender,
         });
       } else if (role === "Medic") {
         const { medicInstitution, medicFunction } = additionalData;

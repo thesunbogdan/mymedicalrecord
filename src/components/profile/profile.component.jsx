@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import MedicProfile from "./medic/medic-profile.component";
+import PacientProfile from "./pacient/pacient-profile.component";
 
 const Profile = (props) => {
   const { role } = props.currentUser;
@@ -8,9 +9,9 @@ const Profile = (props) => {
   if (role === "Medic") {
     return <MedicProfile />;
   } else if (role === "Pacient") {
-    return <div></div>;
+    return <PacientProfile />;
   } else {
-    return <div></div>;
+    return <div>Invalid account role: Neither Medic nor Pacient</div>;
   }
 };
 

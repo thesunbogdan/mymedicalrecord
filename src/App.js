@@ -52,14 +52,14 @@ class App extends React.Component {
           <Route
             path="/login"
             element={
-              this.props.currentUser ? <Navigate to="/profile" /> : <Login />
+              this.props.currentUser ? <Navigate to={`/${this.props.currentUser.id}`} /> : <Login />
             }
           />
           <Route
             exact
             path="/register"
             element={
-              this.props.currentUser ? <Navigate to="/profile" /> : <Register />
+              this.props.currentUser ? <Navigate to={`/${this.props.currentUser.id}`} /> : <Register />
             }
           />
         </Routes>

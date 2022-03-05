@@ -1,6 +1,5 @@
 import React from "react";
 import "./medic-profile.styles.scss";
-import ProfilePicture from "./doctor.jpg";
 import PhoneIcon from "@mui/icons-material/Phone";
 import MailIcon from "@mui/icons-material/Mail";
 import { connect } from "react-redux";
@@ -12,6 +11,7 @@ import "react-phone-input-2/lib/material.css";
 import { updateUserProfilePicture } from "../../../utils/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { basicProfilePictureURL } from "../../../utils/basic-profile-picture";
 
 class MedicProfile extends React.Component {
   constructor(props) {
@@ -193,13 +193,13 @@ class MedicProfile extends React.Component {
               src={`${
                 this.props.currentUser.profilePictureURL
                   ? this.props.currentUser.profilePictureURL
-                  : ProfilePicture
+                  : basicProfilePictureURL
               }`}
             />
           </div>
           <div className="half-column">
             <h1 className="medic-name">
-              {this.props.currentUser.firstName}
+              {this.props.currentUser.firstName}&nbsp;
               {this.props.currentUser.lastName}
             </h1>
             <div className="medic-function-institution">
