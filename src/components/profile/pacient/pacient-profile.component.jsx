@@ -190,7 +190,6 @@ class PacientProfile extends React.Component {
                   onChange={this.handleChange}
                 />
                 <input
-                  fullWidth
                   name="profile-picture"
                   type="file"
                   accept="image/*"
@@ -248,7 +247,7 @@ class PacientProfile extends React.Component {
             </div>
           </div>
         </div>
-        <div className="medical-profile-second-row">
+        <div className="pacient-profile-second-row">
           <button>ADD MEDICAL EVENT</button>
         </div>
       </div>
