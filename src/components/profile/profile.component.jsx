@@ -8,7 +8,7 @@ const Profile = (props) => {
 
   if (role === "Medic") {
     return <MedicProfile />;
-  } else if (role === "Pacient") {
+  } else if (role === "Pacient" ) {
     return <PacientProfile />;
   } else {
     return <div>Invalid account role: Neither Medic nor Pacient</div>;
