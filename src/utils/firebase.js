@@ -31,7 +31,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const medicalRecord = [];
     const height = null;
     const weight = null;
-    
 
     try {
       const { role, firstName, lastName } = additionalData;
@@ -48,7 +47,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           profilePictureURL,
           tel,
           gender,
-          height, 
+          height,
           weight,
           medicalRecord,
         });
@@ -91,9 +90,9 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
     try {
       const { firstName, lastName, tel, profilePictureURL, location } =
         additionalData;
-     
+
       if (role === "Pacient") {
-        const { height, weight, gender} = additionalData;
+        const { height, weight, gender } = additionalData;
         await userRef.update({
           firstName: firstName,
           lastName: lastName,
@@ -138,6 +137,23 @@ export const updateUserProfilePicture = async (userAuth, file) => {
     });
 
     return profilePictureURL;
+  }
+};
+
+export const createMedicalEvent = async (userAuth, medicalEventData) => {
+  if (userAuth && medicalEventData) {
+    const userRef = firestore.doc(`users/${userAuth.id}`);
+    const snapShot = await userRef.get();
+    if (snapShot.exists) {
+      try {
+        await userRef.update({
+          medicalRecord:
+            firebase.firestore.FieldValue.arrayUnion(medicalEventData),
+        });
+      } catch (error) {
+        alert("error pushing medical event into de database: " + error);
+      }
+    }
   }
 };
 

@@ -12,6 +12,8 @@ import { updateUserProfilePicture } from "../../../utils/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import { basicProfilePictureURL } from "../../../utils/basic-profile-picture";
 import InputAdornment from "@mui/material/InputAdornment";
+import DropdownCascade from "react-dropdown-cascade";
+import { createMedicalEvent } from "../../../utils/firebase";
 
 class PacientProfile extends React.Component {
   constructor(props) {
@@ -26,9 +28,113 @@ class PacientProfile extends React.Component {
       gender: this.props.currentUser.gender,
       height: this.props.currentUser.height,
       weight: this.props.currentUser.weight,
-      medicalRecord: this.props.currentUser.medicalRecord,
       profilePicture: this.props.currentUser.profilePicture,
       pacientBirthDate: this.props.currentUser.pacientBirthDate,
+
+      disabled: true,
+
+      diagnostic: "",
+      fromDate: "",
+      toDate: "",
+      details: "",
+      medic: "",
+      institution: "",
+
+      items: [
+        {
+          value: "I",
+          label: "I",
+          children: [
+            {
+              value: "1",
+              label: "1",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "2",
+              label: "2",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "3",
+              label: "3",
+              children: [
+                { value: "a", label: "a" },
+                { value: "a", label: "b" },
+              ],
+            },
+          ],
+        },
+        {
+          value: "II",
+          label: "II",
+          children: [
+            {
+              value: "1",
+              label: "1",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "2",
+              label: "2",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "3",
+              label: "3",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+                { value: "c", label: "c" },
+                { value: "d", label: "d" },
+                { value: "e", label: "e" },
+              ],
+            },
+          ],
+        },
+        {
+          value: "III",
+          label: "III",
+          children: [
+            {
+              value: "1",
+              label: "1",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "2",
+              label: "2",
+              children: [
+                { value: "a", label: "a" },
+                { value: "b", label: "b" },
+              ],
+            },
+            {
+              value: "3",
+              label: "3",
+              children: [
+                { value: "a", label: "a" },
+                { value: "a", label: "b" },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -109,8 +215,10 @@ class PacientProfile extends React.Component {
               overlay: {
                 left: `${window.innerWidth < 600 ? "0" : "240px"} `,
                 top: "60px",
+                zIndex: 200,
               },
               content: {
+                zIndex: 201,
                 backgroundColor: "white",
                 flexWrap: "wrap",
                 justifyContent: "space-around",
@@ -206,6 +314,7 @@ class PacientProfile extends React.Component {
             <div className="half-column">
               <img
                 className="profile-image"
+                alt="profile"
                 src={`${
                   this.props.currentUser.profilePictureURL
                     ? this.props.currentUser.profilePictureURL
@@ -219,9 +328,24 @@ class PacientProfile extends React.Component {
                 {this.props.currentUser.lastName}
               </h1>
               <div className="medic-function-institution">
-                <p>Height: {this.props.currentUser.height}</p>
-                <p>Weight: {this.props.currentUser.weight}</p>
-                <p>Gender: {this.props.currentUser.gender}</p>
+                <p>
+                  Height:{" "}
+                  {this.props.currentUser.height
+                    ? this.props.currentUser.height
+                    : "(Please add your height)"}
+                </p>
+                <p>
+                  Weight:{" "}
+                  {this.props.currentUser.weight
+                    ? this.props.currentUser.weight
+                    : "(Please add your weight)"}
+                </p>
+                <p>
+                  Gender:{" "}
+                  {this.props.currentUser.gender
+                    ? this.props.currentUser.gender
+                    : "(Please add your gender)"}
+                </p>
               </div>
             </div>
           </div>
@@ -247,9 +371,140 @@ class PacientProfile extends React.Component {
             </div>
           </div>
         </div>
-        <div className="pacient-profile-second-row">
-          <button>ADD MEDICAL EVENT</button>
+
+        <div
+          className={`${
+            this.state.disabled ? "medical-event disabled" : "medical-event"
+          }`}
+        >
+          <div className="column">
+            <div className="text-and-textfield">
+              <p>Diagnostic: </p>
+              <DropdownCascade
+                separatorIcon=" &#8594; "
+                customStyles={{
+                  dropdown: {
+                    style: {
+                      margin: "5px 20px 15px 20px",
+                    },
+                  },
+                }}
+                items={this.state.items}
+                onSelect={(value) => {
+                  this.setState({ diagnostic: value });
+                }}
+                value={this.state.diagnostic}
+              />
+            </div>
+            <div className="text-and-textfield">
+              <p>From date:</p>
+              <TextField
+                defaultValue={this.state.fromDate}
+                name="fromDate"
+                type="date"
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="text-and-textfield">
+              <p>To date:</p>
+              <TextField
+                defaultValue={this.state.toDate}
+                name="toDate"
+                type="date"
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+          <div className="column">
+            <div className="text-and-textfield">
+              <p>Medic:</p>
+              <TextField
+                name="medic"
+                defaultValue={this.state.medic}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="text-and-textfield">
+              <p>Instiution:</p>
+              <TextField
+                name="institution"
+                defaultValue={this.state.institution}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="text-and-textfield">
+              <p>Details:</p>
+              <TextField
+                name="details"
+                defaultValue={this.state.details}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+          {/* <p>{this.state.diagnostic}</p>
+          <p>{this.state.fromDate}</p>
+          <p>{this.state.toDate}</p>
+          <p>{this.state.medic}</p>
+          <p>{this.state.institution}</p>
+          <p>{this.state.details}</p> */}
         </div>
+        {this.state.disabled ? (
+          <button
+            style={{ zIndex: 50 }}
+            onClick={() => {
+              this.setState({ disabled: false });
+            }}
+          >
+            ADD MEDICAL EVENT
+          </button>
+        ) : (
+          <div className="medical-event-done-cancel">
+            <button
+              onClick={() => {
+                this.setState({
+                  disabled: true,
+                  diagnostic: "",
+                  fromDate: "",
+                  toDate: "",
+                  details: "",
+                  medic: "",
+                  institution: "",
+                });
+              }}
+            >
+              CANCEL
+            </button>
+            <button
+              onClick={() => {
+                createMedicalEvent(this.props.currentUser, {
+                  diagnostic: this.state.diagnostic,
+                  fromDate: this.state.fromDate,
+                  toDate: this.state.toDate,
+                  medic: this.state.medic,
+                  institution: this.state.institution,
+                  details: this.state.details,
+                });
+                this.setState({ disabled: true });
+              }}
+            >
+              DONE
+            </button>
+          </div>
+        )}
+
+        {this.props.currentUser.medicalRecord.map((item, index) => {
+          return (
+            <div key={index} className="medical-event">
+              {Object.entries(item).map(([key, value]) => {
+                return (
+                  <p>
+                    {key} : {value}
+                  </p>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     );
   }

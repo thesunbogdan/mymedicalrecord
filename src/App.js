@@ -2,7 +2,6 @@ import "./App.css";
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { auth, createUserProfileDocument } from "./utils/firebase";
-import { fromUnixTime } from "date-fns";
 import Login from "./components/login/login-component";
 import Register from "./components/register/register-component";
 import Main from "./pages/main/main.page";
@@ -10,9 +9,11 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends React.Component {
+
   constructor() {
     super();
   }
+  
   unSubscribeFromAuth = null;
 
   componentDidMount() {

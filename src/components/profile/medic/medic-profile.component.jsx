@@ -189,6 +189,7 @@ class MedicProfile extends React.Component {
           </button>
           <div className="half-column">
             <img
+              alt="profile"
               className="profile-image"
               src={`${
                 this.props.currentUser.profilePictureURL
