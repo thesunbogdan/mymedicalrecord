@@ -67,6 +67,7 @@ class Login extends React.Component {
               sx={{ mt: 1 }}
             >
               <TextField
+                autoComplete="off"
                 margin="normal"
                 required
                 fullWidth
@@ -78,6 +79,7 @@ class Login extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                autoComplete="off"
                 margin="normal"
                 required
                 fullWidth

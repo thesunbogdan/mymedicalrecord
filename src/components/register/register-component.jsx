@@ -132,6 +132,7 @@ export default class Register extends React.Component {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    autoComplete="off"
                     name="firstName"
                     required
                     fullWidth
@@ -145,6 +146,7 @@ export default class Register extends React.Component {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    autoComplete="off"
                     required
                     fullWidth
                     id="lastName"
@@ -156,6 +158,7 @@ export default class Register extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    autoComplete="off"
                     required
                     fullWidth
                     id="email"
@@ -167,6 +170,7 @@ export default class Register extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    autoComplete="off"
                     required
                     fullWidth
                     name="password"
@@ -179,6 +183,7 @@ export default class Register extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    autoComplete="off"
                     required
                     fullWidth
                     name="confirmPassword"
@@ -214,6 +219,7 @@ export default class Register extends React.Component {
                   <>
                     <Grid item xs={12}>
                       <TextField
+                        autoComplete="off"
                         required
                         fullWidth
                         id="institution"
@@ -225,6 +231,7 @@ export default class Register extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
+                        autoComplete="off"
                         required
                         fullWidth
                         id="function"

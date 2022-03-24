@@ -48,7 +48,7 @@ function ResponsiveDrawer(props) {
             button
             key="Profile"
             onClick={() => {
-              navigate(`${currentUser.id}`);
+              navigate(`/${currentUser.id}`);
             }}
           >
             <ListItemIcon>

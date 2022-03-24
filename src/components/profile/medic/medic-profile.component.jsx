@@ -128,6 +128,7 @@ class MedicProfile extends React.Component {
           <div className="modal-grid-bottom">
             <div className="modal-column">
               <TextField
+                autoComplete="off"
                 fullWidth
                 label="First name"
                 name="firstName"
@@ -135,6 +136,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                autoComplete="off"
                 fullWidth
                 label="Last name"
                 name="lastName"
@@ -152,6 +154,7 @@ class MedicProfile extends React.Component {
             </div>
             <div className="modal-column">
               <TextField
+                autoComplete="off"
                 fullWidth
                 label="Medical Function"
                 name="medicFunction"
@@ -159,6 +162,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                autoComplete="off"
                 fullWidth
                 label="Medical Institution"
                 name="medicInstitution"
@@ -166,6 +170,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                autoComplete="off"
                 fullWidth
                 label="Institution Location"
                 name="location"

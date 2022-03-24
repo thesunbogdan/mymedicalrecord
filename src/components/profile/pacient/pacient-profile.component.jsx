@@ -245,6 +245,7 @@ class PacientProfile extends React.Component {
             <div className="modal-grid-bottom">
               <div className="modal-column">
                 <TextField
+                  autoComplete="off"
                   fullWidth
                   label="First name"
                   name="firstName"
@@ -252,6 +253,7 @@ class PacientProfile extends React.Component {
                   onChange={this.handleChange}
                 />
                 <TextField
+                  autoComplete="off"
                   fullWidth
                   label="Last name"
                   name="lastName"
@@ -271,6 +273,7 @@ class PacientProfile extends React.Component {
               </div>
               <div className="modal-column">
                 <TextField
+                  autoComplete="off"
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -283,6 +286,7 @@ class PacientProfile extends React.Component {
                   onChange={this.handleChange}
                 />
                 <TextField
+                  autoComplete="off"
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -409,6 +413,7 @@ class PacientProfile extends React.Component {
             <div className="text-and-textfield">
               <p>From date:</p>
               <TextField
+                autoComplete="off"
                 defaultValue={this.state.fromDate}
                 name="fromDate"
                 type="date"
@@ -418,6 +423,7 @@ class PacientProfile extends React.Component {
             <div className="text-and-textfield">
               <p>To date:</p>
               <TextField
+                autoComplete="off"
                 defaultValue={this.state.toDate}
                 name="toDate"
                 type="date"
@@ -429,6 +435,7 @@ class PacientProfile extends React.Component {
             <div className="text-and-textfield">
               <p>Medic:</p>
               <TextField
+                autoComplete="off"
                 name="medic"
                 defaultValue={this.state.medic}
                 onChange={this.handleChange}
@@ -437,6 +444,7 @@ class PacientProfile extends React.Component {
             <div className="text-and-textfield">
               <p>Instiution:</p>
               <TextField
+                autoComplete="off"
                 name="institution"
                 defaultValue={this.state.institution}
                 onChange={this.handleChange}
@@ -445,6 +453,7 @@ class PacientProfile extends React.Component {
             <div className="text-and-textfield">
               <p>Details:</p>
               <TextField
+                autoComplete="off"
                 name="details"
                 defaultValue={this.state.details}
                 onChange={this.handleChange}
