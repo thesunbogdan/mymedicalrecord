@@ -22,6 +22,7 @@ import { useLocation } from "react-router-dom";
 import ListComponent from "../../components/list/list.components";
 import ProfileComponent from "../../components/profile/profile.component";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import Access from "../../components/access/access.component";
 
 const drawerWidth = 240;
 
@@ -43,7 +44,19 @@ function ResponsiveDrawer(props) {
       <Divider />
       {currentUser.role === "Medic" ? (
         <List>
-          {["Profile", "Pacients", "Statistics"].map((text, index) => (
+          <ListItem
+            button
+            key="Profile"
+            onClick={() => {
+              navigate(`${currentUser.id}`);
+            }}
+          >
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
+          {["Access", "My pacients", "Statistics"].map((text, index) => (
             <ListItem
               button
               key={text}
@@ -53,7 +66,7 @@ function ResponsiveDrawer(props) {
             >
               <ListItemIcon>
                 {(() => {
-                  if (index === 0) return <PersonIcon />;
+                  if (index === 0) return <VisibilityIcon />;
                   if (index === 1) return <FormatListBulletedIcon />;
                   if (index === 2) return <EqualizerIcon />;
                 })()}
@@ -64,23 +77,30 @@ function ResponsiveDrawer(props) {
         </List>
       ) : (
         <List>
-          {["Profile", "Access"].map((text, index) => (
-            <ListItem
-              button
-              key={text}
-              onClick={() => {
-                navigate(`/${text.toLowerCase()}`);
-              }}
-            >
-              <ListItemIcon>
-                {(() => {
-                  if (index === 0) return <PersonIcon />;
-                  if (index === 1) return <VisibilityIcon />;
-                })()}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem
+            button
+            key="Profile"
+            onClick={() => {
+              navigate(`${currentUser.id}`);
+            }}
+          >
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
+          <ListItem
+            button
+            key="Access"
+            onClick={() => {
+              navigate("/access");
+            }}
+          >
+            <ListItemIcon>
+              <VisibilityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Access" />
+          </ListItem>
         </List>
       )}
     </div>
@@ -180,6 +200,8 @@ function ResponsiveDrawer(props) {
             <ProfileComponent />
           ) : location.pathname === "/statistics" ? (
             <p>/statistics</p>
+          ) : location.pathname === "/access" ? (
+            <Access />
           ) : null): null)
         )}
       </Box>

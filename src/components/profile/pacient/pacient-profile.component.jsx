@@ -14,6 +14,10 @@ import { basicProfilePictureURL } from "../../../utils/basic-profile-picture";
 import InputAdornment from "@mui/material/InputAdornment";
 import DropdownCascade from "react-dropdown-cascade";
 import { createMedicalEvent } from "../../../utils/firebase";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 class PacientProfile extends React.Component {
   constructor(props) {
@@ -290,13 +294,19 @@ class PacientProfile extends React.Component {
                   defaultValue={this.props.currentUser.height}
                   onChange={this.handleChange}
                 />
-                <TextField
-                  fullWidth
-                  label="Gender"
-                  name="gender"
-                  defaultValue={this.props.currentUser.gender}
-                  onChange={this.handleChange}
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    fullWidth
+                    label="Gender"
+                    name="gender"
+                    defaultValue={this.props.currentUser.gender}
+                    onChange={this.handleChange}
+                  >
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
+                  </Select>
+                </FormControl>
                 <input
                   name="profile-picture"
                   type="file"
@@ -497,11 +507,18 @@ class PacientProfile extends React.Component {
             <div key={index} className="medical-event">
               {Object.entries(item).map(([key, value]) => {
                 return (
-                  <p>
-                    {key} : {value}
-                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <p>{key}</p> : <p>{value}</p>
+                  </div>
                 );
               })}
+              {console.log(item)}
             </div>
           );
         })}

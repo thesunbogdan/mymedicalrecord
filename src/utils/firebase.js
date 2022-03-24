@@ -140,6 +140,26 @@ export const updateUserProfilePicture = async (userAuth, file) => {
   }
 };
 
+export const getPatients = async () => {
+  const usersSnapshot = await firebase.firestore().collection("users").get();
+  const patients = [];
+
+  usersSnapshot.docs.map((doc) => {
+    if (doc.data().role === "Pacient") {
+      const patientInfo = doc.data();
+      patients.push({
+        id: doc.id,
+        firstName: patientInfo.firstName,
+        lastName: patientInfo.lastName,
+        // pacientBirthDate: patientInfo.pacientBirthDate,
+        profilePictureURL: patientInfo.profilePictureURL,
+      });
+    }
+  });
+
+  return patients;
+};
+
 export const createMedicalEvent = async (userAuth, medicalEventData) => {
   if (userAuth && medicalEventData) {
     const userRef = firestore.doc(`users/${userAuth.id}`);

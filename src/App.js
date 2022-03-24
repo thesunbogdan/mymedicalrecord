@@ -9,11 +9,10 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends React.Component {
-
   constructor() {
     super();
   }
-  
+
   unSubscribeFromAuth = null;
 
   componentDidMount() {
@@ -21,7 +20,6 @@ class App extends React.Component {
 
     this.unSubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
-        console.log("!!!!!!!!!!!! " + userAuth.uid);
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapShot) => {
@@ -53,14 +51,37 @@ class App extends React.Component {
           <Route
             path="/login"
             element={
-              this.props.currentUser ? <Navigate to={`/${this.props.currentUser.id}`} /> : <Login />
+              this.props.currentUser ? (
+                <Navigate to={`/${this.props.currentUser.id}`} />
+              ) : (
+                <Login />
+              )
             }
           />
           <Route
             exact
             path="/register"
             element={
-              this.props.currentUser ? <Navigate to={`/${this.props.currentUser.id}`} /> : <Register />
+              this.props.currentUser ? (
+                <Navigate to={`/${this.props.currentUser.id}`} />
+              ) : (
+                <Register />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/access"
+            element={
+              this.props.currentUser ? (
+                this.props.currentUser.role === "Medic" ? (
+                  <Main />
+                ) : (
+                  <Navigate to={`/${this.props.currentUser.id}`} />
+                )
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
         </Routes>
