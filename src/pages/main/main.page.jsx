@@ -39,7 +39,7 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <Toolbar>{`Hello, ${currentUser.firstName}!`}</Toolbar>
+      <Toolbar>{`Salut, ${currentUser.firstName}!`}</Toolbar>
 
       <Divider />
       {currentUser.role === "Medic" ? (

@@ -1,9 +1,10 @@
 import React from "react";
 import "./profile-card.styles.scss";
 import { basicProfilePictureURL } from "../../utils/basic-profile-picture";
+
 const ProfileCard = ({ props }) => {
-  console.log(JSON.stringify(props, null, 2));
   const { index, firstName, lastName, profilePictureURL } = props;
+  console.log("fasfasfas: " + props);
   return (
     <div key={index} className="profile-card">
       <div className="picture-and-age">
