@@ -19,8 +19,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
   if (!snapShot.exists) {
-    console.log("userAuth: " + userAuth);
-    console.log("additionalData: " + additionalData);
     const { email } = userAuth;
     const profilePictureURL = null;
     const tel = null;
@@ -41,6 +39,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           firstName,
           lastName,
           email,
+          myMedicsPending: [],
+          myMedicsAllowed: [],
           role,
           pacientBirthDate,
           createdAt,
@@ -56,6 +56,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
         await userRef.set({
           firstName,
+          myPatientsPending: [],
+          myPatientsAllowed: [],
           lastName,
           email,
           role,
@@ -68,7 +70,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         });
       }
     } catch (error) {
-      console.log("error creating user", error.message);
+      alert(error.message);
     }
   }
 
@@ -150,7 +152,9 @@ export const getPatients = async () => {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        allPatients.push(doc.data());
+        const docData = doc.data();
+        docData["pacientId"] = doc.id;
+        allPatients.push(docData);
       });
     });
 
@@ -170,6 +174,42 @@ export const createMedicalEvent = async (userAuth, medicalEventData) => {
       } catch (error) {
         alert("error pushing medical event into de database: " + error);
       }
+    }
+  }
+};
+
+export const sendRequest = async (medicId, pacientId) => {
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+
+    try {
+      await medicRef.update({
+        myPatientsPending: firebase.firestore.FieldValue.arrayUnion(pacientId),
+      });
+      await pacientRef.update({
+        myMedicsPending: firebase.firestore.FieldValue.arrayUnion(medicId),
+      });
+    } catch (err) {
+      alert("error sending request" + err.message);
+    }
+  }
+};
+
+export const cancelRequest = async (medicId, pacientId) => {
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+
+    try {
+      await medicRef.update({
+        myPatientsPending: firebase.firestore.FieldValue.arrayRemove(pacientId),
+      });
+      await pacientRef.update({
+        myMedicsPending: firebase.firestore.FieldValue.arrayRemove(medicId),
+      });
+    } catch (err) {
+      alert("error canceling request" + err.message);
     }
   }
 };

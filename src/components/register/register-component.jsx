@@ -270,7 +270,7 @@ export default class Register extends React.Component {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link to="/login" variant="body2">
-                    Already have an account? Login
+                    Aveți deja cont? Conectați-vă
                   </Link>
                 </Grid>
               </Grid>

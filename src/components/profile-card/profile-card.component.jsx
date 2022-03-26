@@ -1,10 +1,15 @@
 import React from "react";
 import "./profile-card.styles.scss";
 import { basicProfilePictureURL } from "../../utils/basic-profile-picture";
+import { sendRequest } from "../../utils/firebase";
+import { cancelRequest } from "../../utils/firebase";
 
-const ProfileCard = ({ props }) => {
-  const { index, firstName, lastName, profilePictureURL } = props;
-  console.log("fasfasfas: " + props);
+const ProfileCard = (props) => {
+  const { firstName, lastName, profilePictureURL, pacientId, myMedicsPending } =
+    props.item;
+  const { index } = props.index;
+  const medicId = props.medic.id;
+
   return (
     <div key={index} className="profile-card">
       <div className="picture-and-age">
@@ -23,7 +28,15 @@ const ProfileCard = ({ props }) => {
           <h3>{firstName}</h3>
         </div>
         <div className="buttons">
-          <button>Request Access</button>
+          {myMedicsPending?.filter((item) => item === medicId).length > 0 ? (
+            <button onClick={() => cancelRequest(medicId, pacientId)}>
+              Cancel Request
+            </button>
+          ) : (
+            <button onClick={() => sendRequest(medicId, pacientId)}>
+              Request Access
+            </button>
+          )}
         </div>
       </div>
     </div>

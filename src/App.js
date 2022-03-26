@@ -73,12 +73,7 @@ class App extends React.Component {
             exact
             path="/access"
             element={
-              this.props.currentUser &&
-              this.props.currentUser.role === "Medic" ? (
-                <Main />
-              ) : (
-                <Navigate to="/login" />
-              )
+              this.props.currentUser ? <Main /> : <Navigate to="/login" />
             }
           />
         </Routes>

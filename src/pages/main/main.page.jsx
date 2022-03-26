@@ -22,7 +22,8 @@ import { useLocation } from "react-router-dom";
 import ListComponent from "../../components/list/list.components";
 import ProfileComponent from "../../components/profile/profile.component";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Access from "../../components/access/access.component";
+import AccessMedic from "../../components/access-medic/access-medic.component";
+import AccessPatient from "../../components/access-patient/access-patient.component";
 
 const drawerWidth = 240;
 
@@ -81,7 +82,7 @@ function ResponsiveDrawer(props) {
             button
             key="Profile"
             onClick={() => {
-              navigate(`${currentUser.id}`);
+              navigate(`/${currentUser.id}`);
             }}
           >
             <ListItemIcon>
@@ -135,11 +136,11 @@ function ResponsiveDrawer(props) {
                 border: "1px solid black",
                 borderRadius: "3px",
                 height: "25px",
-                width: "90px",
+                width: "110px",
               }}
               onClick={() => auth.signOut()}
             >
-              SIGN OUT
+              Deconectați-vă
             </button>
           ) : (
             ""
@@ -201,7 +202,11 @@ function ResponsiveDrawer(props) {
           ) : location.pathname === "/statistics" ? (
             <p>/statistics</p>
           ) : location.pathname === "/access" ? (
-            <Access />
+            currentUser.role === "Medic" ? (
+              <AccessMedic />
+            ) : (
+              <AccessPatient />
+            )
           ) : null): null)
         )}
       </Box>
