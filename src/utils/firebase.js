@@ -142,23 +142,21 @@ export const updateUserProfilePicture = async (userAuth, file) => {
   }
 };
 
-export const getPatients = async () => {
-  const allPatients = [];
-
-  await firebase
+export const getUsersByRole = async (role, idRole) => {
+  const filteredUsers = [];
+  const users = await firebase
     .firestore()
     .collection("users")
-    .where("role", "==", "Pacient")
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const docData = doc.data();
-        docData["pacientId"] = doc.id;
-        allPatients.push(docData);
-      });
-    });
+    .where("role", "==", role)
+    .get();
 
-  return allPatients;
+  users.forEach((doc) => {
+    const docData = doc.data();
+    docData[idRole] = doc.id;
+    filteredUsers.push(docData);
+  });
+
+  return filteredUsers;
 };
 
 export const createMedicalEvent = async (userAuth, medicalEventData) => {

@@ -23,9 +23,28 @@ import ListComponent from "../../components/list/list.components";
 import ProfileComponent from "../../components/profile/profile.component";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AccessMedic from "../../components/access-medic/access-medic.component";
-import AccessPatient from "../../components/access-patient/access-patient.component";
 
 const drawerWidth = 240;
+
+const switchRender = (path, currentUser) => {
+  switch (path) {
+    case `/${currentUser.id}`:
+      return <ProfileComponent />;
+
+    case "/pacients":
+      return <ListComponent />;
+    case "/statistics":
+      return <p>Statistics</p>;
+    case "/access":
+      if (currentUser.role === "Medic") {
+        return <AccessMedic />;
+      } else if (currentUser.role === "Pacient") {
+        return;
+      }
+    default:
+      break;
+  }
+};
 
 function ResponsiveDrawer(props) {
   const navigate = useNavigate();
@@ -194,21 +213,7 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar />
-        {location.pathname === "/pacients" ? (
-          <ListComponent />
-        ) : (
-          ((location.pathname === "/" + currentUser.id ? (
-            <ProfileComponent />
-          ) : location.pathname === "/statistics" ? (
-            <p>/statistics</p>
-          ) : location.pathname === "/access" ? (
-            currentUser.role === "Medic" ? (
-              <AccessMedic />
-            ) : (
-              <AccessPatient />
-            )
-          ) : null): null)
-        )}
+        {switchRender(location.pathname, currentUser)}
       </Box>
     </Box>
   );
