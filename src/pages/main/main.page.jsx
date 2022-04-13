@@ -23,6 +23,7 @@ import ListComponent from "../../components/list/list.components";
 import ProfileComponent from "../../components/profile/profile.component";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AccessMedic from "../../components/access-medic/access-medic.component";
+import AccessPatient from "../../components/access-patient/access-patient.component";
 
 const drawerWidth = 240;
 
@@ -39,7 +40,7 @@ const switchRender = (path, currentUser) => {
       if (currentUser.role === "Medic") {
         return <AccessMedic />;
       } else if (currentUser.role === "Pacient") {
-        return;
+        return <AccessPatient />;
       }
     default:
       break;
