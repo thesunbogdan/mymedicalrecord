@@ -9,10 +9,6 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends React.Component {
-  constructor() {
-    super();
-  }
-
   unSubscribeFromAuth = null;
 
   componentDidMount() {
@@ -21,7 +17,6 @@ class App extends React.Component {
     this.unSubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-
         userRef.onSnapshot((snapShot) => {
           setCurrentUser({
             id: snapShot.id,

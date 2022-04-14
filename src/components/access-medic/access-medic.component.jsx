@@ -2,7 +2,7 @@ import { Component } from "react";
 import { getUsersByRole } from "../../utils/firebase";
 import { basicProfilePictureURL } from "../../utils/basic-profile-picture";
 import { connect } from "react-redux";
-import { cancelRequest, sendRequest } from "../../utils/firebase";
+import { cancelRequest1, sendRequest } from "../../utils/firebase";
 import "./access-medic.styles.scss";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -33,6 +33,7 @@ class AccessMedic extends Component {
         <div className="picture-and-age">
           <div className="picture">
             <img
+              alt="profile"
               src={
                 profilePictureURL ? profilePictureURL : basicProfilePictureURL
               }
@@ -51,7 +52,7 @@ class AccessMedic extends Component {
             {myMedicsPending?.filter((item) => item === medicId).length > 0 ? (
               <button
                 onClick={() => {
-                  cancelRequest(medicId, pacientId).then(this.updateUserList);
+                  cancelRequest1(medicId, pacientId).then(this.updateUserList);
                 }}
               >
                 Cancel Request

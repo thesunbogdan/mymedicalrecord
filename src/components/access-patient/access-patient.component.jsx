@@ -2,7 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { basicProfilePictureURL } from "../../utils/basic-profile-picture";
 import TextField from "@mui/material/TextField";
-import { cancelRequest, sendRequest } from "../../utils/firebase";
+import { cancelRequest, acceptRequest, denyAccess } from "../../utils/firebase";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { getUsersByRole } from "../../utils/firebase";
@@ -16,7 +16,6 @@ class AccessPatient extends Component {
       usersList: null,
       searchField: "",
     };
-    this._isMounted = false;
   }
 
   ProfileCard = (props) => {
@@ -25,17 +24,24 @@ class AccessPatient extends Component {
       lastName,
       profilePictureURL,
       medicId,
-      myPatientsPending,
       medicFunction,
       medicInstitution,
     } = props.item;
+
     const patientId = props.patientId;
+
+    if (props.type === "pending") {
+      var { myPatientsPending } = props.item;
+    } else if (props.type === "allowed") {
+      var { myPatientsAllowed } = props.item;
+    }
 
     return (
       <div className="profile-card">
         <div className="picture-and-age">
           <div className="picture">
             <img
+              alt="profile"
               src={
                 profilePictureURL ? profilePictureURL : basicProfilePictureURL
               }
@@ -51,35 +57,36 @@ class AccessPatient extends Component {
             <h1>{lastName},</h1>
             <h3>{firstName}</h3>
           </div>
-
-          {myPatientsPending?.filter((item) => item === patientId).length >
-          0 ? (
+          {myPatientsAllowed?.includes(patientId) ? (
             <div className="buttons">
-              <button>Accept Request</button>
+              <p>Has access to your data.</p>
               <button
                 onClick={() => {
-                  if (this._isMounted)
-                    cancelRequest(medicId, patientId).then(
-                      this._isMounted && this.updateUserList
-                    );
+                  denyAccess(medicId, patientId).then(this.updateUserList);
+                }}
+              >
+                Deny Access
+              </button>
+            </div>
+          ) : myPatientsPending?.includes(patientId) ? (
+            <div className="buttons">
+              <button
+                onClick={() => {
+                  acceptRequest(medicId, patientId).then(this.updateUserList);
+                }}
+              >
+                Accept Request
+              </button>
+              <button
+                onClick={() => {
+                  cancelRequest(medicId, patientId).then(this.updateUserList);
                 }}
               >
                 Decline Request
               </button>
             </div>
           ) : (
-            <div className="buttons">
-              <button
-                onClick={() => {
-                  if (this._isMounted)
-                    sendRequest(medicId, patientId).then(
-                      this._isMounted && this.updateUserList
-                    );
-                }}
-              >
-                Request Access
-              </button>
-            </div>
+            <p style={{ zIndex: 200 }}>fasfasfsa</p>
           )}
         </div>
       </div>
@@ -91,8 +98,7 @@ class AccessPatient extends Component {
   };
 
   componentDidMount() {
-    this._isMounted = true;
-    if (this._isMounted) this.updateUserList();
+    this.updateUserList();
   }
 
   updateUserList = () => {
@@ -101,19 +107,14 @@ class AccessPatient extends Component {
     );
   };
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
   render() {
     return (
       <>
         <div className="textfield">
           {" "}
           <TextField
-            sx={{ display: "block", margin: "auto" }}
-            autoComplete="off"
             placeholder="Cautare medic..."
+            sx={{ left: "42%" }}
             type="search"
             onChange={this.onSearchChange}
             InputProps={{
@@ -130,17 +131,40 @@ class AccessPatient extends Component {
           {this.state.usersList
             ?.filter(
               (medic) =>
-                medic.myPatientsPending.indexOf(this.props.currentUser.id) >
-                  -1 &&
+                medic.myPatientsPending.includes(this.props.currentUser.id) &&
                 `${medic.firstName} ${medic.lastName}`
                   .toLowerCase()
                   .includes(this.state.searchField.toLowerCase())
             )
             .map((item, index) => {
+              console.log("myPatientsPending: " + item);
               return (
                 <this.ProfileCard
                   key={index}
                   item={item}
+                  type="pending"
+                  patientId={this.props.currentUser.id}
+                />
+              );
+            })}
+
+          {this.state.usersList
+            ?.filter(
+              (medic) =>
+                medic.myPatientsAllowed.includes(this.props.currentUser.id) &&
+                `${medic.firstName} ${medic.lastName}`
+                  .toLowerCase()
+                  .includes(this.state.searchField.toLowerCase())
+            )
+            .map((item, index) => {
+              // console.log("myPatientsAllowd: ");
+              // console.table(item);
+
+              return (
+                <this.ProfileCard
+                  key={index}
+                  item={item}
+                  type="allowed"
                   patientId={this.props.currentUser.id}
                 />
               );

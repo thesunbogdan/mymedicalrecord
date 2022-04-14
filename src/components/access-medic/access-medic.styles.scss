@@ -58,7 +58,10 @@
       }
   
       .buttons {
+        flex-direction: row;
+        justify-content: center;
         button {
+          margin: 0 15px;
           width: 30%;
           height: 100%;
         }

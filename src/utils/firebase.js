@@ -182,11 +182,11 @@ export const sendRequest = async (medicId, pacientId) => {
     const medicRef = await firestore.doc(`users/${medicId}`);
 
     try {
-      await medicRef.update({
-        myPatientsPending: firebase.firestore.FieldValue.arrayUnion(pacientId),
-      });
       await pacientRef.update({
         myMedicsPending: firebase.firestore.FieldValue.arrayUnion(medicId),
+      });
+      await medicRef.update({
+        myPatientsPending: firebase.firestore.FieldValue.arrayUnion(pacientId),
       });
     } catch (err) {
       alert("error sending request" + err.message);
@@ -205,6 +205,66 @@ export const cancelRequest = async (medicId, pacientId) => {
       });
       await pacientRef.update({
         myMedicsPending: firebase.firestore.FieldValue.arrayRemove(medicId),
+      });
+    } catch (err) {
+      alert("error canceling request" + err.message);
+    }
+  }
+};
+
+export const cancelRequest1 = async (medicId, pacientId) => {
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+
+    try {
+      await pacientRef.update({
+        myMedicsPending: firebase.firestore.FieldValue.arrayRemove(medicId),
+      });
+      await medicRef.update({
+        myPatientsPending: firebase.firestore.FieldValue.arrayRemove(pacientId),
+      });
+    } catch (err) {
+      alert("error canceling request" + err.message);
+    }
+  }
+};
+
+export const acceptRequest = async (medicId, pacientId) => {
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+
+    try {
+      await medicRef.update({
+        myPatientsPending: firebase.firestore.FieldValue.arrayRemove(pacientId),
+      });
+      await pacientRef.update({
+        myMedicsPending: firebase.firestore.FieldValue.arrayRemove(medicId),
+      });
+      await medicRef.update({
+        myPatientsAllowed: firebase.firestore.FieldValue.arrayUnion(pacientId),
+      });
+      await pacientRef.update({
+        myMedicsAllowed: firebase.firestore.FieldValue.arrayUnion(medicId),
+      });
+    } catch (err) {
+      alert("error accepting request" + err.message);
+    }
+  }
+};
+
+export const denyAccess = async (medicId, pacientId) => {
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+
+    try {
+      await medicRef.update({
+        myPatientsAllowed: firebase.firestore.FieldValue.arrayRemove(pacientId),
+      });
+      await pacientRef.update({
+        myMedicsAllowed: firebase.firestore.FieldValue.arrayRemove(medicId),
       });
     } catch (err) {
       alert("error canceling request" + err.message);
