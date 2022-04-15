@@ -104,10 +104,12 @@ class AccessMedic extends Component {
         />
         <div className="access">
           {this.state.usersList
-            ?.filter((patient) =>
-              `${patient.firstName} ${patient.lastName}`
-                .toLowerCase()
-                .includes(this.state.searchField.toLowerCase())
+            ?.filter(
+              (patient) =>
+                `${patient.firstName} ${patient.lastName}`
+                  .toLowerCase()
+                  .includes(this.state.searchField.toLowerCase()) &&
+                !patient.myMedicsAllowed.includes(this.props.currentUser.id)
             )
             .map((item) => {
               return (

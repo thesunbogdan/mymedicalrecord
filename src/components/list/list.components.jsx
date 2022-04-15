@@ -9,6 +9,7 @@ class ListComponent extends React.Component {
     super();
     this.state = {
       patientsAllowedRaw: [],
+      selectedPatients: null,
     };
   }
 
@@ -20,14 +21,18 @@ class ListComponent extends React.Component {
 
   render() {
     const myPatients = [];
+    console.log(this.state.selectedPatients);
+
     const patientsAllowed = this.state.patientsAllowedRaw?.filter((patient) => {
       return patient.myMedicsAllowed.includes(this.props.currentUser.id);
     });
+
     const currentYear = new Date().getFullYear();
-    console.log(patientsAllowed[0]?.pacientBirthDate.toDate().getFullYear());
+
     patientsAllowed.map((patient) =>
       myPatients.push({
         id: patient.pacientId,
+        profilePictureURL: patient.profilePictureURL,
         firstName: patient.firstName,
         lastName: patient.lastName,
         email: patient.email,
@@ -36,13 +41,26 @@ class ListComponent extends React.Component {
         weight: patient.weight,
         tel: patient.tel,
         age: currentYear - patient.pacientBirthDate.toDate().getFullYear(),
+        medicalRecord: patient.medicalRecord,
       })
     );
 
     return (
       <div style={{ height: "90vh", width: "100%" }}>
         {myPatients ? (
-          <DataGrid columns={columns} rows={myPatients} checkboxSelection />
+          <DataGrid
+            columns={columns}
+            rows={myPatients}
+            checkboxSelection
+            disableSelectionOnClick
+            onSelectionModelChange={(ids) => {
+              const selectedIDs = new Set(ids);
+              const selectedRowData = myPatients.filter((row) =>
+                selectedIDs.has(row.id.toString())
+              );
+              this.setState({ selectedPatients: selectedRowData });
+            }}
+          />
         ) : (
           ""
         )}

@@ -128,8 +128,8 @@ class MedicProfile extends React.Component {
           <div className="modal-grid-bottom">
             <div className="modal-column">
               <TextField
-                autoComplete="off"
                 fullWidth
+                autoComplete="off"
                 label="First name"
                 name="firstName"
                 defaultValue={this.props.currentUser.firstName}
