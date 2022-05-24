@@ -67,6 +67,27 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           profilePictureURL,
           tel,
           location,
+          orar: {
+            luni: null,
+            marti: null,
+            miercuri: null,
+            joi: null,
+            vineri: null,
+            sambata: null,
+            duminica: null,
+          },
+          specializari: {
+            specializare1: null,
+            specializare2: null,
+            specializare3: null,
+          },
+          experienta: {
+            experienta1: null,
+            experienta2: null,
+            experienta3: null,
+          },
+          facultate: null,
+          anulAbsolvirii: null,
         });
       }
     } catch (error) {
@@ -105,7 +126,15 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
           gender: gender,
         });
       } else if (role === "Medic") {
-        const { medicInstitution, medicFunction } = additionalData;
+        const {
+          medicInstitution,
+          medicFunction,
+          orar,
+          specializari,
+          facultate,
+          anulAbsolvirii,
+          experienta,
+        } = additionalData;
 
         await userRef.update({
           firstName: firstName,
@@ -115,6 +144,11 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
           medicFunction: medicFunction,
           medicInstitution: medicInstitution,
           location: location,
+          orar: orar,
+          specializari: specializari,
+          facultate: facultate,
+          anulAbsolvirii: anulAbsolvirii,
+          experienta: experienta,
         });
       }
     } catch (error) {

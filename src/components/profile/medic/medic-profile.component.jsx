@@ -27,11 +27,56 @@ class MedicProfile extends React.Component {
       medicInstitution: this.props.currentUser.medicInstitution,
       profilePicture: this.props.currentUser.profilePicture,
       location: this.props.currentUser.location,
+      orar: {
+        luni: this.props.currentUser.orar.luni,
+        marti: this.props.currentUser.orar.marti,
+        miercuri: this.props.currentUser.orar.miercuri,
+        joi: this.props.currentUser.orar.joi,
+        vineri: this.props.currentUser.orar.vineri,
+        sambata: this.props.currentUser.orar.sambata,
+        duminica: this.props.currentUser.orar.duminica,
+      },
+      specializari: {
+        specializare1: this.props.currentUser.specializari.specializare1,
+        specializare2: this.props.currentUser.specializari.specializare2,
+        specializare3: this.props.currentUser.specializari.specializare3,
+      },
+      experienta: {
+        experienta1: this.props.currentUser.experienta.experienta1,
+        experienta2: this.props.currentUser.experienta.experienta2,
+        experienta3: this.props.currentUser.experienta.experienta3,
+      },
+      facultate: this.props.currentUser.facultate,
+      anulAbsolvirii: this.props.currentUser.anulAbsolvirii,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
+
+  handleTimetableChange = (event) => {
+    const { name, value } = event.target;
+    const { orar } = this.state;
+
+    orar[name] = value;
+    this.setState({ orar: orar });
+  };
+
+  handleExpChange = (event) => {
+    const { name, value } = event.target;
+    const { experienta } = this.state;
+
+    experienta[name] = value;
+    this.setState({ experienta: experienta });
+  };
+
+  handleSpecChange = (event) => {
+    const { name, value } = event.target;
+    const { specializari } = this.state;
+
+    specializari[name] = value;
+    this.setState({ specializari: specializari });
+  };
 
   handleOpenModal() {
     this.setState({ showModal: true });
@@ -71,6 +116,11 @@ class MedicProfile extends React.Component {
       medicFunction,
       medicInstitution,
       location,
+      orar,
+      facultate,
+      anulAbsolvirii,
+      specializari,
+      experienta,
     } = this.state;
 
     try {
@@ -85,11 +135,14 @@ class MedicProfile extends React.Component {
           medicInstitution,
           role: "Medic",
           location,
+          orar,
+          facultate,
+          anulAbsolvirii,
+          specializari,
+          experienta,
         }
       );
-      console.log("const showModal " + showModal);
       this.setState({ showModal: showModal });
-      console.log("this.state.showModal" + this.state.showModal);
     } catch (error) {
       alert(error.message);
     }
@@ -128,6 +181,7 @@ class MedicProfile extends React.Component {
           <div className="modal-grid-bottom">
             <div className="modal-column">
               <TextField
+                size="small"
                 fullWidth
                 autoComplete="off"
                 label="First name"
@@ -136,6 +190,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                size="small"
                 autoComplete="off"
                 fullWidth
                 label="Last name"
@@ -151,9 +206,56 @@ class MedicProfile extends React.Component {
                 value={this.props.currentUser.tel}
                 onChange={(phoneNumber) => this.setState({ tel: phoneNumber })}
               />
+              <h2>Specializari</h2>
+              {Object.keys(this.state.specializari).map((key) => (
+                <TextField
+                  onChange={this.handleSpecChange}
+                  size="small"
+                  name={key}
+                  autoComplete="off"
+                  fullWidth
+                  label={key}
+                  defaultValue={this.props.currentUser.specializari[key]}
+                />
+              ))}
+
+              <h2>Educatie</h2>
+              <TextField
+                size="small"
+                autoComplete="off"
+                name="facultate"
+                label="Facultate"
+                fullWidth
+                defaultValue={this.props.currentUser.facultate}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                size="small"
+                autoComplete="off"
+                name="anulAbsolvirii"
+                label="Anul absolvirii"
+                fullWidth
+                defaultValue={this.props.currentUser.anulAbsolvirii}
+                onChange={this.handleChange}
+              />
             </div>
             <div className="modal-column">
+              <h2>Experienta</h2>
+              {Object.keys(this.state.experienta).map((key) => (
+                <TextField
+                  onChange={this.handleExpChange}
+                  size="small"
+                  name={key}
+                  autoComplete="off"
+                  fullWidth
+                  label={key}
+                  defaultValue={this.props.currentUser.experienta[key]}
+                />
+              ))}
+
               <TextField
+                size="small"
                 autoComplete="off"
                 fullWidth
                 label="Medical Function"
@@ -162,6 +264,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                size="small"
                 autoComplete="off"
                 fullWidth
                 label="Medical Institution"
@@ -170,6 +273,7 @@ class MedicProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                size="small"
                 autoComplete="off"
                 fullWidth
                 label="Institution Location"
@@ -177,6 +281,104 @@ class MedicProfile extends React.Component {
                 defaultValue={this.props.currentUser.location}
                 onChange={this.handleChange}
               />
+              <table>
+                <tbody>
+                  <tr>
+                    <td colSpan="2">ORAR</td>
+                  </tr>
+                  <tr>
+                    <td>Luni</td>
+                    <td>
+                      <TextField
+                        size="small"
+                        name="luni"
+                        defaultValue={this.props.currentUser.orar.luni}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Marti</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="marti"
+                        defaultValue={this.props.currentUser.orar.marti}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Miercuri</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="miercuri"
+                        defaultValue={this.props.currentUser.orar.miercuri}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Joi</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="joi"
+                        defaultValue={this.props.currentUser.orar.joi}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vineri</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="vineri"
+                        defaultValue={this.props.currentUser.orar.vineri}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Sambata</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="sambata"
+                        defaultValue={this.props.currentUser.orar.sambata}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Duminica</td>
+                    <td>
+                      {" "}
+                      <TextField
+                        size="small"
+                        name="duminica"
+                        defaultValue={this.props.currentUser.orar.duminica}
+                        autoComplete="off"
+                        onChange={this.handleTimetableChange}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
               <input
                 fullWidth
                 name="profile-picture"
@@ -216,26 +418,57 @@ class MedicProfile extends React.Component {
           </div>
         </div>
         <div className="column">
-          <h1 className="title">Bio</h1>
           <div className="column-bottom">
-            <p>
-              Ad fugiat irure nulla ea fugiat dolore ipsum. Deserunt dolor anim
-              irure incididunt irure eu magna nisi ullamco aliquip ipsum eu.
-              Sunt veniam fugiat sit excepteur elit ullamco laborum et minim
-              nisi ullamco amet occaecat irure.
-            </p>
-            <p>
-              Tempor aute sit qui consequat irure officia ipsum ad nostrud est
-              commodo. Commodo eu dolor elit ad irure duis dolor duis
-              adipisicing ea do officia occaecat. Ex culpa aliquip ut sunt minim
-              esse eiusmod ex in fugiat mollit ipsum fugiat.
-            </p>
-            <p>
-              Lorem anim consectetur ullamco proident amet irure qui mollit
-              adipisicing aute. Pariatur tempor aliquip irure ut officia magna
-              quis adipisicing nisi Lorem laborum labore minim. Fugiat pariatur
-              dolor deserunt cillum dolore nisi ullamco eu anim esse.
-            </p>
+            <h2>Educatie</h2>
+            <p>Facultate: </p>
+            <p>Anul absolvirii</p>
+            <h2>Specializari:</h2>
+            <p>asfsafas</p>
+            <p>asfsafas</p>
+            <h2>Competente profesionale</h2>
+            <p>asfsafas</p>
+            <p>asfsafas</p>
+
+            <h2>Experienta:</h2>
+            <p>asfsafas</p>
+            <p>asfsafas</p>
+            <p>asfsafas</p>
+
+            <table>
+              <tbody>
+                <tr>
+                  <td colSpan="2">ORAR</td>
+                </tr>
+                <tr>
+                  <td>Luni</td>
+                  <td>{this.props.currentUser.orar.luni}</td>
+                </tr>
+                <tr>
+                  <td>Marti</td>
+                  <td>{this.props.currentUser.orar.marti}</td>
+                </tr>
+                <tr>
+                  <td>Miercuri</td>
+                  <td>{this.props.currentUser.orar.miercuri}</td>
+                </tr>
+                <tr>
+                  <td>Joi</td>
+                  <td>{this.props.currentUser.orar.joi}</td>
+                </tr>
+                <tr>
+                  <td>Vineri</td>
+                  <td>{this.props.currentUser.orar.vineri}</td>
+                </tr>
+                <tr>
+                  <td>Sambata</td>
+                  <td>{this.props.currentUser.orar.sambata}</td>
+                </tr>
+                <tr>
+                  <td>Duminica</td>
+                  <td>{this.props.currentUser.orar.duminica}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
