@@ -12,12 +12,13 @@ import { updateUserProfilePicture } from "../../../utils/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import { basicProfilePictureURL } from "../../../utils/basic-profile-picture";
 import InputAdornment from "@mui/material/InputAdornment";
-import DropdownCascade from "react-dropdown-cascade";
 import { createMedicalEvent } from "../../../utils/firebase";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import { LocalizationProvider, MobileDateRangePicker } from "@mui/lab";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 class PacientProfile extends React.Component {
   constructor(props) {
@@ -37,108 +38,14 @@ class PacientProfile extends React.Component {
 
       disabled: true,
 
-      diagnostic: "",
-      fromDate: "",
-      toDate: "",
-      details: "",
-      medic: "",
-      institution: "",
-
-      items: [
-        {
-          value: "I",
-          label: "I",
-          children: [
-            {
-              value: "1",
-              label: "1",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "2",
-              label: "2",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "3",
-              label: "3",
-              children: [
-                { value: "a", label: "a" },
-                { value: "a", label: "b" },
-              ],
-            },
-          ],
-        },
-        {
-          value: "II",
-          label: "II",
-          children: [
-            {
-              value: "1",
-              label: "1",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "2",
-              label: "2",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "3",
-              label: "3",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-                { value: "c", label: "c" },
-                { value: "d", label: "d" },
-                { value: "e", label: "e" },
-              ],
-            },
-          ],
-        },
-        {
-          value: "III",
-          label: "III",
-          children: [
-            {
-              value: "1",
-              label: "1",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "2",
-              label: "2",
-              children: [
-                { value: "a", label: "a" },
-                { value: "b", label: "b" },
-              ],
-            },
-            {
-              value: "3",
-              label: "3",
-              children: [
-                { value: "a", label: "a" },
-                { value: "a", label: "b" },
-              ],
-            },
-          ],
-        },
-      ],
+      Data: "",
+      Perioada: [null, null],
+      Prescripție: "",
+      Numele_medicului: "",
+      Tipul_evenimentului: "Vizită medic familie",
+      Diagnostic: "",
+      Instituție: "",
+      Detalii: "",
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -155,7 +62,18 @@ class PacientProfile extends React.Component {
 
   handleChange = (event) => {
     const { value, name } = event.target;
-    this.setState({ [name]: value });
+    if (name === "Tipul_evenimentului")
+      this.setState({
+        Numele_medicului: "",
+        Data: "",
+        Prescripție: "",
+        Diagnostic: "",
+        Instituție: "",
+        Detalii: "",
+        Perioada: [null, null],
+        [name]: value,
+      });
+    else this.setState({ [name]: value });
   };
 
   getFile = async (event) => {
@@ -170,7 +88,7 @@ class PacientProfile extends React.Component {
       this.state.profilePicture
     );
     if (profilePictureRes) {
-      await this.setState({
+      this.setState({
         profilePictureURL: profilePictureRes,
       });
     }
@@ -201,9 +119,7 @@ class PacientProfile extends React.Component {
           gender,
         }
       );
-      console.log("const showModal " + showModal);
       this.setState({ showModal: showModal });
-      console.log("this.state.showModal" + this.state.showModal);
     } catch (error) {
       alert(error.message);
     }
@@ -391,81 +307,226 @@ class PacientProfile extends React.Component {
             this.state.disabled ? "medical-event disabled" : "medical-event"
           }`}
         >
-          <div className="column">
-            <div className="text-and-textfield">
-              <p>Diagnostic: </p>
-              <DropdownCascade
-                separatorIcon=" &#8594; "
-                customStyles={{
-                  dropdown: {
-                    style: {
-                      margin: "5px 20px 15px 20px",
-                    },
-                  },
-                }}
-                items={this.state.items}
-                onSelect={(value) => {
-                  this.setState({ diagnostic: value });
-                }}
-                value={this.state.diagnostic}
-              />
-            </div>
-            <div className="text-and-textfield">
-              <p>From date:</p>
-              <TextField
-                autoComplete="off"
-                defaultValue={this.state.fromDate}
-                name="fromDate"
-                type="date"
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="text-and-textfield">
-              <p>To date:</p>
-              <TextField
-                autoComplete="off"
-                defaultValue={this.state.toDate}
-                name="toDate"
-                type="date"
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="column">
-            <div className="text-and-textfield">
-              <p>Medic:</p>
-              <TextField
-                autoComplete="off"
-                name="medic"
-                defaultValue={this.state.medic}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="text-and-textfield">
-              <p>Instiution:</p>
-              <TextField
-                autoComplete="off"
-                name="institution"
-                defaultValue={this.state.institution}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="text-and-textfield">
-              <p>Details:</p>
-              <TextField
-                autoComplete="off"
-                name="details"
-                defaultValue={this.state.details}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          {/* <p>{this.state.diagnostic}</p>
-          <p>{this.state.fromDate}</p>
-          <p>{this.state.toDate}</p>
-          <p>{this.state.medic}</p>
-          <p>{this.state.institution}</p>
-          <p>{this.state.details}</p> */}
+          {this.state.Tipul_evenimentului === "Vizită medic familie" ||
+          this.state.Tipul_evenimentului === "Vizită medic specialist" ? (
+            <>
+              <div className="column">
+                <FormControl fullWidth>
+                  <InputLabel>Tipul evenimentului</InputLabel>
+                  <Select
+                    native
+                    fullWidth
+                    name="Tipul_evenimentului"
+                    defaultValue={"Vizită medic familie"}
+                    onChange={this.handleChange}
+                  >
+                    <option value={"Vizită medic familie"}>
+                      Vizită medic familie
+                    </option>
+                    <option value={"Vizită medic specialist"}>
+                      Vizită medic specialist
+                    </option>
+                    <option value={"Internare în spital"}>
+                      Internare în spital
+                    </option>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ m: 1 }} fullWidth>
+                  <InputLabel>Diagnostic</InputLabel>
+                  <Select
+                    onChange={this.handleChange}
+                    native
+                    name="Diagnostic"
+                    defaultValue=""
+                    label="Diagnostic"
+                  >
+                    <optgroup label="Category 1">
+                      <option disabled>&nbsp;&nbsp;Option 0</option>
+
+                      <option value={1}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 1
+                      </option>
+                      <option value={2}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 2
+                      </option>
+                    </optgroup>
+                    <optgroup label="Category 2">
+                      <option disabled>&nbsp;&nbsp;Option 3</option>
+                      <option value={4}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 4
+                      </option>
+                    </optgroup>
+                  </Select>
+                </FormControl>
+                <TextField
+                  fullWidth
+                  label="Data"
+                  autoComplete="off"
+                  defaultValue={""}
+                  name="Data"
+                  value={this.state.Data}
+                  type="date"
+                  InputLabelProps={{ shrink: "true" }}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  fullWidth
+                  label="Numele medicului"
+                  name="Numele_medicului"
+                  value={this.state.Numele_medicului}
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="column">
+                <TextField
+                  fullWidth
+                  label="Instituție"
+                  name="Instituție"
+                  value={this.state.Instituție}
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  fullWidth
+                  label="Prescripție"
+                  name="Prescripție"
+                  autoComplete="off"
+                  value={this.state.Prescripție}
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  fullWidth
+                  label="Detalii"
+                  name="Detalii"
+                  value={this.state.Detalii}
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="column">
+                <FormControl fullWidth>
+                  <InputLabel>Tipul evenimentului</InputLabel>
+                  <Select
+                    native
+                    fullWidth
+                    name="Tipul_evenimentului"
+                    defaultValue={"Vizită medic familie"}
+                    onChange={this.handleChange}
+                  >
+                    <option value={"Vizită medic familie"}>
+                      Vizită medic familie
+                    </option>
+                    <option value={"Vizită medic specialist"}>
+                      Vizită medic specialist
+                    </option>
+                    <option value={"Internare în spital"}>
+                      Internare în spital
+                    </option>
+                  </Select>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <MobileDateRangePicker
+                    inputFormat="yyyy/MM/dd"
+                    startText="Data internare"
+                    endText="Data externare"
+                    value={this.state.Perioada}
+                    onChange={(newValue) => {
+                      this.setState({
+                        Perioada: newValue,
+                      });
+                    }}
+                    renderInput={(startProps, endProps) => (
+                      <React.Fragment>
+                        <TextField {...startProps} />
+                        <TextField {...endProps} />
+                      </React.Fragment>
+                    )}
+                  />
+                </LocalizationProvider>
+                <TextField
+                  fullWidth
+                  label="Numele medicului"
+                  name="Numele_medicului"
+                  value={this.state.Numele_medicului}
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+                <FormControl sx={{ m: 1 }} fullWidth>
+                  <InputLabel>Diagnostic</InputLabel>
+                  <Select
+                    onChange={this.handleChange}
+                    native
+                    name="Diagnostic"
+                    defaultValue=""
+                    label="Diagnostic"
+                  >
+                    <optgroup label="Category 1">
+                      <option disabled>&nbsp;&nbsp;Option 0</option>
+
+                      <option value={1}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 1
+                      </option>
+                      <option value={2}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 2
+                      </option>
+                    </optgroup>
+                    <optgroup label="Category 2">
+                      <option disabled>&nbsp;&nbsp;Option 3</option>
+                      <option value={4}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Option 4
+                      </option>
+                    </optgroup>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="column">
+                <TextField
+                  fullWidth
+                  value={this.state.Instituție}
+                  label="Instituție"
+                  name="Instituție"
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  fullWidth
+                  label="Prescripție"
+                  name="Prescripție"
+                  autoComplete="off"
+                  value={this.state.Prescripție}
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  fullWidth
+                  label="Detalii"
+                  name="Detalii"
+                  value={this.state.Detalii}
+                  autoComplete="off"
+                  defaultValue={""}
+                  onChange={this.handleChange}
+                />
+              </div>
+            </>
+          )}
         </div>
         {this.state.disabled ? (
           <button
@@ -482,27 +543,52 @@ class PacientProfile extends React.Component {
               onClick={() => {
                 this.setState({
                   disabled: true,
-                  diagnostic: "",
-                  fromDate: "",
-                  toDate: "",
-                  details: "",
-                  medic: "",
-                  institution: "",
+                  Numele_medicului: "",
+                  Data: "",
+                  Prescripție: "",
+                  Diagnostic: "",
+                  Instituție: "",
+                  Detalii: "",
+                  Perioada: [null, null],
                 });
               }}
             >
               CANCEL
             </button>
+
             <button
               onClick={() => {
-                createMedicalEvent(this.props.currentUser, {
-                  diagnostic: this.state.diagnostic,
-                  fromDate: this.state.fromDate,
-                  toDate: this.state.toDate,
-                  medic: this.state.medic,
-                  institution: this.state.institution,
-                  details: this.state.details,
-                });
+                if (
+                  this.state.Tipul_evenimentului === "Vizită medic familie" ||
+                  this.state.Tipul_evenimentului === "Vizită medic specialist"
+                )
+                  createMedicalEvent(this.props.currentUser, {
+                    Numele_medicului: this.state.Numele_medicului,
+                    Data: this.state.Data,
+                    Prescripție: this.state.Prescripție,
+                    Diagnostic: this.state.Diagnostic,
+                    Instituție: this.state.Instituție,
+                    Detalii: this.state.Detalii,
+                  });
+                else if (
+                  this.state.Tipul_evenimentului === "Internare în spital"
+                )
+                  createMedicalEvent(this.props.currentUser, {
+                    Numele_medicului: this.state.Numele_medicului,
+                    Prescripție: this.state.Prescripție,
+                    Diagnostic: this.state.Diagnostic,
+                    Instituție: this.state.Instituție,
+                    Detalii: this.state.Detalii,
+                    Perioada: [
+                      `${new Date(this.state.Perioada[0]).getFullYear()}-${
+                        new Date(this.state.Perioada[0]).getMonth() + 1
+                      }-${new Date(this.state.Perioada[0]).getDate()}`,
+                      `${new Date(this.state.Perioada[1]).getFullYear()}-${
+                        new Date(this.state.Perioada[1]).getMonth() + 1
+                      }-${new Date(this.state.Perioada[1]).getDate()}`,
+                    ],
+                  });
+                else console.log("event type not expected");
                 this.setState({ disabled: true });
               }}
             >
@@ -510,7 +596,7 @@ class PacientProfile extends React.Component {
             </button>
           </div>
         )}
-
+        <p>{JSON.stringify(this.state)}</p>
         {this.props.currentUser.medicalRecord.map((item, index) => {
           return (
             <div key={index} className="medical-event">
@@ -523,7 +609,10 @@ class PacientProfile extends React.Component {
                       justifyContent: "space-around",
                     }}
                   >
-                    <p>{key}</p> : <p>{value}</p>
+                    <p>{key}</p> :{" "}
+                    <p>
+                      {key === "Perioada" ? `${value[0]} - ${value[1]}` : value}
+                    </p>
                   </div>
                 );
               })}

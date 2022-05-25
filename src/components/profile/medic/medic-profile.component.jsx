@@ -420,19 +420,21 @@ class MedicProfile extends React.Component {
         <div className="column">
           <div className="column-bottom">
             <h2>Educatie</h2>
+
             <p>Facultate: </p>
+            <p>{this.props.currentUser.facultate}</p>
             <p>Anul absolvirii</p>
+            <p>{this.props.currentUser.anulAbsolvirii}</p>
             <h2>Specializari:</h2>
-            <p>asfsafas</p>
-            <p>asfsafas</p>
+            {Object.keys(this.props.currentUser.specializari).forEach((key) => (
+              <p>{this.props.currentUser.specializari[key]}</p>
+            ))}
             <h2>Competente profesionale</h2>
-            <p>asfsafas</p>
-            <p>asfsafas</p>
 
             <h2>Experienta:</h2>
-            <p>asfsafas</p>
-            <p>asfsafas</p>
-            <p>asfsafas</p>
+            {Object.keys(this.props.currentUser.experienta).forEach((key) => (
+              <p>{this.props.currentUser.experienta[key]}</p>
+            ))}
 
             <table>
               <tbody>
