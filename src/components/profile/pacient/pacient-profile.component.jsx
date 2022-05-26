@@ -19,6 +19,8 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider, MobileDateRangePicker } from "@mui/lab";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Chip, OutlinedInput } from "@mui/material";
+import { Box } from "@mui/system";
 
 class PacientProfile extends React.Component {
   constructor(props) {
@@ -30,22 +32,37 @@ class PacientProfile extends React.Component {
       lastName: this.props.currentUser.lastName,
       profilePictureURL: this.props.currentUser.profilePictureURL,
       tel: this.props.currentUser.tel,
-      gender: this.props.currentUser.gender,
-      height: this.props.currentUser.height,
-      weight: this.props.currentUser.weight,
+      gen: this.props.currentUser.gen,
+      înălțime: this.props.currentUser.înălțime,
+      greutate: this.props.currentUser.greutate,
       profilePicture: this.props.currentUser.profilePicture,
       pacientBirthDate: this.props.currentUser.pacientBirthDate,
 
       disabled: true,
 
-      Data: "",
-      Perioada: [null, null],
-      Prescripție: "",
-      Numele_medicului: "",
-      Tipul_evenimentului: "Vizită medic familie",
-      Diagnostic: "",
-      Instituție: "",
-      Detalii: "",
+      comorbiditățiPosibile: [
+        "Obezitate",
+        "Diabet",
+        "Hipertensiune arterială",
+        "Insuficiența cardiacă",
+        "Astm cronic",
+        "Boli pulmonare",
+        "Boli autoimune",
+        "Boli renale cronice",
+        "Boli digestive cronice",
+        "Hepatita cronică",
+      ],
+      searchMedicName: "",
+      searchEventType: "",
+      comorbidități: [],
+      data: "",
+      perioada: [null, null],
+      prescripție: "",
+      numele_medicului: "",
+      tipul_evenimentului: "Vizită medic familie",
+      diagnostic: "",
+      instituție: "",
+      detalii: "",
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -55,6 +72,14 @@ class PacientProfile extends React.Component {
   handleOpenModal() {
     this.setState({ showModal: true });
   }
+  handleMultipleSelectChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState({
+      comorbidități: typeof value === "string" ? value.split(",") : value,
+    });
+  };
 
   handleCloseModal() {
     this.setState({ showModal: false });
@@ -62,15 +87,15 @@ class PacientProfile extends React.Component {
 
   handleChange = (event) => {
     const { value, name } = event.target;
-    if (name === "Tipul_evenimentului")
+    if (name === "tipul_evenimentului")
       this.setState({
-        Numele_medicului: "",
-        Data: "",
-        Prescripție: "",
-        Diagnostic: "",
-        Instituție: "",
-        Detalii: "",
-        Perioada: [null, null],
+        numele_medicului: "",
+        data: "",
+        prescripție: "",
+        diagnostic: "",
+        instituție: "",
+        detalii: "",
+        perioada: [null, null],
         [name]: value,
       });
     else this.setState({ [name]: value });
@@ -100,23 +125,25 @@ class PacientProfile extends React.Component {
       lastName,
       profilePictureURL,
       tel,
-      height,
-      weight,
-      gender,
+      înălțime,
+      greutate,
+      gen,
+      comorbidități,
     } = this.state;
 
     try {
       const showModal = await updateUserProfileDocument(
         this.props.currentUser,
         {
+          comorbidități,
           firstName,
           lastName,
           profilePictureURL,
           tel,
-          height,
-          weight,
+          înălțime,
+          greutate,
           role: "Pacient",
-          gender,
+          gen,
         }
       );
       this.setState({ showModal: showModal });
@@ -196,9 +223,9 @@ class PacientProfile extends React.Component {
                       <InputAdornment position="end">kg</InputAdornment>
                     ),
                   }}
-                  label="Weight"
-                  name="weight"
-                  defaultValue={this.props.currentUser.weight}
+                  label="Greutate"
+                  name="greutate"
+                  defaultValue={this.props.currentUser.greutate}
                   onChange={this.handleChange}
                 />
                 <TextField
@@ -209,22 +236,44 @@ class PacientProfile extends React.Component {
                       <InputAdornment position="end">cm</InputAdornment>
                     ),
                   }}
-                  label="Height"
-                  name="height"
-                  defaultValue={this.props.currentUser.height}
+                  label="Înălțime"
+                  name="înălțime"
+                  defaultValue={this.props.currentUser.înălțime}
                   onChange={this.handleChange}
                 />
+                <FormControl sx={{ m: 1 }} fullWidth>
+                  <InputLabel>Comorbidități</InputLabel>
+                  <Select
+                    multiple
+                    value={this.state.comorbidități}
+                    onChange={this.handleMultipleSelectChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {this.state.comorbiditățiPosibile.map((name) => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControl fullWidth>
-                  <InputLabel>Gender</InputLabel>
+                  <InputLabel>Gen</InputLabel>
                   <Select
                     fullWidth
-                    label="Gender"
-                    name="gender"
-                    defaultValue={this.props.currentUser.gender}
+                    label="Gen"
+                    name="gen"
+                    defaultValue={this.props.currentUser.gen}
                     onChange={this.handleChange}
                   >
-                    <MenuItem value={"Male"}>Male</MenuItem>
-                    <MenuItem value={"Female"}>Female</MenuItem>
+                    <MenuItem value={"Masculin"}>Masculin</MenuItem>
+                    <MenuItem value={"Feminin"}>Feminin</MenuItem>
                   </Select>
                 </FormControl>
                 <input
@@ -259,22 +308,43 @@ class PacientProfile extends React.Component {
               </h1>
               <div className="medic-function-institution">
                 <p>
-                  Height:{" "}
-                  {this.props.currentUser.height
-                    ? this.props.currentUser.height
-                    : "(Please add your height)"}
+                  Înălțime:{" "}
+                  {this.props.currentUser.înălțime
+                    ? `${this.props.currentUser.înălțime} cm`
+                    : "(Nu ați adăugat înălțimea)"}
                 </p>
                 <p>
-                  Weight:{" "}
-                  {this.props.currentUser.weight
-                    ? this.props.currentUser.weight
-                    : "(Please add your weight)"}
+                  Greutate:{" "}
+                  {this.props.currentUser.greutate
+                    ? `${this.props.currentUser.greutate} kg`
+                    : "(Nu ați adăugat greutatea)"}
                 </p>
                 <p>
-                  Gender:{" "}
-                  {this.props.currentUser.gender
-                    ? this.props.currentUser.gender
-                    : "(Please add your gender)"}
+                  Gen:{" "}
+                  {this.props.currentUser.gen
+                    ? this.props.currentUser.gen
+                    : "(Nu ați adăugat genul)"}
+                </p>
+                <p>
+                  Vârsta:{" "}
+                  {new Date().getFullYear() -
+                    this.props.currentUser.pacientBirthDate
+                      .toDate()
+                      .getFullYear()}{" "}
+                  ani
+                </p>
+                <p>
+                  Comorbidități:{" "}
+                  {this.props.currentUser.comorbidități ? (
+                    this.props.currentUser.comorbidități.map((com) => (
+                      <>
+                        {com}
+                        &nbsp;
+                      </>
+                    ))
+                  ) : (
+                    <p>Nu prezintă comorbidități</p>
+                  )}
                 </p>
               </div>
             </div>
@@ -286,7 +356,6 @@ class PacientProfile extends React.Component {
               <button className="contact-button">
                 <PhoneIcon />
                 <p>
-                  &nbsp;
                   {this.props.currentUser.tel
                     ? this.props.currentUser.tel
                     : "Please add a phone number"}
@@ -307,8 +376,8 @@ class PacientProfile extends React.Component {
             this.state.disabled ? "medical-event disabled" : "medical-event"
           }`}
         >
-          {this.state.Tipul_evenimentului === "Vizită medic familie" ||
-          this.state.Tipul_evenimentului === "Vizită medic specialist" ? (
+          {this.state.tipul_evenimentului === "Vizită medic familie" ||
+          this.state.tipul_evenimentului === "Vizită medic specialist" ? (
             <>
               <div className="column">
                 <FormControl fullWidth>
@@ -316,7 +385,7 @@ class PacientProfile extends React.Component {
                   <Select
                     native
                     fullWidth
-                    name="Tipul_evenimentului"
+                    name="tipul_evenimentului"
                     defaultValue={"Vizită medic familie"}
                     onChange={this.handleChange}
                   >
@@ -336,7 +405,7 @@ class PacientProfile extends React.Component {
                   <Select
                     onChange={this.handleChange}
                     native
-                    name="Diagnostic"
+                    name="diagnostic"
                     defaultValue=""
                     label="Diagnostic"
                   >
@@ -363,8 +432,8 @@ class PacientProfile extends React.Component {
                   label="Data"
                   autoComplete="off"
                   defaultValue={""}
-                  name="Data"
-                  value={this.state.Data}
+                  name="data"
+                  value={this.state.data}
                   type="date"
                   InputLabelProps={{ shrink: "true" }}
                   onChange={this.handleChange}
@@ -372,8 +441,8 @@ class PacientProfile extends React.Component {
                 <TextField
                   fullWidth
                   label="Numele medicului"
-                  name="Numele_medicului"
-                  value={this.state.Numele_medicului}
+                  name="numele_medicului"
+                  value={this.state.numele_medicului}
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -383,8 +452,8 @@ class PacientProfile extends React.Component {
                 <TextField
                   fullWidth
                   label="Instituție"
-                  name="Instituție"
-                  value={this.state.Instituție}
+                  name="instituție"
+                  value={this.state.instituție}
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -394,9 +463,9 @@ class PacientProfile extends React.Component {
                   rows={4}
                   fullWidth
                   label="Prescripție"
-                  name="Prescripție"
+                  name="prescripție"
                   autoComplete="off"
-                  value={this.state.Prescripție}
+                  value={this.state.prescripție}
                   defaultValue={""}
                   onChange={this.handleChange}
                 />
@@ -405,8 +474,8 @@ class PacientProfile extends React.Component {
                   rows={4}
                   fullWidth
                   label="Detalii"
-                  name="Detalii"
-                  value={this.state.Detalii}
+                  name="detalii"
+                  value={this.state.detalii}
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -421,7 +490,7 @@ class PacientProfile extends React.Component {
                   <Select
                     native
                     fullWidth
-                    name="Tipul_evenimentului"
+                    name="tipul_evenimentului"
                     defaultValue={"Vizită medic familie"}
                     onChange={this.handleChange}
                   >
@@ -441,10 +510,10 @@ class PacientProfile extends React.Component {
                     inputFormat="yyyy/MM/dd"
                     startText="Data internare"
                     endText="Data externare"
-                    value={this.state.Perioada}
+                    value={this.state.perioada}
                     onChange={(newValue) => {
                       this.setState({
-                        Perioada: newValue,
+                        perioada: newValue,
                       });
                     }}
                     renderInput={(startProps, endProps) => (
@@ -458,8 +527,8 @@ class PacientProfile extends React.Component {
                 <TextField
                   fullWidth
                   label="Numele medicului"
-                  name="Numele_medicului"
-                  value={this.state.Numele_medicului}
+                  name="numele_medicului"
+                  value={this.state.numele_medicului}
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -469,7 +538,7 @@ class PacientProfile extends React.Component {
                   <Select
                     onChange={this.handleChange}
                     native
-                    name="Diagnostic"
+                    name="diagnostic"
                     defaultValue=""
                     label="Diagnostic"
                   >
@@ -495,9 +564,9 @@ class PacientProfile extends React.Component {
               <div className="column">
                 <TextField
                   fullWidth
-                  value={this.state.Instituție}
+                  value={this.state.instituție}
                   label="Instituție"
-                  name="Instituție"
+                  name="instituție"
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -507,9 +576,9 @@ class PacientProfile extends React.Component {
                   rows={4}
                   fullWidth
                   label="Prescripție"
-                  name="Prescripție"
+                  name="prescripție"
                   autoComplete="off"
-                  value={this.state.Prescripție}
+                  value={this.state.prescripție}
                   defaultValue={""}
                   onChange={this.handleChange}
                 />
@@ -518,8 +587,8 @@ class PacientProfile extends React.Component {
                   rows={4}
                   fullWidth
                   label="Detalii"
-                  name="Detalii"
-                  value={this.state.Detalii}
+                  name="detalii"
+                  value={this.state.detalii}
                   autoComplete="off"
                   defaultValue={""}
                   onChange={this.handleChange}
@@ -543,13 +612,13 @@ class PacientProfile extends React.Component {
               onClick={() => {
                 this.setState({
                   disabled: true,
-                  Numele_medicului: "",
-                  Data: "",
-                  Prescripție: "",
-                  Diagnostic: "",
-                  Instituție: "",
-                  Detalii: "",
-                  Perioada: [null, null],
+                  numele_medicului: "",
+                  data: "",
+                  prescripție: "",
+                  diagnostic: "",
+                  instituție: "",
+                  detalii: "",
+                  perioada: [null, null],
                 });
               }}
             >
@@ -559,67 +628,109 @@ class PacientProfile extends React.Component {
             <button
               onClick={() => {
                 if (
-                  this.state.Tipul_evenimentului === "Vizită medic familie" ||
-                  this.state.Tipul_evenimentului === "Vizită medic specialist"
+                  this.state.tipul_evenimentului === "Vizită medic familie" ||
+                  this.state.tipul_evenimentului === "Vizită medic specialist"
                 )
                   createMedicalEvent(this.props.currentUser, {
-                    Numele_medicului: this.state.Numele_medicului,
-                    Data: this.state.Data,
-                    Prescripție: this.state.Prescripție,
-                    Diagnostic: this.state.Diagnostic,
-                    Instituție: this.state.Instituție,
-                    Detalii: this.state.Detalii,
+                    tipul_evenimentului: this.state.tipul_evenimentului,
+                    numele_medicului: this.state.numele_medicului,
+                    data: this.state.data,
+                    prescripție: this.state.prescripție,
+                    diagnostic: this.state.diagnostic,
+                    instituție: this.state.instituție,
+                    detalii: this.state.detalii,
                   });
                 else if (
-                  this.state.Tipul_evenimentului === "Internare în spital"
-                )
+                  this.state.tipul_evenimentului === "Internare în spital"
+                ) {
                   createMedicalEvent(this.props.currentUser, {
-                    Numele_medicului: this.state.Numele_medicului,
-                    Prescripție: this.state.Prescripție,
-                    Diagnostic: this.state.Diagnostic,
-                    Instituție: this.state.Instituție,
-                    Detalii: this.state.Detalii,
-                    Perioada: [
-                      `${new Date(this.state.Perioada[0]).getFullYear()}-${
-                        new Date(this.state.Perioada[0]).getMonth() + 1
-                      }-${new Date(this.state.Perioada[0]).getDate()}`,
-                      `${new Date(this.state.Perioada[1]).getFullYear()}-${
-                        new Date(this.state.Perioada[1]).getMonth() + 1
-                      }-${new Date(this.state.Perioada[1]).getDate()}`,
+                    tipul_evenimentului: this.state.tipul_evenimentului,
+                    numele_medicului: this.state.numele_medicului,
+                    prescripție: this.state.prescripție,
+                    diagnostic: this.state.diagnostic,
+                    instituție: this.state.instituție,
+                    detalii: this.state.detalii,
+                    perioada: [
+                      `${new Date(this.state.perioada[0]).getFullYear()}-${
+                        new Date(this.state.perioada[0]).getMonth() + 1
+                      }-${new Date(this.state.perioada[0]).getDate()}`,
+                      `${new Date(this.state.perioada[1]).getFullYear()}-${
+                        new Date(this.state.perioada[1]).getMonth() + 1
+                      }-${new Date(this.state.perioada[1]).getDate()}`,
                     ],
                   });
-                else console.log("event type not expected");
-                this.setState({ disabled: true });
+                } else console.log("event type not expected");
+                this.setState({
+                  disabled: true,
+                  numele_medicului: "",
+                  data: "",
+                  prescripție: "",
+                  diagnostic: "",
+                  instituție: "",
+                  detalii: "",
+                  perioada: [null, null],
+                });
               }}
             >
               DONE
             </button>
           </div>
         )}
-        <p>{JSON.stringify(this.state)}</p>
-        {this.props.currentUser.medicalRecord.map((item, index) => {
-          return (
-            <div key={index} className="medical-event">
-              {Object.entries(item).map(([key, value]) => {
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                    }}
-                  >
-                    <p>{key}</p> :{" "}
-                    <p>
-                      {key === "Perioada" ? `${value[0]} - ${value[1]}` : value}
-                    </p>
-                  </div>
-                );
-              })}
-              {console.log(item)}
-            </div>
-          );
-        })}
+        {/* <p>{JSON.stringify(this.state)}</p> */}
+        <FormControl>
+          <InputLabel>Tipul evenimentului</InputLabel>
+          <Select
+            native
+            name="searchEventType"
+            onChange={this.handleChange}
+            defaultValue={""}
+          >
+            <option value={""}>Toate</option>
+            <option value={"Vizită medic familie"}>Vizită medic familie</option>
+            <option value={"Vizită medic specialist"}>
+              Vizită medic specialist
+            </option>
+            <option value={"Internare în spital"}>Internare în spital</option>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Numele medicului"
+          name="searchMedicName"
+          onChange={this.handleChange}
+          defaultValue=""
+          type="search"
+        />
+        {this.props.currentUser.medicalRecord
+          .filter(
+            (item) =>
+              item.tipul_evenimentului?.includes(this.state.searchEventType) &&
+              item.numele_medicului?.includes(this.state.searchMedicName)
+          )
+          .map((item, index) => {
+            return (
+              <div key={index} className="medical-event">
+                {Object.entries(item).map(([key, value]) => {
+                  return (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <p>{key}</p> :{" "}
+                      <p>
+                        {key === "perioada"
+                          ? `${value[0]} - ${value[1]}`
+                          : value}
+                      </p>
+                    </div>
+                  );
+                })}
+                {console.log(item)}
+              </div>
+            );
+          })}
       </div>
     );
   }

@@ -25,10 +25,10 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const location = null;
     const createdAt = new Date();
 
-    const gender = null;
+    const gen = null;
     const medicalRecord = [];
-    const height = null;
-    const weight = null;
+    const înălțime = null;
+    const greutate = null;
 
     try {
       const { role, firstName, lastName } = additionalData;
@@ -45,10 +45,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           pacientBirthDate,
           createdAt,
           profilePictureURL,
+          comorbidități: [],
           tel,
-          gender,
-          height,
-          weight,
+          gen,
+          înălțime,
+          greutate,
           medicalRecord,
         });
       } else if (role === "Medic") {
@@ -115,15 +116,16 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
         additionalData;
 
       if (role === "Pacient") {
-        const { height, weight, gender } = additionalData;
+        const { înălțime, greutate, gen, comorbidități } = additionalData;
         await userRef.update({
           firstName: firstName,
           lastName: lastName,
           profilePictureURL: profilePictureURL,
           tel: tel,
-          height: height,
-          weight: weight,
-          gender: gender,
+          înălțime: înălțime,
+          greutate: greutate,
+          gen: gen,
+          comorbidități: comorbidități,
         });
       } else if (role === "Medic") {
         const {
