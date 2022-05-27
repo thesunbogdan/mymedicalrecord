@@ -63,6 +63,10 @@ class PacientProfile extends React.Component {
       diagnostic: "",
       instituție: "",
       detalii: "",
+
+      anul: "",
+      ziua: "",
+      luna: "",
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -406,7 +410,7 @@ class PacientProfile extends React.Component {
                     onChange={this.handleChange}
                     native
                     name="diagnostic"
-                    defaultValue=""
+                    value={this.state.diagnostic}
                     label="Diagnostic"
                   >
                     <optgroup label="Category 1">
@@ -431,20 +435,19 @@ class PacientProfile extends React.Component {
                   fullWidth
                   label="Data"
                   autoComplete="off"
-                  defaultValue={""}
                   name="data"
                   value={this.state.data}
                   type="date"
-                  InputLabelProps={{ shrink: "true" }}
+                  InputLabelProps={{ shrink: true }}
                   onChange={this.handleChange}
                 />
+
                 <TextField
                   fullWidth
                   label="Numele medicului"
                   name="numele_medicului"
                   value={this.state.numele_medicului}
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
               </div>
@@ -455,7 +458,6 @@ class PacientProfile extends React.Component {
                   name="instituție"
                   value={this.state.instituție}
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
                 <TextField
@@ -466,7 +468,6 @@ class PacientProfile extends React.Component {
                   name="prescripție"
                   autoComplete="off"
                   value={this.state.prescripție}
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
                 <TextField
@@ -477,7 +478,6 @@ class PacientProfile extends React.Component {
                   name="detalii"
                   value={this.state.detalii}
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
               </div>
@@ -530,7 +530,6 @@ class PacientProfile extends React.Component {
                   name="numele_medicului"
                   value={this.state.numele_medicului}
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
                 <FormControl sx={{ m: 1 }} fullWidth>
@@ -568,7 +567,6 @@ class PacientProfile extends React.Component {
                   label="Instituție"
                   name="instituție"
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
                 <TextField
@@ -579,7 +577,6 @@ class PacientProfile extends React.Component {
                   name="prescripție"
                   autoComplete="off"
                   value={this.state.prescripție}
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
                 <TextField
@@ -590,7 +587,6 @@ class PacientProfile extends React.Component {
                   name="detalii"
                   value={this.state.detalii}
                   autoComplete="off"
-                  defaultValue={""}
                   onChange={this.handleChange}
                 />
               </div>
@@ -634,7 +630,7 @@ class PacientProfile extends React.Component {
                   createMedicalEvent(this.props.currentUser, {
                     tipul_evenimentului: this.state.tipul_evenimentului,
                     numele_medicului: this.state.numele_medicului,
-                    data: this.state.data,
+                    data: new Date(this.state.data),
                     prescripție: this.state.prescripție,
                     diagnostic: this.state.diagnostic,
                     instituție: this.state.instituție,
@@ -651,12 +647,8 @@ class PacientProfile extends React.Component {
                     instituție: this.state.instituție,
                     detalii: this.state.detalii,
                     perioada: [
-                      `${new Date(this.state.perioada[0]).getFullYear()}-${
-                        new Date(this.state.perioada[0]).getMonth() + 1
-                      }-${new Date(this.state.perioada[0]).getDate()}`,
-                      `${new Date(this.state.perioada[1]).getFullYear()}-${
-                        new Date(this.state.perioada[1]).getMonth() + 1
-                      }-${new Date(this.state.perioada[1]).getDate()}`,
+                      new Date(this.state.perioada[0]),
+                      new Date(this.state.perioada[1]),
                     ],
                   });
                 } else console.log("event type not expected");
@@ -700,12 +692,87 @@ class PacientProfile extends React.Component {
           defaultValue=""
           type="search"
         />
+        <TextField
+          label="Anul"
+          name="anul"
+          onChange={this.handleChange}
+          defaultValue=""
+          type="search"
+        />
+        <TextField
+          label="Luna"
+          name="luna"
+          onChange={this.handleChange}
+          defaultValue=""
+          type="search"
+        />
+        <TextField
+          label="Ziua"
+          name="ziua"
+          onChange={this.handleChange}
+          defaultValue=""
+          type="search"
+        />
         {this.props.currentUser.medicalRecord
-          .filter(
-            (item) =>
+          .filter((item) => {
+            var data = true;
+            var perioada = true;
+            if (this.state.anul !== "") {
+              if (
+                item.tipul_evenimentului?.includes("Vizită") &&
+                new Date(item.data["seconds"] * 1000).getFullYear() !==
+                  parseInt(this.state.anul)
+              )
+                data = false;
+              if (
+                item.tipul_evenimentului?.includes("Internare") &&
+                (new Date(item.perioada[0]["seconds"] * 1000).getFullYear() >
+                  parseInt(this.state.anul) ||
+                  new Date(item.perioada[1]["seconds"] * 1000).getFullYear() <
+                    parseInt(this.state.anul))
+              )
+                perioada = false;
+            }
+
+            if (this.state.luna !== "") {
+              if (
+                item.tipul_evenimentului?.includes("Vizită") &&
+                new Date(item.data["seconds"] * 1000).getMonth() + 1 !==
+                  parseInt(this.state.luna)
+              )
+                data = false;
+              if (
+                item.tipul_evenimentului?.includes("Internare") &&
+                (new Date(item.perioada[0]["seconds"] * 1000).getMonth() + 1 >
+                  parseInt(this.state.luna) ||
+                  new Date(item.perioada[1]["seconds"] * 1000).getMonth() + 1 <
+                    parseInt(this.state.luna))
+              )
+                perioada = false;
+            }
+            if (this.state.ziua !== "") {
+              if (
+                item.tipul_evenimentului?.includes("Vizită") &&
+                new Date(item.data["seconds"] * 1000).getDate() !==
+                  parseInt(this.state.ziua)
+              )
+                data = false;
+              if (
+                item.tipul_evenimentului?.includes("Internare") &&
+                (new Date(item.perioada[0]["seconds"] * 1000).getDate() >
+                  parseInt(this.state.ziua) ||
+                  new Date(item.perioada[1]["seconds"] * 1000).getDate() <
+                    parseInt(this.state.ziua))
+              )
+                perioada = false;
+            }
+            return (
+              data &&
+              perioada &&
               item.tipul_evenimentului?.includes(this.state.searchEventType) &&
               item.numele_medicului?.includes(this.state.searchMedicName)
-          )
+            );
+          })
           .map((item, index) => {
             return (
               <div key={index} className="medical-event">
@@ -721,13 +788,30 @@ class PacientProfile extends React.Component {
                       <p>{key}</p> :{" "}
                       <p>
                         {key === "perioada"
-                          ? `${value[0]} - ${value[1]}`
+                          ? `${new Date(
+                              value[0]["seconds"] * 1000
+                            ).getFullYear()}/${
+                              new Date(value[0]["seconds"] * 1000).getMonth() +
+                              1
+                            }/${new Date(
+                              value[0]["seconds"] * 1000
+                            ).getDate()} - ${new Date(
+                              value[1]["seconds"] * 1000
+                            ).getFullYear()}/${
+                              new Date(value[1]["seconds"] * 1000).getMonth() +
+                              1
+                            }/${new Date(value[1]["seconds"] * 1000).getDate()}`
+                          : key === "data"
+                          ? `${new Date(
+                              value["seconds"] * 1000
+                            ).getFullYear()}/${
+                              new Date(value["seconds"] * 1000).getMonth() + 1
+                            }/${new Date(value["seconds"] * 1000).getDate()}`
                           : value}
                       </p>
                     </div>
                   );
                 })}
-                {console.log(item)}
               </div>
             );
           })}
