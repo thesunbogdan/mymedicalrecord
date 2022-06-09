@@ -57,6 +57,7 @@ export default class Register extends React.Component {
       medicInstitution,
       medicFunction,
       pacientBirthDate,
+      role,
     } = this.state;
 
     if (this.state.password.length < 8) {
@@ -125,37 +126,36 @@ export default class Register extends React.Component {
         email,
         password
       );
-      console.log(this.state.role + " <<<<<<");
-      if (this.state.role === "Pacient") {
+      if (role === "Pacient") {
         await createUserProfileDocument(user, {
           firstName,
           lastName,
-          role: this.state.role,
+          role,
           pacientBirthDate,
         });
-      } else if (this.state.role === "Medic") {
+      } else if (role === "Medic") {
         await createUserProfileDocument(user, {
           firstName,
           lastName,
-          role: this.state.role,
+          role,
           medicInstitution,
           medicFunction,
         });
       }
+      this.setState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "",
+        medicInstitution: "",
+        medicFunction: "",
+        pacientBirthDate: "",
+      });
     } catch (error) {
       alert(error.message);
     }
-    this.setState({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "",
-      medicInstitution: "",
-      medicFunction: "",
-      pacientBirthDate: "",
-    });
   };
 
   render() {

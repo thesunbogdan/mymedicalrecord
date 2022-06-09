@@ -29,69 +29,71 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const înălțime = null;
     const greutate = null;
 
-    try {
-      const { role, firstName, lastName } = additionalData;
-      if (role === "Pacient") {
-        const { pacientBirthDate } = additionalData;
+    if (additionalData) {
+      try {
+        const { role, firstName, lastName } = additionalData;
+        if (role === "Pacient") {
+          const { pacientBirthDate } = additionalData;
 
-        await userRef.set({
-          firstName,
-          lastName,
-          email,
-          myMedicsPending: [],
-          myMedicsAllowed: [],
-          role,
-          pacientBirthDate,
-          createdAt,
-          profilePictureURL,
-          comorbidități: [],
-          tel,
-          gen,
-          înălțime,
-          greutate,
-          medicalRecord,
-        });
-      } else if (role === "Medic") {
-        const { medicInstitution, medicFunction } = additionalData;
+          await userRef.set({
+            firstName,
+            lastName,
+            email,
+            myMedicsPending: [],
+            myMedicsAllowed: [],
+            role,
+            pacientBirthDate,
+            createdAt,
+            profilePictureURL,
+            comorbidități: [],
+            tel,
+            gen,
+            înălțime,
+            greutate,
+            medicalRecord,
+          });
+        } else if (role === "Medic") {
+          const { medicInstitution, medicFunction } = additionalData;
 
-        await userRef.set({
-          firstName,
-          myPatientsPending: [],
-          myPatientsAllowed: [],
-          lastName,
-          email,
-          role,
-          medicInstitution,
-          medicFunction,
-          createdAt,
-          profilePictureURL,
-          tel,
-          location,
-          orar: {
-            luni: null,
-            marti: null,
-            miercuri: null,
-            joi: null,
-            vineri: null,
-            sambata: null,
-            duminica: null,
-          },
-          specializari: {
-            specializare1: null,
-            specializare2: null,
-            specializare3: null,
-          },
-          experienta: {
-            experienta1: null,
-            experienta2: null,
-            experienta3: null,
-          },
-          facultate: null,
-          anulAbsolvirii: null,
-        });
+          await userRef.set({
+            firstName,
+            myPatientsPending: [],
+            myPatientsAllowed: [],
+            lastName,
+            email,
+            role,
+            medicInstitution,
+            medicFunction,
+            createdAt,
+            profilePictureURL,
+            tel,
+            location,
+            orar: {
+              luni: null,
+              marti: null,
+              miercuri: null,
+              joi: null,
+              vineri: null,
+              sambata: null,
+              duminica: null,
+            },
+            specializari: {
+              specializare1: null,
+              specializare2: null,
+              specializare3: null,
+            },
+            experienta: {
+              experienta1: null,
+              experienta2: null,
+              experienta3: null,
+            },
+            facultate: null,
+            anulAbsolvirii: null,
+          });
+        }
+      } catch (error) {
+        alert(error.message + " linia 95 firebase.js");
       }
-    } catch (error) {
-      alert(error.message + " linia 95 firebase.js");
     }
   }
 
@@ -99,14 +101,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 export const updateUserProfileDocument = async (userAuth, additionalData) => {
-  console.log("userAuth: " + userAuth.id);
   if (!userAuth) {
     return true;
   }
   const userRef = firestore.doc(`users/${userAuth.id}`);
-  // console.log(JSON.stringify(userRef, null, 2));
   const snapShot = await userRef.get();
-  // console.log(JSON.stringify(snapShot, null, 2));
   if (snapShot.exists) {
     const { role } = additionalData;
 
@@ -153,7 +152,7 @@ export const updateUserProfileDocument = async (userAuth, additionalData) => {
         });
       }
     } catch (error) {
-      console.log("error updating user profile", error.message);
+      alert("error updating user profile ", error.message);
     }
   }
   return false;
@@ -165,7 +164,6 @@ export const updateUserProfilePicture = async (userAuth, file) => {
     const storageRef = firebase
       .storage()
       .ref("ProfilePictures/" + userAuth.id + "/" + file.name);
-    console.log(storageRef);
 
     await storageRef.put(file);
 
