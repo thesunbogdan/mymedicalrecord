@@ -248,10 +248,11 @@ class PacientProfile extends React.Component {
                 <FormControl sx={{ m: 1 }} fullWidth>
                   <InputLabel>Comorbidități</InputLabel>
                   <Select
+                    label="Comorbidități"
                     multiple
                     value={this.state.comorbidități}
                     onChange={this.handleMultipleSelectChange}
-                    input={<OutlinedInput />}
+                    input={<OutlinedInput label="Comorbidități" />}
                     renderValue={(selected) => (
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                         {selected.map((value) => (
@@ -292,7 +293,7 @@ class PacientProfile extends React.Component {
           <div className="first-column">
             <button onClick={this.handleOpenModal} className="modal-open-btn">
               <EditIcon fontSize="small" />
-              <p>EDIT</p>
+              <p>MODIFICĂ</p>
             </button>
             <div className="half-column">
               <img
@@ -339,16 +340,14 @@ class PacientProfile extends React.Component {
                 </p>
                 <p>
                   Comorbidități:{" "}
-                  {this.props.currentUser.comorbidități ? (
-                    this.props.currentUser.comorbidități.map((com) => (
-                      <>
-                        {com}
-                        &nbsp;
-                      </>
-                    ))
-                  ) : (
-                    <p>Nu prezintă comorbidități</p>
-                  )}
+                  {this.props.currentUser.comorbidități.length !== 0
+                    ? this.props.currentUser.comorbidități.map((com) => (
+                        <>
+                          {com}
+                          &nbsp;
+                        </>
+                      ))
+                    : "Nu prezintă comorbidități"}
                 </p>
               </div>
             </div>
@@ -387,6 +386,7 @@ class PacientProfile extends React.Component {
                 <FormControl fullWidth>
                   <InputLabel>Tipul evenimentului</InputLabel>
                   <Select
+                    label="Tipul evenimentului"
                     native
                     fullWidth
                     name="tipul_evenimentului"
@@ -600,7 +600,7 @@ class PacientProfile extends React.Component {
               this.setState({ disabled: false });
             }}
           >
-            ADD MEDICAL EVENT
+            ADAUGĂ EVENIMENT MEDICAL
           </button>
         ) : (
           <div className="medical-event-done-cancel">
@@ -669,50 +669,62 @@ class PacientProfile extends React.Component {
           </div>
         )}
         {/* <p>{JSON.stringify(this.state)}</p> */}
-        <FormControl>
-          <InputLabel>Tipul evenimentului</InputLabel>
-          <Select
-            native
-            name="searchEventType"
+        <div className="medicalEventFilterBody">
+          <FormControl fullWidth>
+            <InputLabel>Tipul evenimentului</InputLabel>
+            <Select
+              label="Tipul evenimentului"
+              native
+              name="searchEventType"
+              onChange={this.handleChange}
+              defaultValue={""}
+            >
+              <option value={""}>Toate</option>
+              <option value={"Vizită medic familie"}>
+                Vizită medic familie
+              </option>
+              <option value={"Vizită medic specialist"}>
+                Vizită medic specialist
+              </option>
+              <option value={"Internare în spital"}>Internare în spital</option>
+            </Select>
+          </FormControl>
+
+          <TextField
+            fullWidth
+            label="Numele medicului"
+            name="searchMedicName"
             onChange={this.handleChange}
-            defaultValue={""}
-          >
-            <option value={""}>Toate</option>
-            <option value={"Vizită medic familie"}>Vizită medic familie</option>
-            <option value={"Vizită medic specialist"}>
-              Vizită medic specialist
-            </option>
-            <option value={"Internare în spital"}>Internare în spital</option>
-          </Select>
-        </FormControl>
-        <TextField
-          label="Numele medicului"
-          name="searchMedicName"
-          onChange={this.handleChange}
-          defaultValue=""
-          type="search"
-        />
-        <TextField
-          label="Anul"
-          name="anul"
-          onChange={this.handleChange}
-          defaultValue=""
-          type="search"
-        />
-        <TextField
-          label="Luna"
-          name="luna"
-          onChange={this.handleChange}
-          defaultValue=""
-          type="search"
-        />
-        <TextField
-          label="Ziua"
-          name="ziua"
-          onChange={this.handleChange}
-          defaultValue=""
-          type="search"
-        />
+            defaultValue=""
+            type="search"
+          />
+          <div className="medicalEventFilterDate">
+            <TextField
+              fullWidth
+              label="Anul"
+              name="anul"
+              onChange={this.handleChange}
+              defaultValue=""
+              type="search"
+            />
+            <TextField
+              fullWidth
+              label="Luna"
+              name="luna"
+              onChange={this.handleChange}
+              defaultValue=""
+              type="search"
+            />
+            <TextField
+              fullWidth
+              label="Ziua"
+              name="ziua"
+              onChange={this.handleChange}
+              defaultValue=""
+              type="search"
+            />
+          </div>
+        </div>
         {this.props.currentUser.medicalRecord
           .filter((item) => {
             var data = true;
@@ -785,7 +797,7 @@ class PacientProfile extends React.Component {
                         justifyContent: "space-around",
                       }}
                     >
-                      <p>{key}</p> :{" "}
+                      <p>{key.replace("_", " ")}:&nbsp;</p>
                       <p>
                         {key === "perioada"
                           ? `${new Date(

@@ -24,7 +24,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const tel = null;
     const location = null;
     const createdAt = new Date();
-
     const gen = null;
     const medicalRecord = [];
     const înălțime = null;
@@ -92,7 +91,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         });
       }
     } catch (error) {
-      alert(error.message);
+      alert(error.message + " linia 95 firebase.js");
     }
   }
 

@@ -19,12 +19,23 @@ class AccessMedic extends Component {
   }
 
   ProfileCard = (props) => {
+    function getAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
     const {
       firstName,
       lastName,
       profilePictureURL,
       pacientId,
       myMedicsPending,
+      pacientBirthDate,
     } = props.item;
     const medicId = props.medicId;
 
@@ -40,7 +51,7 @@ class AccessMedic extends Component {
             />
           </div>
           <div className="age">
-            <p>26 years old</p>
+            <p>{getAge(pacientBirthDate["seconds"] * 1000)} ani</p>
           </div>
         </div>
         <div className="name-and-buttons">
@@ -90,7 +101,7 @@ class AccessMedic extends Component {
     return (
       <>
         <TextField
-          placeholder="Cautare pacient..."
+          placeholder="Căutare pacient"
           sx={{ left: "42%" }}
           type="search"
           onChange={this.onSearchChange}

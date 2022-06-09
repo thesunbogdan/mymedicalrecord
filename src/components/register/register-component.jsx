@@ -48,60 +48,114 @@ export default class Register extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-
     const {
       firstName,
       lastName,
       email,
       password,
       confirmPassword,
-      role,
       medicInstitution,
       medicFunction,
       pacientBirthDate,
     } = this.state;
 
-    if (password !== confirmPassword) {
-      alert("passwords don't match");
+    if (this.state.password.length < 8) {
+      alert("Parola trebuie sa conțină minim 8 caractere");
       return;
     }
 
+    if (this.state.password.length > 20) {
+      alert("Parola trebuie sa conțină maxim 20 de caractere");
+    }
+
+    if (password !== confirmPassword) {
+      alert("Parolele nu se potrivesc");
+      return;
+    }
+
+    if (
+      !this.state.email
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    ) {
+      alert("Email incorect");
+      return;
+    }
+
+    if (this.state.firstName === 31) {
+      alert("Maxim 30 de caractere pentru prenume");
+      return;
+    }
+
+    if (this.state.firstName === "") {
+      alert("Nu ați completat prenumele");
+      return;
+    }
+
+    if (this.state.lastName === "") {
+      alert("Nu ați completat numele");
+      return;
+    }
+
+    if (this.state.lastName === 21) {
+      alert("Maxim 20 de caractere pentru nume");
+      return;
+    }
+
+    if (this.state.role === "") {
+      alert("Nu ați ales rolul");
+      return;
+    }
+
+    if (this.state.role === "Pacient" && this.state.pacientBirthDate === "") {
+      alert("Nu ați completat data de naștere");
+      return;
+    }
+    if (
+      this.state.role === "Medic" &&
+      (this.state.medicInstitution === "" || this.state.medicFunction === "")
+    ) {
+      alert("Nu ați completat toate campurile aferente medicului");
+      return;
+    }
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
-      if (role === "Pacient") {
+      console.log(this.state.role + " <<<<<<");
+      if (this.state.role === "Pacient") {
         await createUserProfileDocument(user, {
           firstName,
           lastName,
-          role,
+          role: this.state.role,
           pacientBirthDate,
         });
-      } else if (role === "Medic") {
+      } else if (this.state.role === "Medic") {
         await createUserProfileDocument(user, {
           firstName,
           lastName,
-          role,
+          role: this.state.role,
           medicInstitution,
           medicFunction,
         });
       }
-
-      this.setState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        role: "",
-        medicInstitution: "",
-        medicFunction: "",
-        pacientBirthDate: "",
-      });
     } catch (error) {
       alert(error.message);
     }
+    this.setState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "",
+      medicInstitution: "",
+      medicFunction: "",
+      pacientBirthDate: "",
+    });
   };
 
   render() {
@@ -117,11 +171,11 @@ export default class Register extends React.Component {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Register
+              Înregistrare
             </Typography>
             <Box
               component="form"
@@ -133,11 +187,18 @@ export default class Register extends React.Component {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="off"
+                    inputProps={{ maxLength: 31 }}
                     name="firstName"
+                    error={this.state.firstName.length === 31}
+                    helperText={
+                      this.state.firstName.length === 31
+                        ? "Maxim 30 de caractere"
+                        : ""
+                    }
                     required
                     fullWidth
                     id="firstName"
-                    label="First Name"
+                    label="Prenume"
                     value={this.state.firstName}
                     onChange={this.handleChange}
                     autoFocus
@@ -146,11 +207,18 @@ export default class Register extends React.Component {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    error={this.state.lastName.length === 21}
+                    helperText={
+                      this.state.lastName.length === 21
+                        ? "Maxim 20 de caractere"
+                        : ""
+                    }
+                    inputProps={{ maxLength: 21 }}
                     autoComplete="off"
                     required
                     fullWidth
                     id="lastName"
-                    label="Last Name"
+                    label="Nume"
                     name="lastName"
                     value={this.state.lastName}
                     onChange={this.handleChange}
@@ -162,7 +230,25 @@ export default class Register extends React.Component {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    error={
+                      this.state.email !== "" &&
+                      !this.state.email
+                        .toLowerCase()
+                        .match(
+                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        )
+                    }
+                    helperText={
+                      this.state.email !== "" &&
+                      !this.state.email
+                        .toLowerCase()
+                        .match(
+                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        )
+                        ? "Email incorect"
+                        : ""
+                    }
+                    label="Email"
                     name="email"
                     value={this.state.email}
                     onChange={this.handleChange}
@@ -174,7 +260,13 @@ export default class Register extends React.Component {
                     required
                     fullWidth
                     name="password"
-                    label="Password"
+                    error={this.state.password.length < 8}
+                    helperText={
+                      this.state.password.length < 8
+                        ? "Parola trebuie sa conțină minim 8 caractere"
+                        : ""
+                    }
+                    label="Parola"
                     type="password"
                     id="password"
                     value={this.state.password}
@@ -186,8 +278,14 @@ export default class Register extends React.Component {
                     autoComplete="off"
                     required
                     fullWidth
+                    error={this.state.confirmPassword !== this.state.password}
+                    helperText={
+                      this.state.confirmPassword !== this.state.password
+                        ? "Parolele nu se potrivesc"
+                        : ""
+                    }
                     name="confirmPassword"
-                    label="Confirm Password"
+                    label="Confirmarea parolei"
                     type="password"
                     id="confirmPassword"
                     value={this.state.confirmPassword}
@@ -219,11 +317,18 @@ export default class Register extends React.Component {
                   <>
                     <Grid item xs={12}>
                       <TextField
+                        error={this.state.medicInstitution.length === 41}
+                        helperText={
+                          this.state.lastName.length === 41
+                            ? "Maxim 40 de caractere"
+                            : ""
+                        }
+                        inputProps={{ maxLength: 41 }}
                         autoComplete="off"
                         required
                         fullWidth
                         id="institution"
-                        label="Institution"
+                        label="Instituție medicală"
                         name="medicInstitution"
                         value={this.state.medicInstitution}
                         onChange={this.handleChange}
@@ -231,11 +336,18 @@ export default class Register extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
+                        error={this.state.medicInstitution.length === 26}
+                        helperText={
+                          this.state.lastName.length === 26
+                            ? "Maxim 26 de caractere"
+                            : ""
+                        }
+                        inputProps={{ maxLength: 26 }}
                         autoComplete="off"
                         required
                         fullWidth
                         id="function"
-                        label="Function"
+                        label="Funcție"
                         name="medicFunction"
                         value={this.state.medicFunction}
                         onChange={this.handleChange}
@@ -246,7 +358,7 @@ export default class Register extends React.Component {
                   <Grid item xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <MobileDatePicker
-                        label="Birth date"
+                        label="Data de naștere"
                         inputFormat="dd/MM/yyyy"
                         value={this.state.pacientBirthDate}
                         onChange={this.handleChange1}
@@ -264,9 +376,9 @@ export default class Register extends React.Component {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Register
+                Înregistrare
               </Button>
-
+              <p>{this.state.role}</p>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link to="/login" variant="body2">

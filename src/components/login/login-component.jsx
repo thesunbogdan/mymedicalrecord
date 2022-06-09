@@ -54,11 +54,11 @@ class Login extends React.Component {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Login
+              Conectare
             </Typography>
             <Box
               component="form"
@@ -72,7 +72,7 @@ class Login extends React.Component {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 value={this.state.email}
                 autoFocus
@@ -85,7 +85,7 @@ class Login extends React.Component {
                 fullWidth
                 name="password"
                 value={this.state.password}
-                label="Password"
+                label="Parola"
                 type="password"
                 id="password"
                 onChange={this.handleChange}
@@ -97,17 +97,13 @@ class Login extends React.Component {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Login
+                Conectare
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link to="/" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
+                <Grid item xs></Grid>
                 <Grid item>
                   <Link to="/register" variant="body2">
-                    Don't have an account? Register
+                    Nu aveți un cont? Înregistrare
                   </Link>
                 </Grid>
               </Grid>

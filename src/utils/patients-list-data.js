@@ -1,6 +1,8 @@
 import Avatar from "@mui/material/Avatar";
 import { basicProfilePictureURL } from "./basic-profile-picture";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import swal from "sweetalert";
+import MedicalRecord from "../components/medical-record/medical-record.component";
 
 export const columns = [
   { field: "id", headerName: "ID", width: 100 },
@@ -42,19 +44,7 @@ export const columns = [
   {
     field: "medicalRecord",
     headerName: "Medical record",
-    renderCell: (params) => (
-      <EventNoteIcon
-        onClick={() => {
-          const medicalRecordJSON = JSON.stringify(
-            params?.row.medicalRecord,
-            null,
-            4
-          );
-          if (medicalRecordJSON != "[]") alert(medicalRecordJSON);
-          else alert("No data found.");
-        }}
-      />
-    ),
+    renderCell: (params) => <MedicalRecord props={params.row.medicalRecord} />,
     width: 150,
   },
 ];

@@ -25,7 +25,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 60px;
+      width: 100px;
       height: 25px;
       display: flex;
       align-items: center;
@@ -202,4 +202,17 @@
   flex-direction: row;
   justify-content: space-around;
   padding: 0 10px;
+}
+
+.medicalEventFilterBody {
+  width: 100%;
+  display: block;
+  padding-top: 30px;
+}
+.medicalEventFilterDate {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
