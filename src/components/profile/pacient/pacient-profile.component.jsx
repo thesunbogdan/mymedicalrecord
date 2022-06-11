@@ -675,11 +675,13 @@ class PacientProfile extends React.Component {
             <Select
               label="Tipul evenimentului"
               native
+              defaultValue={"Toate"}
               name="searchEventType"
               onChange={this.handleChange}
-              defaultValue={""}
             >
-              <option value={""}>Toate</option>
+              <option value={"Toate"} selected>
+                Toate
+              </option>
               <option value={"Vizită medic familie"}>
                 Vizită medic familie
               </option>
@@ -778,6 +780,12 @@ class PacientProfile extends React.Component {
               )
                 perioada = false;
             }
+            if (this.state.searchEventType === "Toate")
+              return (
+                data &&
+                perioada &&
+                item.numele_medicului?.includes(this.state.searchMedicName)
+              );
             return (
               data &&
               perioada &&

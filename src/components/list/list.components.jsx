@@ -4,15 +4,12 @@ import { connect } from "react-redux";
 import { columns } from "../../utils/patients-list-data";
 import { getUsersByRole } from "../../utils/firebase";
 import {
-  BarChart,
-  Bar,
+  PieChart,
+  Pie,
+  Sector,
   Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 
 class ListComponent extends React.Component {
@@ -21,52 +18,74 @@ class ListComponent extends React.Component {
     this.state = {
       patientsAllowedRaw: [],
       selectedPatients: null,
-      data: [
-        {
-          name: "Page A",
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: "Page B",
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: "Page C",
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: "Page D",
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: "Page E",
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: "Page F",
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: "Page G",
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ],
     };
   }
+
+  COLORS = [
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#39393A",
+    "#A594F9",
+    "#56203D",
+    "#B10F2E",
+    "#132E32",
+    "#348AA7",
+    "#A77E58",
+  ];
+
+  comorbidities = (patients) => {
+    var comorbiditiesJSON = [
+      { name: "Obezitate", value: 0 },
+      { name: "Diabet", value: 0 },
+      { name: "Hipertensiune arterială", value: 0 },
+      { name: "Insuficiența cardiacă", value: 0 },
+      { name: "Astm cronic", value: 0 },
+      { name: "Boli pulmonare", value: 0 },
+      { name: "Boli autoimune", value: 0 },
+      { name: "Boli renale cronice", value: 0 },
+      { name: "Boli digestive cronice", value: 0 },
+      { name: "Hepatita cronică", value: 0 },
+    ];
+
+    patients.map((patient) => {
+      patient.comorbidități.map((comorbiditate) => {
+        comorbiditiesJSON.map((comorbiditateJSON) => {
+          if (comorbiditateJSON["name"] === comorbiditate) {
+            comorbiditateJSON["value"]++;
+          }
+        });
+      });
+    });
+    return comorbiditiesJSON;
+  };
+
+  renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {percent * 100 ? `${(percent * 100).toFixed(0)}%` : ""}
+      </text>
+    );
+  };
 
   componentDidMount() {
     getUsersByRole("Pacient", "pacientId").then((value) =>
@@ -82,7 +101,16 @@ class ListComponent extends React.Component {
       return patient.myMedicsAllowed.includes(this.props.currentUser.id);
     });
 
-    const currentYear = new Date().getFullYear();
+    function getAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
 
     patientsAllowed.map((patient) =>
       myPatients.push({
@@ -91,11 +119,14 @@ class ListComponent extends React.Component {
         firstName: patient.firstName,
         lastName: patient.lastName,
         email: patient.email,
-        gender: patient.gender,
-        height: patient.height,
-        weight: patient.weight,
+        gen: patient.gen,
+        înălțime: patient.înălțime,
+        greutate: patient.greutate,
         tel: patient.tel,
-        age: currentYear - patient.pacientBirthDate.toDate().getFullYear(),
+        comorbidities: patient.comorbidități,
+        age: JSON.stringify(
+          getAge(new Date(patient.pacientBirthDate["seconds"] * 1000))
+        ),
         medicalRecord: patient.medicalRecord,
       })
     );
@@ -119,13 +150,40 @@ class ListComponent extends React.Component {
         ) : (
           ""
         )}
-        <ResponsiveContainer width="50%" height="50%">
-          <BarChart width={150} height={40} data={this.state.selectedPatients}>
-            <XAxis dataKey="lastName" />
-            <YAxis />
-            <Bar dataKey="age" fill="#8884d8" />
-          </BarChart>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart width={400} height={400}>
+            <Pie
+              data={this.comorbidities(patientsAllowed)}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={this.renderCustomizedLabel}
+              outerRadius={200}
+              innerRadius={25}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {this.comorbidities(patientsAllowed).map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={this.COLORS[index % this.COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Legend
+              iconSize={10}
+              layout="vertical"
+              verticalAlign="middle"
+              wrapperStyle={{
+                top: "40%",
+                left: 0,
+                lineHeight: "24px",
+              }}
+            />
+          </PieChart>
         </ResponsiveContainer>
+
+        {/* <p>{JSON.stringify(this.comorbidities(patientsAllowed))}</p> */}
       </div>
     );
   }

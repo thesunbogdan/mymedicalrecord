@@ -31,9 +31,9 @@ const switchRender = (path, currentUser) => {
   switch (path) {
     case `/${currentUser.id}`:
       return <ProfileComponent />;
-    case "/my%20patients":
+    case "/pacienții%20mei":
       if (currentUser.role === "Medic") return <ListComponent />;
-    case "/access":
+    case "/acces":
       if (currentUser.role === "Medic") {
         return <AccessMedic />;
       } else if (currentUser.role === "Pacient") {
@@ -64,7 +64,7 @@ function ResponsiveDrawer(props) {
         <List>
           <ListItem
             button
-            key="Profile"
+            key="Profil"
             onClick={() => {
               navigate(`/${currentUser.id}`);
             }}
@@ -72,9 +72,9 @@ function ResponsiveDrawer(props) {
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
-            <ListItemText primary="Profile" />
+            <ListItemText primary="Profil" />
           </ListItem>
-          {["Access", "My patients"].map((text, index) => (
+          {["Acces", "Pacienții mei"].map((text, index) => (
             <ListItem
               button
               key={text}
@@ -97,7 +97,7 @@ function ResponsiveDrawer(props) {
         <List>
           <ListItem
             button
-            key="Profile"
+            key="Profil"
             onClick={() => {
               navigate(`/${currentUser.id}`);
             }}
@@ -105,19 +105,19 @@ function ResponsiveDrawer(props) {
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
-            <ListItemText primary="Profile" />
+            <ListItemText primary="Profil" />
           </ListItem>
           <ListItem
             button
-            key="Access"
+            key="Acces"
             onClick={() => {
-              navigate("/access");
+              navigate("/acces");
             }}
           >
             <ListItemIcon>
               <VisibilityIcon />
             </ListItemIcon>
-            <ListItemText primary="Access" />
+            <ListItemText primary="Acces" />
           </ListItem>
         </List>
       )}
@@ -169,14 +169,13 @@ function ResponsiveDrawer(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },

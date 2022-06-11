@@ -378,7 +378,6 @@ export default class Register extends React.Component {
               >
                 Înregistrare
               </Button>
-              <p>{this.state.role}</p>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link to="/login" variant="body2">

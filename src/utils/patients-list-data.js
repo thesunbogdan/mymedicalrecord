@@ -1,11 +1,17 @@
 import Avatar from "@mui/material/Avatar";
 import { basicProfilePictureURL } from "./basic-profile-picture";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import swal from "sweetalert";
 import MedicalRecord from "../components/medical-record/medical-record.component";
 
 export const columns = [
-  { field: "id", headerName: "ID", width: 100 },
+  {
+    field: "id",
+    headerName: "ID",
+    width: 250,
+    headerAlign: "left",
+    align: "left",
+    headerAlign: "center",
+    align: "center",
+  },
   {
     field: "profilePictureURL",
     headerName: "Avatar",
@@ -21,29 +27,92 @@ export const columns = [
       />
     ),
   },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  { field: "email", headerName: "E-mail", width: 200 },
-  { field: "gender", headerName: "Gender", width: 130 },
   {
-    field: "height",
-    headerName: "Height",
+    field: "firstName",
+    headerName: "Prenume",
     width: 130,
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    field: "lastName",
+    headerName: "Nume",
+    width: 130,
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    field: "email",
+    headerName: "E-mail",
+    width: 200,
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    field: "comorbidities",
+    headerName: "Comorbidități",
+    width: 200,
+    headerAlign: "center",
+    align: "center",
+    renderCell: (params) => (
+      <select>
+        <option disabled selected>
+          {"Listă de comorbidități"}
+        </option>
+        {params.row.comorbidities.map((comorbidity) => (
+          <option disabled style={{ color: "black" }}>
+            {comorbidity}
+          </option>
+        ))}
+      </select>
+    ),
+  },
+  {
+    field: "gen",
+    headerName: "Gen",
+    width: 130,
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    field: "înălțime",
+    headerName: "Înălțime",
+    width: 130,
+    headerAlign: "center",
+    align: "center",
     valueFormatter: ({ value }) => {
       if (value) return `${value} cm`;
     },
   },
   {
-    field: "weight",
-    headerName: "Weight",
+    field: "greutate",
+    headerName: "Greutate",
     width: 130,
     valueFormatter: ({ value }) => `${value} kg`,
+    headerAlign: "center",
+    align: "center",
   },
-  { field: "tel", headerName: "Telephone number", width: 200 },
-  { field: "age", headerName: "Age", type: "number", width: 100 },
+  {
+    field: "tel",
+    headerName: "Telephone number",
+    headerAlign: "center",
+    align: "center",
+    width: 200,
+  },
+  {
+    field: "age",
+    headerName: "Vârstă",
+    type: "number",
+    width: 100,
+    headerAlign: "center",
+    align: "center",
+    valueFormatter: ({ value }) => `${value} ani`,
+  },
   {
     field: "medicalRecord",
-    headerName: "Medical record",
+    headerName: "Istoric medical",
+    headerAlign: "center",
+    align: "center",
     renderCell: (params) => <MedicalRecord props={params.row.medicalRecord} />,
     width: 150,
   },
