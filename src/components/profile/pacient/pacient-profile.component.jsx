@@ -73,6 +73,16 @@ class PacientProfile extends React.Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
+  getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
   handleOpenModal() {
     this.setState({ showModal: true });
   }
@@ -158,8 +168,13 @@ class PacientProfile extends React.Component {
 
   render() {
     return (
-      <div className="pacient-profile">
-        <div className="medic-profile-first-row">
+      <div className="patient-profile">
+        <div className="profile-card">
+          <button onClick={this.handleOpenModal} className="modal-open-button">
+            <EditIcon fontSize="small" />
+            <p>MODIFICĂ</p>
+          </button>
+
           <ReactModal
             isOpen={this.state.showModal}
             style={{
@@ -290,15 +305,12 @@ class PacientProfile extends React.Component {
               </div>
             </div>
           </ReactModal>
-          <div className="first-column">
-            <button onClick={this.handleOpenModal} className="modal-open-btn">
-              <EditIcon fontSize="small" />
-              <p>MODIFICĂ</p>
-            </button>
-            <div className="half-column">
+
+          <div className="column">
+            <div className="profile-photo-div">
               <img
-                className="profile-image"
-                alt="profile"
+                alt="forografie de profil"
+                className="profile-photo-image"
                 src={`${
                   this.props.currentUser.profilePictureURL
                     ? this.props.currentUser.profilePictureURL
@@ -306,78 +318,104 @@ class PacientProfile extends React.Component {
                 }`}
               />
             </div>
-            <div className="half-column">
-              <h1 className="medic-name">
-                {this.props.currentUser.firstName}&nbsp;
-                {this.props.currentUser.lastName}
-              </h1>
-              <div className="medic-function-institution">
-                <p>
-                  Înălțime:{" "}
-                  {this.props.currentUser.înălțime
-                    ? `${this.props.currentUser.înălțime} cm`
-                    : "(Nu ați adăugat înălțimea)"}
-                </p>
-                <p>
-                  Greutate:{" "}
-                  {this.props.currentUser.greutate
-                    ? `${this.props.currentUser.greutate} kg`
-                    : "(Nu ați adăugat greutatea)"}
-                </p>
-                <p>
-                  Gen:{" "}
-                  {this.props.currentUser.gen
-                    ? this.props.currentUser.gen
-                    : "(Nu ați adăugat genul)"}
-                </p>
-                <p>
-                  Vârsta:{" "}
-                  {new Date().getFullYear() -
-                    this.props.currentUser.pacientBirthDate
-                      .toDate()
-                      .getFullYear()}{" "}
-                  ani
-                </p>
-                <p>
-                  Comorbidități:{" "}
-                  {this.props.currentUser.comorbidități.length !== 0
-                    ? this.props.currentUser.comorbidități.map((com) => (
-                        <>
-                          {com}
-                          &nbsp;
-                        </>
-                      ))
-                    : "Nu prezintă comorbidități"}
-                </p>
-              </div>
+            <div className="header">
+              {this.props.currentUser.firstName}&nbsp;
+              {this.props.currentUser.lastName}
             </div>
-          </div>
 
-          <div className="column">
-            <h1 className="title">Contact</h1>
-            <div className="column-bottom">
-              <button className="contact-button">
-                <PhoneIcon />
+            <div className="email-tel">
+              <button className="email">
+                {" "}
+                <MailIcon /> <p>{this.props.currentUser.email}</p>
+              </button>
+              <button className="email">
+                {" "}
+                <PhoneIcon />{" "}
                 <p>
                   {this.props.currentUser.tel
                     ? this.props.currentUser.tel
                     : "Please add a phone number"}
                 </p>
               </button>
-
-              <button className="contact-button">
-                <MailIcon />
-                &nbsp;
-                <p>{this.props.currentUser.email}</p>
-              </button>
             </div>
           </div>
-        </div>
 
+          <div className="column">
+            <div className="attribute">
+              <p>Vârstă: </p>
+              <p>
+                {this.getAge(
+                  this.props.currentUser.pacientBirthDate["seconds"] * 1000
+                )}{" "}
+                ani
+              </p>
+            </div>
+
+            <div className="attribute">
+              <p>Gen: </p>{" "}
+              <p>
+                {this.props.currentUser.gen
+                  ? this.props.currentUser.gen
+                  : "(Nu ați adăugat genul)"}
+              </p>
+            </div>
+
+            <div className="attribute">
+              {" "}
+              <p>Înălțime: </p>
+              <p>
+                {this.props.currentUser.înălțime
+                  ? `${this.props.currentUser.înălțime} cm`
+                  : "(Nu ați adăugat înălțimea)"}
+              </p>{" "}
+            </div>
+
+            <div className="attribute">
+              {" "}
+              <p>Greutate:</p>
+              <p>
+                {this.props.currentUser.greutate
+                  ? `${this.props.currentUser.greutate} kg`
+                  : "(Nu ați adăugat greutatea)"}
+              </p>
+            </div>
+
+            <div className="attribute">
+              {" "}
+              <p>Comorbidități:</p>
+              <div className="comorbidities">
+                {this.props.currentUser.comorbidități.length !== 0
+                  ? this.props.currentUser.comorbidități.map((com) => (
+                      <div className="comorbidity">
+                        {com}
+                        &nbsp;
+                      </div>
+                    ))
+                  : "(Nu prezintă comorbidități)"}
+              </div>
+            </div>
+          </div>
+          <div className="toggle-add-medical-event">
+            <button
+              className={
+                this.state.disabled
+                  ? "toggle-add-medical-event-button"
+                  : "toggle-add-medical-event-button-clicked"
+              }
+              onClick={() => {
+                this.setState({ disabled: false });
+              }}
+            >
+              Adaugă eveniment medical
+            </button>
+          </div>
+        </div>
         <div
-          className={`${
-            this.state.disabled ? "medical-event disabled" : "medical-event"
-          }`}
+          className={
+            this.state.disabled
+              ? "add-medical-event-hide"
+              : "add-medical-event-show"
+          }
         >
           {this.state.tipul_evenimentului === "Vizită medic familie" ||
           this.state.tipul_evenimentului === "Vizită medic specialist" ? (
@@ -592,17 +630,6 @@ class PacientProfile extends React.Component {
               </div>
             </>
           )}
-        </div>
-        {this.state.disabled ? (
-          <button
-            style={{ zIndex: 50 }}
-            onClick={() => {
-              this.setState({ disabled: false });
-            }}
-          >
-            ADAUGĂ EVENIMENT MEDICAL
-          </button>
-        ) : (
           <div className="medical-event-done-cancel">
             <button
               onClick={() => {
@@ -667,7 +694,8 @@ class PacientProfile extends React.Component {
               DONE
             </button>
           </div>
-        )}
+        </div>
+
         {/* <p>{JSON.stringify(this.state)}</p> */}
         <div className="medicalEventFilterBody">
           <FormControl fullWidth>

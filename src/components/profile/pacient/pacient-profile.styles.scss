@@ -2,217 +2,170 @@
   padding: 0;
   margin: 0;
 }
-
-.pacient-profile {
+.patient-profile {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-around;
 
-  .medic-profile-first-row {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-around;
-    min-height: 85vh;
+  .profile-card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 100%;
-    border-radius: 3px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
 
-    .modal-open-btn {
+    .modal-open-button {
       position: absolute;
       left: 0;
       top: 0;
       width: 100px;
       height: 25px;
       display: flex;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: center;
       border-radius: 3px;
-      border: 1px solid black;
+      border: none;
     }
 
-    .first-column {
-      min-width: 400px;
-      min-height: 85vh;
-      flex: 0 0 33.333333%;
+    .column {
+      padding: 10px 30px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       flex-wrap: nowrap;
 
-      .half-column {
-        width: 100%;
-        flex: 1;
+      .attribute {
+        margin: auto 0;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        min-width: 300px;
+        font-size: x-large;
 
-        h1,
-        h2 {
-          margin: 15px 30px;
-        }
-
-        p {
-          margin: 15px;
-          font-size: 30px;
-        }
-
-        .profile-image {
-          padding: 20px;
-          display: block;
-          margin: auto;
-          height: 100%;
-          width: 100%;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .medic-function-institution {
-          width: 100%;
+        .comorbidities {
           display: flex;
-          flex-direction: column;
-          align-items: left;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
 
-          p {
-            text-align: left;
-            font-size: 1em;
-            margin: 15px 30px;
+          .comorbidity {
+            border: 1px solid black;
+            border-radius: 3px;
+            background-color: #e3e3e3;
+            margin: 5px;
+            padding: 0 5px;
+            cursor: default;
           }
         }
       }
-    }
+      > * {
+        margin: 15px 0;
+      }
 
-    .column {
-      min-height: 85vh;
-      min-width: 400px;
-      flex: 0 0 33.333333%;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 0.1fr 1fr;
-      gap: 0;
+      .profile-photo-div {
+        flex: 5;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
 
-      .title {
-        padding: 20px 0;
-        width: 100%;
-        grid-area: 1/1/2/2;
+        .profile-photo-image {
+          max-width: 500px;
+          max-height: 500pxpx;
+        }
+      }
+
+      .header {
+        min-width: 300px;
+        font-size: x-large;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        flex: 2;
+        justify-content: center;
+        align-items: center;
         text-align: center;
       }
 
-      .column-bottom {
-        width: 100%;
-        grid-area: 2/1/3/2;
+      .email-tel {
+        flex: 2;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: nowrap;
-        align-items: center;
         justify-content: space-around;
-        padding: 0 25px;
 
-        .contact-button {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: nowrap;
-          justify-content: center;
-          align-items: center;
+        .email {
           width: 100%;
+          display: flex;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+          border-radius: 3px;
+          border: 1px solid black;
+        }
 
-          height: 80px;
+        > * {
+          margin: 20px;
         }
       }
     }
-  }
 
-  .medical-event {
-    width: 100%;
-    flex-wrap: wrap;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 3px;
-    margin-top: 30px;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    .toggle-add-medical-event {
+      width: 100%;
 
-    width: 100%;
+      .toggle-add-medical-event-button {
+        transition: 0.5s;
+        display: block;
+        margin: auto;
+        height: 20px;
+        width: 50%;
+      }
 
-    .column {
-      width: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-
-      .text-and-textfield {
-        padding: 30px;
-        width: 1;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+      .toggle-add-medical-event-button-clicked {
+        height: 3px;
+        transition: 0.5s;
+        display: block;
+        margin: auto;
+        width: 100%;
+        font-size: 0;
+        border: none;
+        background-color: blue;
       }
     }
   }
 
-  .medical-event-done-cancel {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-
-    button {
-      width: 100%;
+  .add-medical-event-hide {
+    transition: 5s;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    width: 100%;
+    border: none;
+    display: none;
+    > * {
+      opacity: 0;
+      transition: 5s;
     }
   }
-}
 
-.modal-grid-top {
-  grid-area: 1/1/2/2;
-  button {
-    margin: 5px;
-  }
-}
-
-.modal-grid-bottom {
-  grid-area: 2/1/3/2;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
-  .modal-column {
+  .add-medical-event-show {
+    transition: 5s;
+    opacity: 1;
+    visibility: visible;
+    height: 500px;
+    opacity: 1;
     width: 100%;
-    flex: 0 0 50%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: left;
-    padding: 0 20px;
+    border: 3px solid blue;
+    z-index: 5;
+
+    background-color: white;
+
+    > * {
+      opacity: 1;
+      transition: 5s;
+    }
   }
-}
-
-.medical-event.disabled {
-  display: none;
-}
-
-.medical-event1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 0 10px;
-}
-
-.medicalEventFilterBody {
-  width: 100%;
-  display: block;
-  padding-top: 30px;
-}
-.medicalEventFilterDate {
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  flex-wrap: nowrap;
 }

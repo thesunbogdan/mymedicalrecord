@@ -31,7 +31,7 @@ const switchRender = (path, currentUser) => {
   switch (path) {
     case `/${currentUser.id}`:
       return <ProfileComponent />;
-    case "/pacienții%20mei":
+    case "/pacientii%20mei":
       if (currentUser.role === "Medic") return <ListComponent />;
     case "/acces":
       if (currentUser.role === "Medic") {
@@ -74,7 +74,7 @@ function ResponsiveDrawer(props) {
             </ListItemIcon>
             <ListItemText primary="Profil" />
           </ListItem>
-          {["Acces", "Pacienții mei"].map((text, index) => (
+          {["Acces", "Pacientii mei"].map((text, index) => (
             <ListItem
               button
               key={text}
