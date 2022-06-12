@@ -514,62 +514,6 @@ class MedicProfile extends React.Component {
                 </p>
               </div>
             </div>
-            {/* <div className="column-bottom">
-              <h2>Educatie</h2>
-
-              <p>Facultate: </p>
-              <p>{this.props.currentUser.facultate}</p>
-              <p>Anul absolvirii</p>
-              <p>{this.props.currentUser.anulAbsolvirii}</p>
-              <h2>Specializari:</h2>
-              {Object.keys(this.props.currentUser.specializari).forEach(
-                (key) => (
-                  <p>{this.props.currentUser.specializari[key]}</p>
-                )
-              )}
-              <h2>Competente profesionale</h2>
-
-              <h2>Experienta:</h2>
-              {Object.keys(this.props.currentUser.experienta).forEach((key) => (
-                <p>{this.props.currentUser.experienta[key]}</p>
-              ))}
-
-              <table>
-                <tbody>
-                  <tr>
-                    <td colSpan="2">ORAR</td>
-                  </tr>
-                  <tr>
-                    <td>Luni</td>
-                    <td>{this.props.currentUser.orar.luni}</td>
-                  </tr>
-                  <tr>
-                    <td>Marti</td>
-                    <td>{this.props.currentUser.orar.marti}</td>
-                  </tr>
-                  <tr>
-                    <td>Miercuri</td>
-                    <td>{this.props.currentUser.orar.miercuri}</td>
-                  </tr>
-                  <tr>
-                    <td>Joi</td>
-                    <td>{this.props.currentUser.orar.joi}</td>
-                  </tr>
-                  <tr>
-                    <td>Vineri</td>
-                    <td>{this.props.currentUser.orar.vineri}</td>
-                  </tr>
-                  <tr>
-                    <td>Sambata</td>
-                    <td>{this.props.currentUser.orar.sambata}</td>
-                  </tr>
-                  <tr>
-                    <td>Duminica</td>
-                    <td>{this.props.currentUser.orar.duminica}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div> */}
           </div>
 
           <div className="column">

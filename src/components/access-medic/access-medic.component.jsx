@@ -41,43 +41,41 @@ class AccessMedic extends Component {
 
     return (
       <div className="profile-card">
-        <div className="picture-and-age">
-          <div className="picture">
+        <div className="first-column">
+          <div className="photo-div">
             <img
-              alt="profile"
+              alt="poza de profil"
               src={
                 profilePictureURL ? profilePictureURL : basicProfilePictureURL
               }
             />
           </div>
-          <div className="age">
-            <p>{getAge(pacientBirthDate["seconds"] * 1000)} ani</p>
-          </div>
+          <div className="id">ID: {pacientId}</div>
         </div>
-        <div className="name-and-buttons">
-          <div className="name">
-            <h1>{lastName},</h1>
-            <h3>{firstName}</h3>
-          </div>
-          <div className="buttons">
-            {myMedicsPending?.filter((item) => item === medicId).length > 0 ? (
-              <button
-                onClick={() => {
-                  cancelRequest1(medicId, pacientId).then(this.updateUserList);
-                }}
-              >
-                Cancel Request
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  sendRequest(medicId, pacientId).then(this.updateUserList);
-                }}
-              >
-                Request Access
-              </button>
-            )}
-          </div>
+        <div className="second-column">
+          <h1>
+            {lastName},<br />
+            {firstName}
+          </h1>
+
+          <h3>Vârstă: {getAge(pacientBirthDate["seconds"] * 1000)}</h3>
+          {myMedicsPending?.filter((item) => item === medicId).length > 0 ? (
+            <button
+              onClick={() => {
+                cancelRequest1(medicId, pacientId).then(this.updateUserList);
+              }}
+            >
+              Cere acces
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                sendRequest(medicId, pacientId).then(this.updateUserList);
+              }}
+            >
+              Anulează cerere acces
+            </button>
+          )}
         </div>
       </div>
     );
@@ -99,29 +97,47 @@ class AccessMedic extends Component {
 
   render() {
     return (
-      <>
-        <TextField
-          placeholder="Căutare pacient"
-          sx={{ left: "42%" }}
-          type="search"
-          onChange={this.onSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment>
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <div className="access">
+      <div className="access-medic">
+        <div className="search-div">
+          <TextField
+            placeholder="Căutare pacient"
+            type="search"
+            onChange={this.onSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment>
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+        <div className="profile-cards">
           {this.state.usersList
-            ?.filter(
-              (patient) =>
-                `${patient.firstName} ${patient.lastName}`
+            ?.filter((patient) => {
+              console.log(patient);
+              var name = true;
+              var id = true;
+              var myPatients = true;
+
+              if (
+                !`${patient.firstName} ${patient.lastName}`
                   .toLowerCase()
-                  .includes(this.state.searchField.toLowerCase()) &&
-                !patient.myMedicsAllowed.includes(this.props.currentUser.id)
-            )
+                  .includes(this.state.searchField.toLowerCase())
+              ) {
+                name = false;
+              }
+
+              if (patient.myMedicsAllowed.includes(this.props.currentUser.id)) {
+                myPatients = false;
+              }
+
+              if (this.state.searchField !== patient.pacientId) {
+                id = false;
+              }
+
+              return (id || name) && myPatients;
+            })
             .map((item) => {
               return (
                 <this.ProfileCard
@@ -132,7 +148,7 @@ class AccessMedic extends Component {
               );
             })}
         </div>
-      </>
+      </div>
     );
   }
 }

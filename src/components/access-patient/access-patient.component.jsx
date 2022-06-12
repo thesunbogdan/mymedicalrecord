@@ -157,9 +157,6 @@ class AccessPatient extends Component {
                   .includes(this.state.searchField.toLowerCase())
             )
             .map((item, index) => {
-              // console.log("myPatientsAllowd: ");
-              // console.table(item);
-
               return (
                 <this.ProfileCard
                   key={index}
