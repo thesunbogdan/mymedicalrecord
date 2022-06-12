@@ -1,139 +1,166 @@
-// * {
-//   padding: 0;
-//   margin: 0;
-// }
+* {
+  margin: 0;
+  padding: 0;
+}
 
-// .medic-profile {
-//   position: relative;
-//   display: flex;
-//   flex-wrap: wrap;
-//   flex-direction: row;
-//   justify-content: space-around;
-//   min-height: 85vh;
-//   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-//   width: 100%;
-//   border-radius: 3px;
+.medic-profile {
+  .medic-profile-card {
+    padding: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
-//   .modal-open-btn {
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     width: 60px;
-//     height: 25px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     border-radius: 3px;
-//     border: 1px solid black;
-//   }
+    .modal-open-button {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100px;
+      height: 25px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      border: none;
+    }
 
-//   .first-column {
-//     min-width: 400px;
-//     min-height: 85vh;
-//     flex: 0 0 33.333333%;
-//     display: flex;
-//     flex-direction: column;
-//     flex-wrap: nowrap;
+    .column {
+      padding: 10px 30px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
 
-//     .half-column {
-//       width: 100%;
-//       flex: 1;
-//       display: flex;
-//       flex-direction: column;
-//       justify-content: center;
-//       align-items: center;
-//       text-align: center;
-//       h1,
-//       h2 {
-//         margin: 15px;
-//       }
+      .profile-photo-div {
+        flex: 5;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
 
-//       p {
-//         margin: 15px;
-//         font-size: 30px;
-//       }
+        .profile-photo {
+          max-width: 500px;
+          max-height: 500px;
+        }
+      }
 
-//       .profile-image {
-//         padding: 20px;
-//         display: block;
-//         margin: auto;
-//         height: 100%;
-//         width: 100%;
-//         border-radius: 50%;
-//         object-fit: cover;
-//       }
+      .fullname-function {
+        padding: 20px 0;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        text-align: center;
+        font-size: x-large;
+      }
 
-//       .medic-function-institution {
-//         width: 100%;
-//         display: flex;
-//         flex-direction: row;
-//         justify-content: center;
-//         align-items: center;
-//       }
-//     }
-//   }
+      .id {
+        margin-left: 5px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: small;
+      }
 
-//   .column {
-//     min-height: 85vh;
-//     min-width: 400px;
-//     flex: 0 0 33.333333%;
-//     display: grid;
-//     grid-template-columns: 1fr;
-//     grid-template-rows: 0.1fr 1fr;
-//     gap: 0;
+      .contact {
+        padding: 20px 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
 
-//     .title {
-//       padding: 20px 0;
-//       width: 100%;
-//       grid-area: 1/1/2/2;
-//       text-align: center;
-//     }
+        .email-tel {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-around;
 
-//     .column-bottom {
-//       width: 100%;
-//       grid-area: 2/1/3/2;
-//       display: flex;
-//       flex-direction: column;
-//       flex-wrap: nowrap;
-//       justify-content: space-around;
-//       align-items: center;
-//       padding: 0 25px;
+          .email {
+            margin: 0 10px;
+            width: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            border: 1px solid black;
+          }
+        }
 
-//       .contact-button {
-//         display: flex;
-//         flex-direction: row;
-//         flex-wrap: nowrap;
-//         justify-content: center;
-//         align-items: center;
-//         width: 100%;
+        .dash {
+          flex: 1;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          flex-wrap: nowrap;
+        }
+      }
 
-//         height: 80px;
-//       }
-//     }
-//   }
-// }
-// .modal-grid-top {
-//   grid-area: 1/1/2/2;
-//   button {
-//     margin: 5px;
-//   }
-// }
+      .timetable {
+        padding: 15px 0;
+        flex: 1;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: space-around;
 
-// .modal-grid-bottom {
-//   grid-area: 2/1/3/2;
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-//   justify-content: space-around;
+        .day {
+          padding: 10px 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          flex-wrap: nowrap;
+        }
 
-//   .modal-column {
-//     width: 100%;
-//     flex: 0 0 50%;
-//     display: flex;
-//     flex-direction: column;
-//     flex-wrap: nowrap;
-//     justify-content: space-around;
-//     align-items: left;
-//     padding: 0 20px;
-//   }
-// }
+        h1 {
+          padding: 10px 0;
+          text-align: center;
+        }
+      }
+
+      .education {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+
+        .dash {
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+        }
+      }
+
+      .exp {
+        padding: 30px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+
+        .vertical {
+          flex: 1;
+          writing-mode: vertical-rl;
+          text-orientation: upright;
+        }
+
+        .list {
+          flex: 100;
+          display: flex;
+          justify-content: space-around;
+          flex-direction: column;
+          flex-wrap: nowrap;
+
+          p {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
