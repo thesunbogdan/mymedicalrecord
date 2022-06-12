@@ -172,7 +172,7 @@ class PacientProfile extends React.Component {
         <div className="profile-card">
           <button onClick={this.handleOpenModal} className="modal-open-button">
             <EditIcon fontSize="small" />
-            <p>MODIFICĂ</p>
+            <p>Modifică</p>
           </button>
 
           <ReactModal
@@ -397,11 +397,7 @@ class PacientProfile extends React.Component {
           </div>
           <div className="toggle-add-medical-event">
             <button
-              className={
-                this.state.disabled
-                  ? "toggle-add-medical-event-button"
-                  : "toggle-add-medical-event-button-clicked"
-              }
+              className="toggle-add-medical-event-button"
               onClick={() => {
                 this.setState({ disabled: false });
               }}
@@ -410,325 +406,335 @@ class PacientProfile extends React.Component {
             </button>
           </div>
         </div>
-        <div
-          className={
-            this.state.disabled
-              ? "add-medical-event-hide"
-              : "add-medical-event-show"
-          }
-        >
-          {this.state.tipul_evenimentului === "Vizită medic familie" ||
-          this.state.tipul_evenimentului === "Vizită medic specialist" ? (
-            <>
-              <div className="column">
-                <FormControl fullWidth>
-                  <InputLabel>Tipul evenimentului</InputLabel>
-                  <Select
-                    label="Tipul evenimentului"
-                    native
-                    fullWidth
-                    name="tipul_evenimentului"
-                    defaultValue={"Vizită medic familie"}
-                    onChange={this.handleChange}
-                  >
-                    <option value={"Vizită medic familie"}>
-                      Vizită medic familie
-                    </option>
-                    <option value={"Vizită medic specialist"}>
-                      Vizită medic specialist
-                    </option>
-                    <option value={"Internare în spital"}>
-                      Internare în spital
-                    </option>
-                  </Select>
-                </FormControl>
-                <FormControl sx={{ m: 1 }} fullWidth>
-                  <InputLabel>Diagnostic</InputLabel>
-                  <Select
-                    onChange={this.handleChange}
-                    native
-                    name="diagnostic"
-                    value={this.state.diagnostic}
-                    label="Diagnostic"
-                  >
-                    <optgroup label="Category 1">
-                      <option disabled>&nbsp;&nbsp;Option 0</option>
+        {!this.state.disabled ? (
+          <div className="add-medical-event">
+            {this.state.tipul_evenimentului === "Vizită medic familie" ||
+            this.state.tipul_evenimentului === "Vizită medic specialist" ? (
+              <>
+                <div className="column">
+                  <FormControl fullWidth>
+                    <InputLabel>Tipul evenimentului</InputLabel>
+                    <Select
+                      label="Tipul evenimentului"
+                      native
+                      fullWidth
+                      name="tipul_evenimentului"
+                      defaultValue={"Vizită medic familie"}
+                      onChange={this.handleChange}
+                    >
+                      <option value={"Vizită medic familie"}>
+                        Vizită medic familie
+                      </option>
+                      <option value={"Vizită medic specialist"}>
+                        Vizită medic specialist
+                      </option>
+                      <option value={"Internare în spital"}>
+                        Internare în spital
+                      </option>
+                    </Select>
+                  </FormControl>
+                  <FormControl sx={{ m: 1 }} fullWidth>
+                    <InputLabel>Diagnostic</InputLabel>
+                    <Select
+                      onChange={this.handleChange}
+                      native
+                      name="diagnostic"
+                      value={this.state.diagnostic}
+                      label="Diagnostic"
+                    >
+                      <optgroup label="Category 1">
+                        <option disabled>&nbsp;&nbsp;Option 0</option>
 
-                      <option value={1}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 1
-                      </option>
-                      <option value={2}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 2
-                      </option>
-                    </optgroup>
-                    <optgroup label="Category 2">
-                      <option disabled>&nbsp;&nbsp;Option 3</option>
-                      <option value={4}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 4
-                      </option>
-                    </optgroup>
-                  </Select>
-                </FormControl>
-                <TextField
-                  fullWidth
-                  label="Data"
-                  autoComplete="off"
-                  name="data"
-                  value={this.state.data}
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Numele medicului"
-                  name="numele_medicului"
-                  value={this.state.numele_medicului}
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="column">
-                <TextField
-                  fullWidth
-                  label="Instituție"
-                  name="instituție"
-                  value={this.state.instituție}
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  multiline
-                  rows={4}
-                  fullWidth
-                  label="Prescripție"
-                  name="prescripție"
-                  autoComplete="off"
-                  value={this.state.prescripție}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  multiline
-                  rows={4}
-                  fullWidth
-                  label="Detalii"
-                  name="detalii"
-                  value={this.state.detalii}
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="column">
-                <FormControl fullWidth>
-                  <InputLabel>Tipul evenimentului</InputLabel>
-                  <Select
-                    native
+                        <option value={1}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 1
+                        </option>
+                        <option value={2}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 2
+                        </option>
+                      </optgroup>
+                      <optgroup label="Category 2">
+                        <option disabled>&nbsp;&nbsp;Option 3</option>
+                        <option value={4}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 4
+                        </option>
+                      </optgroup>
+                    </Select>
+                  </FormControl>
+                  <TextField
                     fullWidth
-                    name="tipul_evenimentului"
-                    defaultValue={"Vizită medic familie"}
+                    label="Data"
+                    autoComplete="off"
+                    name="data"
+                    value={this.state.data}
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
                     onChange={this.handleChange}
-                  >
-                    <option value={"Vizită medic familie"}>
-                      Vizită medic familie
-                    </option>
-                    <option value={"Vizită medic specialist"}>
-                      Vizită medic specialist
-                    </option>
-                    <option value={"Internare în spital"}>
-                      Internare în spital
-                    </option>
-                  </Select>
-                </FormControl>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <MobileDateRangePicker
-                    inputFormat="yyyy/MM/dd"
-                    startText="Data internare"
-                    endText="Data externare"
-                    value={this.state.perioada}
-                    onChange={(newValue) => {
-                      this.setState({
-                        perioada: newValue,
-                      });
-                    }}
-                    renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                        <TextField {...startProps} />
-                        <TextField {...endProps} />
-                      </React.Fragment>
-                    )}
                   />
-                </LocalizationProvider>
-                <TextField
-                  fullWidth
-                  label="Numele medicului"
-                  name="numele_medicului"
-                  value={this.state.numele_medicului}
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-                <FormControl sx={{ m: 1 }} fullWidth>
-                  <InputLabel>Diagnostic</InputLabel>
-                  <Select
+
+                  <TextField
+                    fullWidth
+                    label="Numele medicului"
+                    name="numele_medicului"
+                    value={this.state.numele_medicului}
+                    autoComplete="off"
                     onChange={this.handleChange}
-                    native
-                    name="diagnostic"
-                    defaultValue=""
-                    label="Diagnostic"
-                  >
-                    <optgroup label="Category 1">
-                      <option disabled>&nbsp;&nbsp;Option 0</option>
+                  />
+                </div>
+                <div className="column">
+                  <TextField
+                    fullWidth
+                    label="Instituție"
+                    name="instituție"
+                    value={this.state.instituție}
+                    autoComplete="off"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    fullWidth
+                    label="Prescripție"
+                    name="prescripție"
+                    autoComplete="off"
+                    value={this.state.prescripție}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    fullWidth
+                    label="Detalii"
+                    name="detalii"
+                    value={this.state.detalii}
+                    autoComplete="off"
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="column">
+                  <FormControl fullWidth>
+                    <InputLabel>Tipul evenimentului</InputLabel>
+                    <Select
+                      native
+                      fullWidth
+                      name="tipul_evenimentului"
+                      defaultValue={"Vizită medic familie"}
+                      onChange={this.handleChange}
+                    >
+                      <option value={"Vizită medic familie"}>
+                        Vizită medic familie
+                      </option>
+                      <option value={"Vizită medic specialist"}>
+                        Vizită medic specialist
+                      </option>
+                      <option value={"Internare în spital"}>
+                        Internare în spital
+                      </option>
+                    </Select>
+                  </FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MobileDateRangePicker
+                      inputFormat="yyyy/MM/dd"
+                      startText="Data internare"
+                      endText="Data externare"
+                      value={this.state.perioada}
+                      onChange={(newValue) => {
+                        this.setState({
+                          perioada: newValue,
+                        });
+                      }}
+                      renderInput={(startProps, endProps) => (
+                        <React.Fragment>
+                          <TextField
+                            {...startProps}
+                            fullWidth
+                            sx={{ marginRight: "5px" }}
+                          />
+                          <TextField
+                            {...endProps}
+                            fullWidth
+                            sx={{ marginLeft: "5px" }}
+                          />
+                        </React.Fragment>
+                      )}
+                    />
+                  </LocalizationProvider>
+                  <TextField
+                    fullWidth
+                    label="Numele medicului"
+                    name="numele_medicului"
+                    value={this.state.numele_medicului}
+                    autoComplete="off"
+                    onChange={this.handleChange}
+                  />
+                  <FormControl fullWidth>
+                    <InputLabel>Diagnostic</InputLabel>
+                    <Select
+                      onChange={this.handleChange}
+                      native
+                      name="diagnostic"
+                      defaultValue=""
+                      label="Diagnostic"
+                    >
+                      <optgroup label="Category 1">
+                        <option disabled>&nbsp;&nbsp;Option 0</option>
 
-                      <option value={1}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 1
-                      </option>
-                      <option value={2}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 2
-                      </option>
-                    </optgroup>
-                    <optgroup label="Category 2">
-                      <option disabled>&nbsp;&nbsp;Option 3</option>
-                      <option value={4}>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Option 4
-                      </option>
-                    </optgroup>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="column">
-                <TextField
-                  fullWidth
-                  value={this.state.instituție}
-                  label="Instituție"
-                  name="instituție"
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  multiline
-                  rows={4}
-                  fullWidth
-                  label="Prescripție"
-                  name="prescripție"
-                  autoComplete="off"
-                  value={this.state.prescripție}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  multiline
-                  rows={4}
-                  fullWidth
-                  label="Detalii"
-                  name="detalii"
-                  value={this.state.detalii}
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                />
-              </div>
-            </>
-          )}
-          <div className="medical-event-done-cancel">
-            <button
-              onClick={() => {
-                this.setState({
-                  disabled: true,
-                  numele_medicului: "",
-                  data: "",
-                  prescripție: "",
-                  diagnostic: "",
-                  instituție: "",
-                  detalii: "",
-                  perioada: [null, null],
-                });
-              }}
-            >
-              CANCEL
-            </button>
+                        <option value={1}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 1
+                        </option>
+                        <option value={2}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 2
+                        </option>
+                      </optgroup>
+                      <optgroup label="Category 2">
+                        <option disabled>&nbsp;&nbsp;Option 3</option>
+                        <option value={4}>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Option 4
+                        </option>
+                      </optgroup>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="column">
+                  <TextField
+                    fullWidth
+                    value={this.state.instituție}
+                    label="Instituție"
+                    name="instituție"
+                    autoComplete="off"
+                    onChange={this.handleChange}
+                  />
 
-            <button
-              onClick={() => {
-                if (
-                  this.state.tipul_evenimentului === "Vizită medic familie" ||
-                  this.state.tipul_evenimentului === "Vizită medic specialist"
-                )
-                  createMedicalEvent(this.props.currentUser, {
-                    tipul_evenimentului: this.state.tipul_evenimentului,
-                    numele_medicului: this.state.numele_medicului,
-                    data: new Date(this.state.data),
-                    prescripție: this.state.prescripție,
-                    diagnostic: this.state.diagnostic,
-                    instituție: this.state.instituție,
-                    detalii: this.state.detalii,
+                  <TextField
+                    multiline
+                    rows={4}
+                    fullWidth
+                    label="Prescripție"
+                    name="prescripție"
+                    autoComplete="off"
+                    value={this.state.prescripție}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    fullWidth
+                    label="Detalii"
+                    name="detalii"
+                    value={this.state.detalii}
+                    autoComplete="off"
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </>
+            )}
+            <div className="add-medical-event-done-cancel">
+              <button
+                onClick={() => {
+                  this.setState({
+                    disabled: true,
+                    numele_medicului: "",
+                    data: "",
+                    prescripție: "",
+                    diagnostic: "",
+                    instituție: "",
+                    detalii: "",
+                    perioada: [null, null],
                   });
-                else if (
-                  this.state.tipul_evenimentului === "Internare în spital"
-                ) {
-                  createMedicalEvent(this.props.currentUser, {
-                    tipul_evenimentului: this.state.tipul_evenimentului,
-                    numele_medicului: this.state.numele_medicului,
-                    prescripție: this.state.prescripție,
-                    diagnostic: this.state.diagnostic,
-                    instituție: this.state.instituție,
-                    detalii: this.state.detalii,
-                    perioada: [
-                      new Date(this.state.perioada[0]),
-                      new Date(this.state.perioada[1]),
-                    ],
+                }}
+              >
+                Anulează
+              </button>
+
+              <button
+                onClick={() => {
+                  if (
+                    this.state.tipul_evenimentului === "Vizită medic familie" ||
+                    this.state.tipul_evenimentului === "Vizită medic specialist"
+                  )
+                    createMedicalEvent(this.props.currentUser, {
+                      tipul_evenimentului: this.state.tipul_evenimentului,
+                      numele_medicului: this.state.numele_medicului,
+                      data: new Date(this.state.data),
+                      prescripție: this.state.prescripție,
+                      diagnostic: this.state.diagnostic,
+                      instituție: this.state.instituție,
+                      detalii: this.state.detalii,
+                    });
+                  else if (
+                    this.state.tipul_evenimentului === "Internare în spital"
+                  ) {
+                    createMedicalEvent(this.props.currentUser, {
+                      tipul_evenimentului: this.state.tipul_evenimentului,
+                      numele_medicului: this.state.numele_medicului,
+                      prescripție: this.state.prescripție,
+                      diagnostic: this.state.diagnostic,
+                      instituție: this.state.instituție,
+                      detalii: this.state.detalii,
+                      perioada: [
+                        new Date(this.state.perioada[0]),
+                        new Date(this.state.perioada[1]),
+                      ],
+                    });
+                  } else console.log("event type not expected");
+                  this.setState({
+                    disabled: true,
+                    numele_medicului: "",
+                    data: "",
+                    prescripție: "",
+                    diagnostic: "",
+                    instituție: "",
+                    detalii: "",
+                    perioada: [null, null],
                   });
-                } else console.log("event type not expected");
-                this.setState({
-                  disabled: true,
-                  numele_medicului: "",
-                  data: "",
-                  prescripție: "",
-                  diagnostic: "",
-                  instituție: "",
-                  detalii: "",
-                  perioada: [null, null],
-                });
-              }}
-            >
-              DONE
-            </button>
+                }}
+              >
+                Trimite
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
 
-        {/* <p>{JSON.stringify(this.state)}</p> */}
-        <div className="medicalEventFilterBody">
-          <FormControl fullWidth>
-            <InputLabel>Tipul evenimentului</InputLabel>
-            <Select
-              label="Tipul evenimentului"
-              native
-              defaultValue={"Toate"}
-              name="searchEventType"
+        <div className="medical-event-filter">
+          <div className="medical-event-filter-row">
+            <FormControl fullWidth>
+              <InputLabel>Tipul evenimentului</InputLabel>
+              <Select
+                label="Tipul evenimentului"
+                native
+                defaultValue={"Toate"}
+                name="searchEventType"
+                onChange={this.handleChange}
+              >
+                <option value={"Toate"} selected>
+                  Toate
+                </option>
+                <option value={"Vizită medic familie"}>
+                  Vizită medic familie
+                </option>
+                <option value={"Vizită medic specialist"}>
+                  Vizită medic specialist
+                </option>
+                <option value={"Internare în spital"}>
+                  Internare în spital
+                </option>
+              </Select>
+            </FormControl>
+
+            <TextField
+              fullWidth
+              label="Numele medicului"
+              name="searchMedicName"
               onChange={this.handleChange}
-            >
-              <option value={"Toate"} selected>
-                Toate
-              </option>
-              <option value={"Vizită medic familie"}>
-                Vizită medic familie
-              </option>
-              <option value={"Vizită medic specialist"}>
-                Vizită medic specialist
-              </option>
-              <option value={"Internare în spital"}>Internare în spital</option>
-            </Select>
-          </FormControl>
-
-          <TextField
-            fullWidth
-            label="Numele medicului"
-            name="searchMedicName"
-            onChange={this.handleChange}
-            defaultValue=""
-            type="search"
-          />
-          <div className="medicalEventFilterDate">
+              defaultValue=""
+              type="search"
+            />
+          </div>
+          <div className="medical-event-filter-row">
             <TextField
               fullWidth
               label="Anul"
@@ -755,114 +761,117 @@ class PacientProfile extends React.Component {
             />
           </div>
         </div>
-        {this.props.currentUser.medicalRecord
-          .filter((item) => {
-            var data = true;
-            var perioada = true;
-            if (this.state.anul !== "") {
-              if (
-                item.tipul_evenimentului?.includes("Vizită") &&
-                new Date(item.data["seconds"] * 1000).getFullYear() !==
-                  parseInt(this.state.anul)
-              )
-                data = false;
-              if (
-                item.tipul_evenimentului?.includes("Internare") &&
-                (new Date(item.perioada[0]["seconds"] * 1000).getFullYear() >
-                  parseInt(this.state.anul) ||
-                  new Date(item.perioada[1]["seconds"] * 1000).getFullYear() <
-                    parseInt(this.state.anul))
-              )
-                perioada = false;
-            }
+        <div className="medical-events">
+          {this.props.currentUser.medicalRecord
+            .filter((item) => {
+              var data = true;
+              var perioada = true;
+              if (this.state.anul !== "") {
+                if (
+                  item.tipul_evenimentului?.includes("Vizită") &&
+                  new Date(item.data["seconds"] * 1000).getFullYear() !==
+                    parseInt(this.state.anul)
+                )
+                  data = false;
+                if (
+                  item.tipul_evenimentului?.includes("Internare") &&
+                  (new Date(item.perioada[0]["seconds"] * 1000).getFullYear() >
+                    parseInt(this.state.anul) ||
+                    new Date(item.perioada[1]["seconds"] * 1000).getFullYear() <
+                      parseInt(this.state.anul))
+                )
+                  perioada = false;
+              }
 
-            if (this.state.luna !== "") {
-              if (
-                item.tipul_evenimentului?.includes("Vizită") &&
-                new Date(item.data["seconds"] * 1000).getMonth() + 1 !==
-                  parseInt(this.state.luna)
-              )
-                data = false;
-              if (
-                item.tipul_evenimentului?.includes("Internare") &&
-                (new Date(item.perioada[0]["seconds"] * 1000).getMonth() + 1 >
-                  parseInt(this.state.luna) ||
-                  new Date(item.perioada[1]["seconds"] * 1000).getMonth() + 1 <
-                    parseInt(this.state.luna))
-              )
-                perioada = false;
-            }
-            if (this.state.ziua !== "") {
-              if (
-                item.tipul_evenimentului?.includes("Vizită") &&
-                new Date(item.data["seconds"] * 1000).getDate() !==
-                  parseInt(this.state.ziua)
-              )
-                data = false;
-              if (
-                item.tipul_evenimentului?.includes("Internare") &&
-                (new Date(item.perioada[0]["seconds"] * 1000).getDate() >
-                  parseInt(this.state.ziua) ||
-                  new Date(item.perioada[1]["seconds"] * 1000).getDate() <
-                    parseInt(this.state.ziua))
-              )
-                perioada = false;
-            }
-            if (this.state.searchEventType === "Toate")
+              if (this.state.luna !== "") {
+                if (
+                  item.tipul_evenimentului?.includes("Vizită") &&
+                  new Date(item.data["seconds"] * 1000).getMonth() + 1 !==
+                    parseInt(this.state.luna)
+                )
+                  data = false;
+                if (
+                  item.tipul_evenimentului?.includes("Internare") &&
+                  (new Date(item.perioada[0]["seconds"] * 1000).getMonth() + 1 >
+                    parseInt(this.state.luna) ||
+                    new Date(item.perioada[1]["seconds"] * 1000).getMonth() +
+                      1 <
+                      parseInt(this.state.luna))
+                )
+                  perioada = false;
+              }
+              if (this.state.ziua !== "") {
+                if (
+                  item.tipul_evenimentului?.includes("Vizită") &&
+                  new Date(item.data["seconds"] * 1000).getDate() !==
+                    parseInt(this.state.ziua)
+                )
+                  data = false;
+                if (
+                  item.tipul_evenimentului?.includes("Internare") &&
+                  (new Date(item.perioada[0]["seconds"] * 1000).getDate() >
+                    parseInt(this.state.ziua) ||
+                    new Date(item.perioada[1]["seconds"] * 1000).getDate() <
+                      parseInt(this.state.ziua))
+                )
+                  perioada = false;
+              }
+              if (this.state.searchEventType === "Toate")
+                return (
+                  data &&
+                  perioada &&
+                  item.numele_medicului?.includes(this.state.searchMedicName)
+                );
               return (
                 data &&
                 perioada &&
+                item.tipul_evenimentului?.includes(
+                  this.state.searchEventType
+                ) &&
                 item.numele_medicului?.includes(this.state.searchMedicName)
               );
-            return (
-              data &&
-              perioada &&
-              item.tipul_evenimentului?.includes(this.state.searchEventType) &&
-              item.numele_medicului?.includes(this.state.searchMedicName)
-            );
-          })
-          .map((item, index) => {
-            return (
-              <div key={index} className="medical-event">
-                {Object.entries(item).map(([key, value]) => {
-                  return (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      <p>{key.replace("_", " ")}:&nbsp;</p>
-                      <p>
-                        {key === "perioada"
-                          ? `${new Date(
-                              value[0]["seconds"] * 1000
-                            ).getFullYear()}/${
-                              new Date(value[0]["seconds"] * 1000).getMonth() +
-                              1
-                            }/${new Date(
-                              value[0]["seconds"] * 1000
-                            ).getDate()} - ${new Date(
-                              value[1]["seconds"] * 1000
-                            ).getFullYear()}/${
-                              new Date(value[1]["seconds"] * 1000).getMonth() +
-                              1
-                            }/${new Date(value[1]["seconds"] * 1000).getDate()}`
-                          : key === "data"
-                          ? `${new Date(
-                              value["seconds"] * 1000
-                            ).getFullYear()}/${
-                              new Date(value["seconds"] * 1000).getMonth() + 1
-                            }/${new Date(value["seconds"] * 1000).getDate()}`
-                          : value}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+            })
+            .map((item, index) => {
+              return (
+                <div key={index} className="medical-event">
+                  {Object.entries(item).map(([key, value]) => {
+                    return (
+                      <div className="medical-event-row">
+                        <p>{key.replace("_", " ")}:&nbsp;</p>
+                        <p>
+                          {key === "perioada"
+                            ? `${new Date(
+                                value[0]["seconds"] * 1000
+                              ).getFullYear()}/${
+                                new Date(
+                                  value[0]["seconds"] * 1000
+                                ).getMonth() + 1
+                              }/${new Date(
+                                value[0]["seconds"] * 1000
+                              ).getDate()} - ${new Date(
+                                value[1]["seconds"] * 1000
+                              ).getFullYear()}/${
+                                new Date(
+                                  value[1]["seconds"] * 1000
+                                ).getMonth() + 1
+                              }/${new Date(
+                                value[1]["seconds"] * 1000
+                              ).getDate()}`
+                            : key === "data"
+                            ? `${new Date(
+                                value["seconds"] * 1000
+                              ).getFullYear()}/${
+                                new Date(value["seconds"] * 1000).getMonth() + 1
+                              }/${new Date(value["seconds"] * 1000).getDate()}`
+                            : value}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }
