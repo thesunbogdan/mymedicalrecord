@@ -48,7 +48,7 @@
         .id {
           text-align: center;
           flex: 1;
-          font-size: 80%;
+          font-size: small;
           width: 100%;
         }
       }
@@ -61,6 +61,26 @@
         flex-wrap: nowrap;
         justify-content: space-around;
 
+        .deny-access {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          justify-content: center;
+          p {
+            text-align: center;
+          }
+        }
+
+        .buttons {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-around;
+
+          button {
+            margin: 0 5px;
+          }
+        }
         button {
           width: 100%;
         }

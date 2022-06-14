@@ -50,7 +50,25 @@ class AccessMedic extends Component {
               }
             />
           </div>
-          <div className="id">ID: {pacientId}</div>
+          <button
+            onClick={async (event) => {
+              navigator.clipboard.writeText(pacientId);
+              event.target.innerHTML = "Copiat";
+              await new Promise((res) => setTimeout(res, 1500));
+              event.target.innerHTML = "ID: " + pacientId;
+            }}
+            onMouseEnter={(event) => {
+              if (event.target.innerHTML !== "Copiat")
+                event.target.innerHTML = "Apasă pentru a copia";
+            }}
+            onMouseLeave={(event) => {
+              if (event.target.innerHTML !== "Copiat")
+                event.target.innerHTML = "ID: " + pacientId;
+            }}
+            className="id"
+          >
+            ID: {pacientId}
+          </button>
         </div>
         <div className="second-column">
           <h1>
@@ -65,7 +83,7 @@ class AccessMedic extends Component {
                 cancelRequest1(medicId, pacientId).then(this.updateUserList);
               }}
             >
-              Cere acces
+              Anulează cerere acces
             </button>
           ) : (
             <button
@@ -73,7 +91,7 @@ class AccessMedic extends Component {
                 sendRequest(medicId, pacientId).then(this.updateUserList);
               }}
             >
-              Anulează cerere acces
+              Cere acces
             </button>
           )}
         </div>

@@ -31,6 +31,10 @@
     }
 
     .column {
+      .tooltip {
+        width: 50%;
+      }
+
       padding: 10px 30px;
       flex: 1;
       display: flex;

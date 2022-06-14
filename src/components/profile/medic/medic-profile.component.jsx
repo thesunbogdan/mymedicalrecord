@@ -419,7 +419,25 @@ class MedicProfile extends React.Component {
             <div className="fullname-function">
               {this.props.currentUser.medicFunction}
             </div>
-            <div className="id">ID:&nbsp;{this.props.currentUser.id}</div>
+            <button
+              onClick={async (event) => {
+                navigator.clipboard.writeText(this.props.currentUser.id);
+                event.target.innerHTML = "Copiat";
+                await new Promise((res) => setTimeout(res, 1500));
+                event.target.innerHTML = "ID: " + this.props.currentUser.id;
+              }}
+              onMouseEnter={(event) => {
+                if (event.target.innerHTML !== "Copiat")
+                  event.target.innerHTML = "Apasă pentru a copia";
+              }}
+              onMouseLeave={(event) => {
+                if (event.target.innerHTML !== "Copiat")
+                  event.target.innerHTML = "ID: " + this.props.currentUser.id;
+              }}
+              className="id"
+            >
+              ID: {this.props.currentUser.id}
+            </button>
           </div>
           <div className="column">
             <div className="contact">
