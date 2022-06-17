@@ -21,6 +21,8 @@ import { LocalizationProvider, MobileDateRangePicker } from "@mui/lab";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Chip, OutlinedInput } from "@mui/material";
 import { Box } from "@mui/system";
+import Autocomplete from "@mui/material/Autocomplete";
+import { CIMdata } from "../../../utils/CIMdata";
 
 class PacientProfile extends React.Component {
   constructor(props) {
@@ -186,123 +188,111 @@ class PacientProfile extends React.Component {
               content: {
                 zIndex: 201,
                 backgroundColor: "white",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gridTemplateRows: "0.1fr 1fr",
-                gap: "0px",
               },
             }}
           >
-            <div className="modal-grid-top">
-              <button
-                className="modal-close-button"
-                onClick={this.handleCloseModal}
-              >
-                X{" "}
-              </button>
-              <button onClick={this.handleSubmit}>DONE</button>
-            </div>
-            <div className="modal-grid-bottom">
-              <div className="modal-column">
-                <TextField
-                  autoComplete="off"
-                  fullWidth
-                  label="First name"
-                  name="firstName"
-                  defaultValue={this.props.currentUser.firstName}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  autoComplete="off"
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  defaultValue={this.props.currentUser.lastName}
-                  onChange={this.handleChange}
-                />
+            <div className="patient-modal-body">
+              <div className="patient-modal-top">
+                <button
+                  className="modal-close-button"
+                  onClick={this.handleCloseModal}
+                >
+                  Abandonează
+                </button>
+                <button onClick={this.handleSubmit}>Trimite</button>
+              </div>
+              <TextField
+                autoComplete="off"
+                fullWidth
+                label="First name"
+                name="firstName"
+                defaultValue={this.props.currentUser.firstName}
+                onChange={this.handleChange}
+              />
+              <TextField
+                autoComplete="off"
+                fullWidth
+                label="Last name"
+                name="lastName"
+                defaultValue={this.props.currentUser.lastName}
+                onChange={this.handleChange}
+              />
 
-                <PhoneInput
-                  inputStyle={{ width: "100%" }}
-                  specialLabel="Telephone number"
-                  country={"ro"}
-                  value={this.props.currentUser.tel}
-                  onChange={(phoneNumber) =>
-                    this.setState({ tel: phoneNumber })
-                  }
-                />
-              </div>
-              <div className="modal-column">
-                <TextField
-                  autoComplete="off"
+              <PhoneInput
+                inputStyle={{ width: "100%" }}
+                specialLabel="Telephone number"
+                country={"ro"}
+                value={this.props.currentUser.tel}
+                onChange={(phoneNumber) => this.setState({ tel: phoneNumber })}
+              />
+              <TextField
+                autoComplete="off"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">kg</InputAdornment>
+                  ),
+                }}
+                label="Greutate"
+                name="greutate"
+                defaultValue={this.props.currentUser.greutate}
+                onChange={this.handleChange}
+              />
+              <TextField
+                autoComplete="off"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">cm</InputAdornment>
+                  ),
+                }}
+                label="Înălțime"
+                name="înălțime"
+                defaultValue={this.props.currentUser.înălțime}
+                onChange={this.handleChange}
+              />
+              <FormControl sx={{ m: 1 }} fullWidth>
+                <InputLabel>Comorbidități</InputLabel>
+                <Select
+                  label="Comorbidități"
+                  multiple
+                  value={this.state.comorbidități}
+                  onChange={this.handleMultipleSelectChange}
+                  input={<OutlinedInput label="Comorbidități" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {this.state.comorbiditățiPosibile.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>Gen</InputLabel>
+                <Select
                   fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">kg</InputAdornment>
-                    ),
-                  }}
-                  label="Greutate"
-                  name="greutate"
-                  defaultValue={this.props.currentUser.greutate}
+                  label="Gen"
+                  name="gen"
+                  defaultValue={this.props.currentUser.gen}
                   onChange={this.handleChange}
-                />
-                <TextField
-                  autoComplete="off"
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">cm</InputAdornment>
-                    ),
-                  }}
-                  label="Înălțime"
-                  name="înălțime"
-                  defaultValue={this.props.currentUser.înălțime}
-                  onChange={this.handleChange}
-                />
-                <FormControl sx={{ m: 1 }} fullWidth>
-                  <InputLabel>Comorbidități</InputLabel>
-                  <Select
-                    label="Comorbidități"
-                    multiple
-                    value={this.state.comorbidități}
-                    onChange={this.handleMultipleSelectChange}
-                    input={<OutlinedInput label="Comorbidități" />}
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {this.state.comorbiditățiPosibile.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel>Gen</InputLabel>
-                  <Select
-                    fullWidth
-                    label="Gen"
-                    name="gen"
-                    defaultValue={this.props.currentUser.gen}
-                    onChange={this.handleChange}
-                  >
-                    <MenuItem value={"Masculin"}>Masculin</MenuItem>
-                    <MenuItem value={"Feminin"}>Feminin</MenuItem>
-                  </Select>
-                </FormControl>
-                <input
-                  name="profile-picture"
-                  type="file"
-                  accept="image/*"
-                  onChange={this.getFile}
-                />
-              </div>
+                >
+                  <MenuItem value={"Masculin"}>Masculin</MenuItem>
+                  <MenuItem value={"Feminin"}>Feminin</MenuItem>
+                </Select>
+              </FormControl>
+              <input
+                name="profile-picture"
+                type="file"
+                accept="image/*"
+                onChange={this.getFile}
+              />
             </div>
           </ReactModal>
 
@@ -453,33 +443,15 @@ class PacientProfile extends React.Component {
                       </option>
                     </Select>
                   </FormControl>
-                  <FormControl sx={{ m: 1 }} fullWidth>
-                    <InputLabel>Diagnostic</InputLabel>
-                    <Select
-                      onChange={this.handleChange}
-                      native
-                      name="diagnostic"
-                      value={this.state.diagnostic}
-                      label="Diagnostic"
-                    >
-                      <optgroup label="Category 1">
-                        <option disabled>&nbsp;&nbsp;Option 0</option>
-
-                        <option value={1}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 1
-                        </option>
-                        <option value={2}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 2
-                        </option>
-                      </optgroup>
-                      <optgroup label="Category 2">
-                        <option disabled>&nbsp;&nbsp;Option 3</option>
-                        <option value={4}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 4
-                        </option>
-                      </optgroup>
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    disablePortal
+                    name="diagnostic"
+                    onChange={this.handleChange}
+                    options={CIMdata}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Diagnostic" />
+                    )}
+                  />
                   <TextField
                     fullWidth
                     label="Data"

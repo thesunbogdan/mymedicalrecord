@@ -161,234 +161,207 @@ class MedicProfile extends React.Component {
               },
               content: {
                 backgroundColor: "white",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gridTemplateRows: "0.1fr 1fr",
-                gap: "0px",
               },
             }}
           >
-            <div className="modal-grid-top">
-              <button
-                className="modal-close-button"
-                onClick={this.handleCloseModal}
-              >
-                X{" "}
-              </button>
-              <button onClick={this.handleSubmit}>DONE</button>
-            </div>
-            <div className="modal-grid-bottom">
-              <div className="modal-column">
-                <TextField
-                  size="small"
-                  fullWidth
-                  autoComplete="off"
-                  label="First name"
-                  name="firstName"
-                  defaultValue={this.props.currentUser.firstName}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  defaultValue={this.props.currentUser.lastName}
-                  onChange={this.handleChange}
-                />
-
-                <PhoneInput
-                  inputStyle={{ width: "100%" }}
-                  specialLabel="Telephone number"
-                  country={"ro"}
-                  value={this.props.currentUser.tel}
-                  onChange={(phoneNumber) =>
-                    this.setState({ tel: phoneNumber })
-                  }
-                />
-                <h2>Specializari</h2>
-                {Object.keys(this.state.specializari).map((key) => (
-                  <TextField
-                    onChange={this.handleSpecChange}
-                    size="small"
-                    name={key}
-                    autoComplete="off"
-                    fullWidth
-                    label={key}
-                    defaultValue={this.props.currentUser.specializari[key]}
-                  />
-                ))}
-
-                <h2>Educatie</h2>
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  name="facultate"
-                  label="Facultate"
-                  fullWidth
-                  defaultValue={this.props.currentUser.facultate}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  name="anulAbsolvirii"
-                  label="Anul absolvirii"
-                  fullWidth
-                  defaultValue={this.props.currentUser.anulAbsolvirii}
-                  onChange={this.handleChange}
-                />
+            <div className="modal-body">
+              <div className="buttons">
+                <button onClick={this.handleCloseModal}>Abandonează </button>
+                <button onClick={this.handleSubmit}>Trimite</button>
               </div>
-              <div className="modal-column">
-                <h2>Experienta</h2>
-                {Object.keys(this.state.experienta).map((key) => (
+              <div className="first-column">
+                <div className="block" style={{ marginTop: "30px" }}>
                   <TextField
-                    onChange={this.handleExpChange}
                     size="small"
-                    name={key}
+                    fullWidth
+                    autoComplete="off"
+                    label="First name"
+                    name="firstName"
+                    defaultValue={this.props.currentUser.firstName}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    size="small"
                     autoComplete="off"
                     fullWidth
-                    label={key}
-                    defaultValue={this.props.currentUser.experienta[key]}
+                    label="Last name"
+                    name="lastName"
+                    defaultValue={this.props.currentUser.lastName}
+                    onChange={this.handleChange}
                   />
-                ))}
 
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  fullWidth
-                  label="Medical Function"
-                  name="medicFunction"
-                  defaultValue={this.props.currentUser.medicFunction}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  fullWidth
-                  label="Medical Institution"
-                  name="medicInstitution"
-                  defaultValue={this.props.currentUser.medicInstitution}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  size="small"
-                  autoComplete="off"
-                  fullWidth
-                  label="Institution Location"
-                  name="location"
-                  defaultValue={this.props.currentUser.location}
-                  onChange={this.handleChange}
-                />
-                <table>
-                  <tbody>
-                    <tr>
-                      <td colSpan="2">ORAR</td>
-                    </tr>
-                    <tr>
-                      <td>Luni</td>
-                      <td>
-                        <TextField
-                          size="small"
-                          name="luni"
-                          defaultValue={this.props.currentUser.orar.luni}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Marti</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="marti"
-                          defaultValue={this.props.currentUser.orar.marti}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Miercuri</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="miercuri"
-                          defaultValue={this.props.currentUser.orar.miercuri}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Joi</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="joi"
-                          defaultValue={this.props.currentUser.orar.joi}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Vineri</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="vineri"
-                          defaultValue={this.props.currentUser.orar.vineri}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Sambata</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="sambata"
-                          defaultValue={this.props.currentUser.orar.sambata}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Duminica</td>
-                      <td>
-                        {" "}
-                        <TextField
-                          size="small"
-                          name="duminica"
-                          defaultValue={this.props.currentUser.orar.duminica}
-                          autoComplete="off"
-                          onChange={this.handleTimetableChange}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                  <PhoneInput
+                    inputStyle={{ width: "100%" }}
+                    specialLabel="Telephone number"
+                    country={"ro"}
+                    value={this.props.currentUser.tel}
+                    onChange={(phoneNumber) =>
+                      this.setState({ tel: phoneNumber })
+                    }
+                  />
+                  <input
+                    fullWidth
+                    name="profile-picture"
+                    type="file"
+                    accept="image/*"
+                    onChange={this.getFile}
+                  />
+                </div>
+                <div className="block">
+                  {" "}
+                  <TextField
+                    size="small"
+                    autoComplete="off"
+                    fullWidth
+                    label="Medical Function"
+                    name="medicFunction"
+                    defaultValue={this.props.currentUser.medicFunction}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    size="small"
+                    autoComplete="off"
+                    fullWidth
+                    label="Medical Institution"
+                    name="medicInstitution"
+                    defaultValue={this.props.currentUser.medicInstitution}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    size="small"
+                    autoComplete="off"
+                    fullWidth
+                    label="Institution Location"
+                    name="location"
+                    defaultValue={this.props.currentUser.location}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="timetable">
+                  <h2>Orar</h2>
+                  <div className="day">
+                    <p>Luni</p>
+                    <TextField
+                      size="small"
+                      name="luni"
+                      defaultValue={this.props.currentUser.orar.luni}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Marți</p>
+                    <TextField
+                      size="small"
+                      name="marti"
+                      defaultValue={this.props.currentUser.orar.marti}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Miercuri</p>{" "}
+                    <TextField
+                      size="small"
+                      name="miercuri"
+                      defaultValue={this.props.currentUser.orar.miercuri}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Joi</p>{" "}
+                    <TextField
+                      size="small"
+                      name="joi"
+                      defaultValue={this.props.currentUser.orar.joi}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Vineri</p>{" "}
+                    <TextField
+                      size="small"
+                      name="vineri"
+                      defaultValue={this.props.currentUser.orar.vineri}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Sâmbătă</p>{" "}
+                    <TextField
+                      size="small"
+                      name="sambata"
+                      defaultValue={this.props.currentUser.orar.sambata}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                  <div className="day">
+                    <p>Duminică</p>{" "}
+                    <TextField
+                      size="small"
+                      name="duminica"
+                      defaultValue={this.props.currentUser.orar.duminica}
+                      autoComplete="off"
+                      onChange={this.handleTimetableChange}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="second-column">
+                <div className="block">
+                  <h2>Specializari</h2>
+                  {Object.keys(this.state.specializari).map((key) => (
+                    <TextField
+                      onChange={this.handleSpecChange}
+                      size="small"
+                      name={key}
+                      autoComplete="off"
+                      fullWidth
+                      label={key}
+                      defaultValue={this.props.currentUser.specializari[key]}
+                    />
+                  ))}
+                </div>
+                <div className="block">
+                  <h2>Experienta</h2>
+                  {Object.keys(this.state.experienta).map((key) => (
+                    <TextField
+                      onChange={this.handleExpChange}
+                      size="small"
+                      name={key}
+                      autoComplete="off"
+                      fullWidth
+                      label={key}
+                      defaultValue={this.props.currentUser.experienta[key]}
+                    />
+                  ))}
+                </div>
+                <div className="block">
+                  <h2>Educatie</h2>
+                  <TextField
+                    size="small"
+                    autoComplete="off"
+                    name="facultate"
+                    label="Facultate"
+                    fullWidth
+                    defaultValue={this.props.currentUser.facultate}
+                    onChange={this.handleChange}
+                  />
 
-                <input
-                  fullWidth
-                  name="profile-picture"
-                  type="file"
-                  accept="image/*"
-                  onChange={this.getFile}
-                />
+                  <TextField
+                    size="small"
+                    autoComplete="off"
+                    name="anulAbsolvirii"
+                    label="Anul absolvirii"
+                    fullWidth
+                    defaultValue={this.props.currentUser.anulAbsolvirii}
+                    onChange={this.handleChange}
+                  />
+                </div>
               </div>
             </div>
           </ReactModal>

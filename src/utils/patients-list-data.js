@@ -88,7 +88,9 @@ export const columns = [
     field: "greutate",
     headerName: "Greutate",
     width: 130,
-    valueFormatter: ({ value }) => `${value} kg`,
+    valueFormatter: ({ value }) => {
+      if (value) return `${value} kg`;
+    },
     headerAlign: "center",
     align: "center",
   },

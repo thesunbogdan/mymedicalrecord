@@ -215,3 +215,26 @@
     }
   }
 }
+
+.patient-modal-body {
+  padding: 50px 10px 10px 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  > * {
+    margin: 10px 0;
+  }
+
+  .patient-modal-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    button {
+      margin: 0 5px;
+    }
+  }
+}
