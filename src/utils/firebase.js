@@ -227,7 +227,7 @@ export const sendRequest = async (medicId, pacientId) => {
   }
 };
 
-export const cancelRequest = async (medicId, pacientId) => {
+export const cancelRequest = async (pacientId, medicId) => {
   if (medicId && pacientId) {
     const pacientRef = await firestore.doc(`users/${pacientId}`);
     const medicRef = await firestore.doc(`users/${medicId}`);
@@ -241,6 +241,25 @@ export const cancelRequest = async (medicId, pacientId) => {
       });
     } catch (err) {
       alert("error canceling request" + err.message);
+    }
+  }
+};
+
+export const deletePatient = async (pacientId, medicId) => {
+  console.log(medicId, pacientId);
+  if (medicId && pacientId) {
+    const pacientRef = await firestore.doc(`users/${pacientId}`);
+    const medicRef = await firestore.doc(`users/${medicId}`);
+    console.log("////");
+    try {
+      await pacientRef.update({
+        myMedicsAllowed: firebase.firestore.FieldValue.arrayRemove(medicId),
+      });
+      await medicRef.update({
+        myPatientsAllowed: firebase.firestore.FieldValue.arrayRemove(pacientId),
+      });
+    } catch (err) {
+      alert("error deleting user" + err.message);
     }
   }
 };

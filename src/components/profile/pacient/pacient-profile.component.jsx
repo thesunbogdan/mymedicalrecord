@@ -202,6 +202,7 @@ class PacientProfile extends React.Component {
                 <button onClick={this.handleSubmit}>Trimite</button>
               </div>
               <TextField
+                className="margin"
                 autoComplete="off"
                 fullWidth
                 label="First name"
@@ -210,6 +211,7 @@ class PacientProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                className="margin"
                 autoComplete="off"
                 fullWidth
                 label="Last name"
@@ -219,6 +221,7 @@ class PacientProfile extends React.Component {
               />
 
               <PhoneInput
+                className="margin"
                 inputStyle={{ width: "100%" }}
                 specialLabel="Telephone number"
                 country={"ro"}
@@ -226,6 +229,7 @@ class PacientProfile extends React.Component {
                 onChange={(phoneNumber) => this.setState({ tel: phoneNumber })}
               />
               <TextField
+                className="margin"
                 autoComplete="off"
                 fullWidth
                 InputProps={{
@@ -239,6 +243,7 @@ class PacientProfile extends React.Component {
                 onChange={this.handleChange}
               />
               <TextField
+                className="margin"
                 autoComplete="off"
                 fullWidth
                 InputProps={{
@@ -251,7 +256,7 @@ class PacientProfile extends React.Component {
                 defaultValue={this.props.currentUser.înălțime}
                 onChange={this.handleChange}
               />
-              <FormControl sx={{ m: 1 }} fullWidth>
+              <FormControl sx={{ m: 1 }} fullWidth className="margin">
                 <InputLabel>Comorbidități</InputLabel>
                 <Select
                   label="Comorbidități"
@@ -274,7 +279,7 @@ class PacientProfile extends React.Component {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl fullWidth className="margin">
                 <InputLabel>Gen</InputLabel>
                 <Select
                   fullWidth
@@ -287,11 +292,13 @@ class PacientProfile extends React.Component {
                   <MenuItem value={"Feminin"}>Feminin</MenuItem>
                 </Select>
               </FormControl>
+
               <input
                 name="profile-picture"
                 type="file"
                 accept="image/*"
                 onChange={this.getFile}
+                className="margin"
               />
             </div>
           </ReactModal>
@@ -420,7 +427,7 @@ class PacientProfile extends React.Component {
           <div className="add-medical-event">
             {this.state.tipul_evenimentului === "Vizită medic familie" ||
             this.state.tipul_evenimentului === "Vizită medic specialist" ? (
-              <>
+              <div className="add-medical-event-wrap">
                 <div className="column">
                   <FormControl fullWidth>
                     <InputLabel>Tipul evenimentului</InputLabel>
@@ -446,7 +453,9 @@ class PacientProfile extends React.Component {
                   <Autocomplete
                     disablePortal
                     name="diagnostic"
-                    onChange={this.handleChange}
+                    onChange={(event, newValue) => {
+                      this.setState({ diagnostic: newValue["label"] });
+                    }}
                     options={CIMdata}
                     renderInput={(params) => (
                       <TextField {...params} label="Diagnostic" />
@@ -502,13 +511,14 @@ class PacientProfile extends React.Component {
                     onChange={this.handleChange}
                   />
                 </div>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="add-medical-event-wrap">
                 <div className="column">
                   <FormControl fullWidth>
                     <InputLabel>Tipul evenimentului</InputLabel>
                     <Select
+                      label="Tipul evenimentului"
                       native
                       fullWidth
                       name="tipul_evenimentului"
@@ -526,6 +536,7 @@ class PacientProfile extends React.Component {
                       </option>
                     </Select>
                   </FormControl>
+
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <MobileDateRangePicker
                       inputFormat="yyyy/MM/dd"
@@ -561,33 +572,17 @@ class PacientProfile extends React.Component {
                     autoComplete="off"
                     onChange={this.handleChange}
                   />
-                  <FormControl fullWidth>
-                    <InputLabel>Diagnostic</InputLabel>
-                    <Select
-                      onChange={this.handleChange}
-                      native
-                      name="diagnostic"
-                      defaultValue=""
-                      label="Diagnostic"
-                    >
-                      <optgroup label="Category 1">
-                        <option disabled>&nbsp;&nbsp;Option 0</option>
-
-                        <option value={1}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 1
-                        </option>
-                        <option value={2}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 2
-                        </option>
-                      </optgroup>
-                      <optgroup label="Category 2">
-                        <option disabled>&nbsp;&nbsp;Option 3</option>
-                        <option value={4}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Option 4
-                        </option>
-                      </optgroup>
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    onChange={(event, newValue) => {
+                      this.setState({ diagnostic: newValue["label"] });
+                    }}
+                    disablePortal
+                    name="diagnostic"
+                    options={CIMdata}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Diagnostic" />
+                    )}
+                  />
                 </div>
                 <div className="column">
                   <TextField
@@ -620,7 +615,7 @@ class PacientProfile extends React.Component {
                     onChange={this.handleChange}
                   />
                 </div>
-              </>
+              </div>
             )}
             <div className="add-medical-event-done-cancel">
               <button

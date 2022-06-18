@@ -132,18 +132,24 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: 30px 0;
     border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
 
-    .column {
-      padding: 20px;
+    .add-medical-event-wrap {
       display: flex;
-      flex-direction: column;
       justify-content: space-around;
-      flex-wrap: nowrap;
-      flex: 1;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .column {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        flex: 1;
+        > * {
+          margin: 5px 0;
+        }
+      }
     }
 
     .add-medical-event-done-cancel {
@@ -224,11 +230,12 @@
   flex-wrap: nowrap;
   justify-content: space-between;
 
-  > * {
+  .margin {
     margin: 10px 0;
   }
 
   .patient-modal-top {
+    padding: 0;
     position: absolute;
     top: 0;
     left: 0;

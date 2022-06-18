@@ -175,7 +175,7 @@ class MedicProfile extends React.Component {
                     size="small"
                     fullWidth
                     autoComplete="off"
-                    label="First name"
+                    label="Prenume"
                     name="firstName"
                     defaultValue={this.props.currentUser.firstName}
                     onChange={this.handleChange}
@@ -184,7 +184,7 @@ class MedicProfile extends React.Component {
                     size="small"
                     autoComplete="off"
                     fullWidth
-                    label="Last name"
+                    label="Nume"
                     name="lastName"
                     defaultValue={this.props.currentUser.lastName}
                     onChange={this.handleChange}
@@ -192,13 +192,14 @@ class MedicProfile extends React.Component {
 
                   <PhoneInput
                     inputStyle={{ width: "100%" }}
-                    specialLabel="Telephone number"
+                    specialLabel="Număr de telefon"
                     country={"ro"}
                     value={this.props.currentUser.tel}
                     onChange={(phoneNumber) =>
                       this.setState({ tel: phoneNumber })
                     }
                   />
+
                   <input
                     fullWidth
                     name="profile-picture"
@@ -213,7 +214,7 @@ class MedicProfile extends React.Component {
                     size="small"
                     autoComplete="off"
                     fullWidth
-                    label="Medical Function"
+                    label="Funcție medicală"
                     name="medicFunction"
                     defaultValue={this.props.currentUser.medicFunction}
                     onChange={this.handleChange}
@@ -222,7 +223,7 @@ class MedicProfile extends React.Component {
                     size="small"
                     autoComplete="off"
                     fullWidth
-                    label="Medical Institution"
+                    label="Insituție medicală"
                     name="medicInstitution"
                     defaultValue={this.props.currentUser.medicInstitution}
                     onChange={this.handleChange}
@@ -231,7 +232,7 @@ class MedicProfile extends React.Component {
                     size="small"
                     autoComplete="off"
                     fullWidth
-                    label="Institution Location"
+                    label="Adresa instituției"
                     name="location"
                     defaultValue={this.props.currentUser.location}
                     onChange={this.handleChange}
@@ -313,7 +314,7 @@ class MedicProfile extends React.Component {
               </div>
               <div className="second-column">
                 <div className="block">
-                  <h2>Specializari</h2>
+                  <h2>Specializări</h2>
                   {Object.keys(this.state.specializari).map((key) => (
                     <TextField
                       onChange={this.handleSpecChange}
@@ -327,7 +328,7 @@ class MedicProfile extends React.Component {
                   ))}
                 </div>
                 <div className="block">
-                  <h2>Experienta</h2>
+                  <h2>Experiență</h2>
                   {Object.keys(this.state.experienta).map((key) => (
                     <TextField
                       onChange={this.handleExpChange}
@@ -341,7 +342,7 @@ class MedicProfile extends React.Component {
                   ))}
                 </div>
                 <div className="block">
-                  <h2>Educatie</h2>
+                  <h2>Educație</h2>
                   <TextField
                     size="small"
                     autoComplete="off"

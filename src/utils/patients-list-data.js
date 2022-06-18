@@ -1,6 +1,11 @@
 import Avatar from "@mui/material/Avatar";
 import { basicProfilePictureURL } from "./basic-profile-picture";
 import MedicalRecord from "../components/medical-record/medical-record.component";
+import { Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+
+import { deletePatient } from "./firebase";
 
 export const columns = [
   {
@@ -11,6 +16,22 @@ export const columns = [
     align: "left",
     headerAlign: "center",
     align: "center",
+  },
+  {
+    headerName: "Șterge",
+    renderCell: (params) => (
+      <IconButton
+        color="error"
+        onClick={() => {
+          deletePatient(this.props.currentUser.id, params.row.id);
+        }}
+      >
+        <DeleteIcon />
+      </IconButton>
+    ),
+
+    sortable: false,
+    filterable: false,
   },
   {
     field: "profilePictureURL",
@@ -49,6 +70,8 @@ export const columns = [
     align: "center",
   },
   {
+    sortable: false,
+    filterable: false,
     field: "comorbidities",
     headerName: "Comorbidități",
     width: 200,
@@ -111,6 +134,8 @@ export const columns = [
     valueFormatter: ({ value }) => `${value} ani`,
   },
   {
+    sortable: false,
+    filterable: false,
     field: "medicalRecord",
     headerName: "Istoric medical",
     headerAlign: "center",
