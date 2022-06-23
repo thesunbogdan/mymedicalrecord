@@ -148,7 +148,7 @@ class ListComponent extends React.Component {
         },
         {
           field: "tel",
-          headerName: "Telephone number",
+          headerName: "Telefon",
           headerAlign: "center",
           align: "center",
           width: 200,
